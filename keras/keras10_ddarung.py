@@ -1,4 +1,3 @@
-
 import numpy as np
 import pandas as pd
 from sqlalchemy import true
@@ -38,27 +37,22 @@ y = train_set['count']
 print(y)
 print(y.shape)       #(1459,)
 
-x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.99, random_state=77 )
+x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.9, random_state=777 )
 
 
 #2. 모델구성
 model = Sequential()
-model.add(Dense(25, input_dim=9))
-model.add(Dense(65, activation ='selu'))
-model.add(Dense(65, activation ='selu'))
-model.add(Dense(65, activation ='selu'))
-model.add(Dense(55, activation ='selu'))
-model.add(Dense(45, activation ='selu'))
-model.add(Dense(45, activation ='selu'))
-model.add(Dense(455, activation ='selu'))
-model.add(Dense(55, activation ='selu'))
-model.add(Dense(55, activation ='selu'))
+model.add(Dense(10, input_dim=9))
+model.add(Dense(100, activation ='selu'))
+model.add(Dense(100, activation ='selu'))
+model.add(Dense(100, activation ='selu'))
+model.add(Dense(100, activation ='selu'))
 model.add(Dense(1))
 
 
 #3. 컴파일 , 훈련 
 model.compile(loss='mse', optimizer = 'adam')
-model.fit(x_train, y_train, epochs =500, batch_size=70 )
+model.fit(x_train, y_train, epochs =500, batch_size=100 )
 
 #평가,예측
 loss = model.evaluate(x_test, y_test)

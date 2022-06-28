@@ -20,7 +20,7 @@ model.add(Dense(143))
 model.add(Dense(190))
 model.add(Dense(1))
 
-model.compile(loss='mae',optimizer='adam') #(mse 평균) (loss 오차)compile (Optimizer(최적화)
+model.compile(loss='mae',optimizer='adam') #(mse 평균제곱오차) (loss 오차) compile (Optimizer(최적화)
 model.fit(x, y, epochs=64, batch_size=1)
 
 loss = model.evaluate(x, y) #평가값을 로스에 넣는다 #(evaliate 평가)
