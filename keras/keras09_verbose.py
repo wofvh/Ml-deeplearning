@@ -42,18 +42,19 @@ import time
 model.compile(loss='mse', optimizer='adam')
 
 start_time = time.time()
-print(start_time)                  #1656033141.8530962
+print(start_time) #1656033141.8530962
+
 model.fit(x,y, epochs=50
-          , batch_size=1, verbose=5)
+          , batch_size=1, verbose=1)
 end_time = time.time() - start_time
 
-print("걸린시간:", end_time)
+print("걸린시간:", end_time = start_time)
 
-"""
-verbose 0 걸린시간 #걸린시간: 18.045161247253418 
+'''
+verbose 0 걸린시간 #걸린시간: 1656570737.0593293 
 verbose 1 걸린시간 #걸린시간: 18.045161247253418 
 verbose 2 걸린시간 #걸린시간: 18.045161247253418 
 verbose 3.4~ 걸린시간 #걸린시간: 18.045161247253418
-"""
+'''
 
  

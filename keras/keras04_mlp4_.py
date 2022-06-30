@@ -6,7 +6,6 @@ from tensorflow.keras.layers import Dense
 #. 데이터
 x = np.array([range(10)])
 print(x.shape)
-
 # print((range10)) #range 범위, 거리 8-10까지의 정수형 숫자
 # for 1 in range(10): for :반복
 #      print(i) 
@@ -43,3 +42,4 @@ print('[9]의 예측값 : ', reuslt)
 #[실습]
 
 # 예측 : [[9]]  -> 예상 y값 [[10, 1.9, 0]]
+

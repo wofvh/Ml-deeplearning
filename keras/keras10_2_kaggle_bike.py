@@ -16,29 +16,6 @@ train_set = pd.read_csv(path + 'train.csv',)#(10886, 11)
 
 test_set = pd.read_csv(path + 'test.csv',)  #(6493, 8)
 
-######## 년, 월 ,일 ,시간 분리 ############
-
-train_set["hour"] = [t.hour for t in pd.DatetimeIndex(train_set.datetime)]
-train_set["day"] = [t.dayofweek for t in pd.DatetimeIndex(train_set.datetime)]
-train_set["month"] = [t.month for t in pd.DatetimeIndex(train_set.datetime)]
-train_set['year'] = [t.year for t in pd.DatetimeIndex(train_set.datetime)]
-train_set['year'] = train_set['year'].map({2011:0, 2012:1})
-
-test_set["hour"] = [t.hour for t in pd.DatetimeIndex(test_set.datetime)]
-test_set["day"] = [t.dayofweek for t in pd.DatetimeIndex(test_set.datetime)]
-test_set["month"] = [t.month for t in pd.DatetimeIndex(test_set.datetime)]
-test_set['year'] = [t.year for t in pd.DatetimeIndex(test_set.datetime)]
-test_set['year'] = test_set['year'].map({2011:0, 2012:1})
-
-train_set.drop('datetime',axis=1,inplace=True) # 트레인 세트에서 데이트타임 드랍
-train_set.drop('casual',axis=1,inplace=True) # 트레인 세트에서 캐주얼 레지스터드 드랍
-train_set.drop('registered',axis=1,inplace=True)
-
-test_set.drop('datetime',axis=1,inplace=True) # 트레인 세트에서 데이트타임 드랍
-
-print(train_set)
-print(test_set)
-##########################################
 
 x = train_set.drop(['count'],axis=1) #drop 데이터에서 '' 사이 값 빼기
 print(x)
@@ -64,7 +41,7 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer = 'adam')
 model.fit(x_train, y_train, epochs =1, batch_size=100, verbose=1 )
 
-#평가,예측
+#4. 평가,예측
 loss = model.evaluate(x, y)
 print('loss : ', loss)
 

@@ -28,10 +28,11 @@ top_corr_features
 plt.figure(figsize=(13,10))
 g = sns.heatmap(train_df[top_corr_features].corr(),annot=True,cmap="RdYlGn")
 
-#feature selection
+'''
+feature selection
 train_df = train_df[top_corr_features]
 test_df = test_df[top_corr_features.drop(['SalePrice'])]
-
+'''
 
 # split y_label
 train_y_label = train_df['SalePrice'] 	# target 값을 미리 분리하였음.
