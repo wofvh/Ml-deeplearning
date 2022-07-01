@@ -2,7 +2,7 @@ import numpy as np
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense
 from sklearn.model_selection import train_test_split
-
+from sklearn.metrics import r2_score
 from sklearn.datasets import load_diabetes
 
 
@@ -32,9 +32,8 @@ model.fit(x_train, y_train, epochs=200, batch_size=10, validation_split=0.25)
 loss = model.evaluate(x_test, y_test)
 print('loss :', loss)
 
+#r2
 y_predict = model.predict(x_test)
-
-from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_predict)
 print('r2스코어 :', r2)
 

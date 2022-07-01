@@ -5,6 +5,7 @@ import seaborn as sns
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from sklearn.metrics import r2_score, mean_squared_error
+import matplotlib.pyplot as plt
 
 # laod data
 path = './_data/kaggle_house/'
