@@ -4,15 +4,10 @@
 # EarlyStopping 넣고
 # 성능 비교
 # 감상문, 느낀점 2줄이상!!!
-
 from sklearn.model_selection import train_test_split
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense
 import matplotlib.pyplot as plt
-# from matplotlib import font_manager, rc
-# font_path = "C:/Windows/Fonts/gulim.TTc"
-# font = font_manager.FontProperties(fname=font_path).get_name()
-# rc('font', family=font)
 from sklearn.datasets import load_boston
 import time
 
@@ -25,22 +20,16 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
                                                     train_size=0.8,
                                                     random_state=66
                                                     )
-'''
-print(x)
-print(y)
-print(x.shape, y.shape) # (506, 13) (506,)
-print(datasets.feature_names) #싸이킷런에만 있는 명령어
-print(datasets.DESCR)
-'''
+
 
 #2. 모델구성
 model = Sequential()
 model.add(Dense(9, input_dim=13))
-model.add(Dense(8, activation='sigmoid'))
-model.add(Dense(9, activation='relu'))
-model.add(Dense(10, activation='relu'))
-model.add(Dense(9, activation='relu'))
-model.add(Dense(8, activation='relu'))
+model.add(Dense(19, activation='sigmoid'))
+model.add(Dense(19, activation='relu'))
+model.add(Dense(22, activation='relu'))
+model.add(Dense(19, activation='relu'))
+model.add(Dense(18, activation='relu'))
 model.add(Dense(1))
 
 #3. 컴파일, 훈련
@@ -70,17 +59,19 @@ r2 = r2_score(y_test, y_predict)
 print('loss : ' , loss)
 print('r2스코어 : ', r2)
 
-# loss :  30.97882080078125
-# r2스코어 :  0.6233822491792897
-##################val전후#################
-# loss :  17.171226501464844
-# r2스코어 :  0.7912448513467571
-##################EarlyStopping전후#################
-# loss :  16.585956573486328
-# r2스코어 :  0.8015628803037077
-##################activation전후#################
-# loss :  15.895992279052734
-# r2스코어 :  0.8098177492286052
+# 1. validation 적용했을때 결과
+#loss : 28.776151657104492
+#r2스코어 : 0.5520111442839735   
+
+# 2. validation / EarlyStopping 적용했을때 결과
+# loss :  18.753120512345123        
+# r2 스코어 : 0.6785231239661245 
+
+# 3. validation / EarlyStopping / activation 적용했을때 결과
+# loss : [16.35492515563965, 3.0075416564941406]
+# r2 스코어 : 0.8043270076545782  
+
+# 1 > 2 > 3 과정을 거칠 수록 r2 값이 1에 가까워짐
 
 
 

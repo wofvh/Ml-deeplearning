@@ -26,10 +26,10 @@ end_time = time.time()
 #2.모델
 model = Sequential()
 model.add(Dense(100, input_dim=8))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
+model.add(Dense(21))
+model.add(Dense(22))
+model.add(Dense(23))
+model.add(Dense(24))
 model.add(Dense(1))
 
 import time

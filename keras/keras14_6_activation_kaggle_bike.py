@@ -82,7 +82,7 @@ earlyStopping = EarlyStopping(monitor='val_loss', patience=500, mode='min', verb
                               restore_best_weights=True)
 
 model.compile(loss='mse', optimizer='adam', metrics=['mae'])
-model.fit(x_train, y_train, epochs=800, batch_size=100, verbose=1,validation_split=0.2, callbacks=[earlyStopping])
+model.fit(x_train, y_train, epochs=80, batch_size=100, verbose=1,validation_split=0.2, callbacks=[earlyStopping])
 
 #4. 평가, 예측
 loss = model.evaluate(x, y) 
@@ -106,6 +106,7 @@ print('r2스코어 : ', r2)
 # loss :  20049.21484375
 # RMSE :  140.3344816795905
 # r2스코어 :  0.3978910778053413
+
 ##################activation전후#################
 # loss :  1027.9700927734375
 # RMSE :  42.40323210832085

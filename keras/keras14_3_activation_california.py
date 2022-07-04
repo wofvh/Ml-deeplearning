@@ -14,7 +14,7 @@ font_path = "C:/Windows/Fonts/gulim.TTc"
 font = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font)
 from sklearn.datasets import fetch_california_housing
-import time
+import time 
 
 #1. 데이터
 datasets = fetch_california_housing()
@@ -25,13 +25,6 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
                                                     train_size=0.8,
                                                     random_state=66
                                                     )
-'''
-print(x)
-print(y)
-print(x.shape, y.shape) # (506, 13) (506,)
-print(datasets.feature_names) #싸이킷런에만 있는 명령어
-print(datasets.DESCR)
-'''
 
 #2. 모델구성
 model = Sequential()
@@ -47,11 +40,11 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer='adam', metrics=['mae'])
 
 from tensorflow.python.keras.callbacks import EarlyStopping
-earlyStopping = EarlyStopping(monitor='val_loss', patience=300, mode='auto', verbose=1, 
+earlyStopping = EarlyStopping(monitor='val_loss', patience=100, mode='auto', verbose=1, 
                               restore_best_weights=True)        
 
 start_time = time.time()
-hist = model.fit(x_train, y_train, epochs=3000, batch_size=100,
+hist = model.fit(x_train, y_train, epochs=200, batch_size=50,
                  validation_split=0.2,
                  callbacks=[earlyStopping],
                  verbose=1)
@@ -72,12 +65,15 @@ print('r2스코어 : ', r2)
 
 # loss :  0.6447481513023376
 # r2스코어 :  0.5096276859675669
+
 ##################val전후#################  72
 # loss :  0.5981025099754333
 # r2스코어 :  0.545104755121719   
+
 ##################EarlyStopping전후#################
 # loss :  0.5845963358879089
 # r2스코어 :  0.5505772840253547
+
 ##################activation전후#################
 # loss :  0.45930835604667664
 # r2스코어 :  0.6705258342277447
