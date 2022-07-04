@@ -61,10 +61,9 @@ y_predict = y_predict.round(0)
 
 #######[과제 accuracy_score 완성]###########
 acc= accuracy_score(y_test, y_predict)
-
+print('acc_score:', acc)
 #r2 = r2_score(y_test, y_predict)
 # print('r2스코어 :', r2 )
-print(y_predict)
 
 
 # print("---------------------------------")
@@ -88,6 +87,5 @@ plt.xlabel("epochs")
 plt.legend(loc='upper right')
 plt.show()
 
-
-# loss: 0.06584574282169342
-# r2스코어 : 0.8994210482098459
+# loss: [0.2297472357749939, 0.8771929740905762, 0.07352643460035324]
+# acc_score: 0.8771929824561403
