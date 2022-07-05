@@ -24,7 +24,7 @@ print(x.shape, y.shape) #(150, 4) (150,)
 
 print("y의 라벨값:" , np.unique(y)) #y의 라벨값: [0 1 2]
 
-
+'''
 y = to_categorical(y)
 print(y)
 print(y.shape) 
@@ -106,7 +106,8 @@ plt.xlabel("epochs")
 plt.legend(loc='upper right')
 plt.show()
 
-import matplotlib.pyplot as plt
-plt.gray()
-plt.matshow(datasets.images[3])
-plt.show()
+# import matplotlib.pyplot as plt
+# plt.gray()
+# plt.matshow(datasets.images[3])
+# plt.show()
+'''

@@ -72,3 +72,6 @@ plt.ylabel("loss")
 plt.xlabel("epochs")
 plt.legend(loc='upper right')
 plt.show()
+import time
+end_time = time.time() - start_time    
+print("걸린시간:", end_time )
