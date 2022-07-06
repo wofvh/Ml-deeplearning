@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.datasets import load_iris
 from sklearn import metrics
 from sklearn.preprocessing import OneHotEncoder
+from tensorboard import summary
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense
 from sklearn.model_selection import train_test_split
@@ -24,7 +25,7 @@ print(x.shape, y.shape) #(150, 4) (150,)
 
 print("y의 라벨값:" , np.unique(y)) #y의 라벨값: [0 1 2]
 
-'''
+
 y = to_categorical(y)
 print(y)
 print(y.shape) 
@@ -46,7 +47,6 @@ model.add(Dense(20, activation='relu'))
 model.add(Dense(3, activation='softmax'))
 
 np.argmax(x)
-
 print(x)
 
 
@@ -110,4 +110,3 @@ plt.show()
 # plt.gray()
 # plt.matshow(datasets.images[3])
 # plt.show()
-'''

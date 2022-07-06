@@ -9,6 +9,9 @@ from tensorflow.python.keras.layers import Dense, Dropout
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+import time
+
 
 
 #1. 데이터
@@ -229,23 +232,40 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
                                                     )
 print(x_train)
 print(y_train)
+# scaler =  MinMaxScaler()
+scaler = StandardScaler()
+scaler.fit(x_train)
+x_train = scaler.transform(x_train) # x_train을 수치로 변환해준다.
+x_test = scaler.transform(x_test) # 
+# print(np.min(x_train))   # 0.0
+# print(np.max(x_train))   # 1.0000000000000002
+# print(np.min(x_test))   # -0.06141956477526944
+# print(np.max(x_test))   # 1.1478180091225068
+ 
+##### [ 3가지 성능 비교 ] #####
+# scaler 사용하기 전
+# scaler =  MinMaxScaler()
+# scaler = StandardScaler()
 
 #2. 모델구성
 model = Sequential()
 model.add(Dense(12, input_dim=12))
-model.add(Dense(15,activation='relu'))
-model.add(Dense(16))
-model.add(Dense(17,activation='relu'))
+model.add(Dense(115,activation='relu'))
+model.add(Dense(115,activation='swish'))
+model.add(Dense(115,activation='sigmoid'))
+model.add(Dense(112,activation='relu'))
 model.add(Dense(1))
 
 #3. 컴파일, 훈련
 
 from tensorflow.python.keras.callbacks import EarlyStopping
-earlyStopping = EarlyStopping(monitor='val_loss', patience=500, mode='min', verbose=1, 
+earlyStopping = EarlyStopping(monitor='val_loss', patience=1000, mode='min', verbose=1, 
                               restore_best_weights=True)
+start_time = time.time()
 
-model.compile(loss='mse', optimizer='adam', metrics=['mae'])
-model.fit(x_train, y_train, epochs=4000, batch_size=100, verbose=1, validation_split=0.2, callbacks=[earlyStopping])
+model.compile(loss='mae', optimizer='adam', metrics=['mae'])
+model.fit(x_train, y_train, epochs=3000, batch_size=500, verbose=1, validation_split=0.2, callbacks=[earlyStopping])
+end_time = time.time()  -start_time
 
 #4. 평가, 예측
 loss = model.evaluate(x_test, y_test) 
@@ -255,60 +275,16 @@ y_predict = model.predict(x_test)
 
 def RMSE(a, b): 
     return np.sqrt(mean_squared_error(a, b))
-
+print("걸린시간:", end_time )
 rmse = RMSE(y_test, y_predict)
 print("RMSE : ", rmse)
 
 r2 = r2_score(y_test, y_predict)
 print('r2스코어 : ', r2)
 
-model.summary()
+#StandardScaler()
+# loss :  [53230.41796875, 53230.41796875]
+# 걸린시간: 120.65667748451233
+# RMSE :  73802.51919096922
+# r2스코어 :  -0.1580899690648454
 
-# loss :  776604224.0
-# RMSE :  27867.618618561268
-# r2스코어 :  0.8348800136895129
-##################activation전후#################
-# loss :  687914688.0  
-# RMSE :  26228.128430321598
-# r2스코어 :  0.8537369820234391
-
-# 느낀점 : earlystopping 쓰니까 epoch를 크게 늘려도 되서 편함, 길게 훈련을 시키더라도 최저점에서 자동으로 멈춰주니까 확신을 가지고 돌릴수 있음
-#왜 진작 안알려주셧는지 알거같음
-
-
-
-'''
-y_summit = model.predict(test_set)
-print(y_summit)
-print(y_summit.shape) # (1459, 1)
-submission_set = pd.read_csv(path + 'sample_submission.csv', # + 명령어는 문자를 앞문자와 더해줌
-                             index_col=0) # index_col=n n번째 컬럼을 인덱스로 인식
-print(submission_set)
-submission_set['SalePrice'] = y_summit
-print(submission_set)
-submission_set.to_csv(path + 'submission.csv', index = True)
-'''
-
-# loss :  [2893929728.0, 41320.25]
-# RMSE :  53795.25486277435
-# r2스코어 :  0.3846986528248172
-# Model: "sequential"
-# _________________________________________________________________      
-# Layer (type)                 Output Shape              Param #
-# =================================================================      
-# dense (Dense)                (None, 12)                156
-# _________________________________________________________________      
-# dense_1 (Dense)              (None, 15)                195
-# _________________________________________________________________      
-# dense_2 (Dense)              (None, 16)                256
-# _________________________________________________________________      
-# dense_3 (Dense)              (None, 17)                289
-# _________________________________________________________________      
-# dense_4 (Dense)              (None, 1)                 18
-# =================================================================      
-# Total params: 914
-# Trainable params: 914
-# Non-trainable params: 0
-# _________________________________________________________________      
-
-# (tf282gpu) C:\study>

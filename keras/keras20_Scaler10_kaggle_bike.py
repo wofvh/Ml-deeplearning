@@ -8,6 +8,8 @@ from keras.layers.recurrent import LSTM, SimpleRNN
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
 import datetime as dt
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+import time
 
 #1. 데이터
 path = './_data/kaggle_bike/'
@@ -66,6 +68,20 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
                                                     train_size=0.75,
                                                     random_state=31
                                                     )
+# scaler =  MinMaxScaler()
+scaler = StandardScaler()
+scaler.fit(x_train)
+x_train = scaler.transform(x_train) # x_train을 수치로 변환해준다.
+x_test = scaler.transform(x_test) # 
+# print(np.min(x_train))   # 0.0
+# print(np.max(x_train))   # 1.0000000000000002
+# print(np.min(x_test))   # -0.06141956477526944
+# print(np.max(x_test))   # 1.1478180091225068
+ 
+##### [ 3가지 성능 비교 ] #####
+# scaler 사용하기 전
+# scaler =  MinMaxScaler()
+# scaler = StandardScaler()
 
 #2. 모델구성
 model = Sequential()
@@ -80,10 +96,12 @@ model.add(Dense(1))
 from tensorflow.python.keras.callbacks import EarlyStopping
 earlyStopping = EarlyStopping(monitor='val_loss', patience=500, mode='min', verbose=1, 
                               restore_best_weights=True)
+start_time = time.time()
 
 model.compile(loss='mse', optimizer='adam', metrics=['mae'])
 model.fit(x_train, y_train, epochs=80, batch_size=100, verbose=1,validation_split=0.2, callbacks=[earlyStopping])
 
+end_time = time.time()  -start_time
 #4. 평가, 예측
 loss = model.evaluate(x, y) 
 print('loss : ', loss)
@@ -97,30 +115,14 @@ rmse = RMSE(y_test, y_predict)
 
 from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_predict)
-
+print("걸린시간:", end_time )
 print('loss : ', loss)
 print("RMSE : ", rmse)
 print('r2스코어 : ', r2)
 
-model.summary()
-
-# loss :  20049.21484375
-# RMSE :  140.3344816795905
-# r2스코어 :  0.3978910778053413
-
-##################activation전후#################
-# loss :  1027.9700927734375
-# RMSE :  42.40323210832085
-# r2스코어 :  0.9450276636367779
-
-'''
-y_summit = model.predict(test_set)
-print(y_summit)
-print(y_summit.shape) # (6493, 1)
-submission_set = pd.read_csv(path + 'sampleSubmission.csv', # + 명령어는 문자를 앞문자와 더해줌
-                             index_col=0) # index_col=n n번째 컬럼을 인덱스로 인식
-print(submission_set)
-submission_set['count'] = y_summit
-print(submission_set)
-submission_set.to_csv(path + 'submission.csv', index = True)
-'''
+#StandardScaler()
+# loss :  [3426147.0, 1486.9388427734375]
+# 걸린시간: 27.99341368675232
+# loss :  [3426147.0, 1486.9388427734375]
+# RMSE :  91.84658028426294
+# r2스코어 :  0.7420875810747748

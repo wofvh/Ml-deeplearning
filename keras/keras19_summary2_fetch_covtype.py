@@ -83,20 +83,20 @@ model.add(Dense(350, activation='relu'))               # relu : 히든에서만 
 model.add(Dense(350, activation='relu'))               # relu : 히든에서만 쓸수있음, 요즘에 성능 젤좋음
 model.add(Dense(350, activation='relu'))               # relu : 히든에서만 쓸수있음, 요즘에 성능 젤좋음
 model.add(Dense(400, activation='relu'))               # relu : 히든에서만 쓸수있음, 요즘에 성능 젤좋음
-model.add(Dense(450, activation='linear'))               
+model.add(Dense(150, activation='linear'))               
 model.add(Dense(7, activation='softmax'))             # softmax : 다중분류일때 아웃풋에 활성화함수로 넣어줌, 아웃풋에서 소프트맥스 활성화 함수를 씌워 주면 그 합은 무조건 1로 변함
-                                                                 # ex 70, 20, 10 -> 0.7, 0.2, 0.1
+                                                # ex 70, 20, 10 -> 0.7, 0.2, 0.
 
 #3. 컴파일 훈련
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', # 다중 분류에서는 로스함수를 'categorical_crossentropy' 로 써준다 (99퍼센트로)
               metrics=['accuracy'])
 
-es = EarlyStopping(monitor='val_loss', patience=1000, mode='auto', verbose=1, 
+es = EarlyStopping(monitor='val_loss', patience=10, mode='auto', verbose=1, 
                               restore_best_weights=True)   
 start_time = time.time()
 
-model.fit(x_train, y_train, epochs=10, batch_size=100,
+model.fit(x_train, y_train, epochs=10, batch_size=1000,
                  validation_split=0.2,
                  callbacks=[es],
                  verbose=1)
@@ -128,11 +128,44 @@ acc= accuracy_score(y_test, y_predict)
 
 print(aaa, "걸린시간:", end_time )
 
-print('acc스코어 : ', acc)
- 
+print('acc스코어 : ', acc) 
+
 model.summary()
 
 # cpu 걸린시간: 183.31732559204102
 # acc스코어 :  0.7139882045162474
 
 # gpu 걸린시간: 220.9035186767578
+
+# gpu 걸린시간: 25.514371156692505
+# acc스코어 :  0.7321633467964017
+# Model: "sequential"
+# _________________________________________________________________      
+# Layer (type)                 Output Shape              Param #
+# =================================================================      
+# dense (Dense)                (None, 30)                1650
+# _________________________________________________________________      
+# dense_1 (Dense)              (None, 200)               6200
+# _________________________________________________________________      
+# dense_2 (Dense)              (None, 300)               60300
+# _________________________________________________________________      
+# dense_3 (Dense)              (None, 350)               105350
+# _________________________________________________________________      
+# dense_4 (Dense)              (None, 350)               122850
+# _________________________________________________________________      
+# dense_5 (Dense)              (None, 350)               122850
+# _________________________________________________________________      
+# dense_6 (Dense)              (None, 350)               122850
+# _________________________________________________________________      
+# dense_7 (Dense)              (None, 350)               122850
+# _________________________________________________________________      
+# dense_8 (Dense)              (None, 400)               140400
+# _________________________________________________________________      
+# dense_9 (Dense)              (None, 150)               60150     
+# _________________________________________________________________      
+# dense_10 (Dense)             (None, 7)                 1057
+# =================================================================      
+# Total params: 866,507
+# Trainable params: 866,507
+# Non-trainable params: 0
+# _________________________________________________________________     

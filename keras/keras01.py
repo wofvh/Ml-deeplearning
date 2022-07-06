@@ -1,12 +1,12 @@
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
 #1. 데이터
 import numpy as np
 x = np.array([1,2,3])
 y = np.array([1,2,3])
 
 #2. 모델구성
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-
+ 
 model = Sequential()
 model.add(Dense(4, input_dim=1))
 model.add(Dense(5))
