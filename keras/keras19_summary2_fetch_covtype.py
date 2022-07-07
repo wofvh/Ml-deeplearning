@@ -9,23 +9,12 @@ from tensorflow.python.keras.callbacks import EarlyStopping
 from sklearn.metrics import r2_score, accuracy_score
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
-font_path = "C:/Windows/Fonts/gulim.TTc"
-font = font_manager.FontProperties(fname=font_path).get_name()
-rc('font', family=font)
 from tensorflow.keras.utils import to_categorical # https://wikidocs.net/22647 케라스 원핫인코딩
 from sklearn.preprocessing import OneHotEncoder  # https://psystat.tistory.com/136 싸이킷런 원핫인코딩
 from sklearn.datasets import fetch_covtype
 import tensorflow as tf
 import time
-gpus = tf.config.experimental.list_physical_devices('GPU')
-print(gpus)
-if(gpus):
-    print("쥐피유돈다")
-    aaa ='gpu'
-else:
-    print("쥐피유 안도아")
-    aaa = 'cpu'
-
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 #1. 데이터
 
@@ -66,9 +55,21 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
                                                     random_state=66
                                                     )
 
-print(y_test)
-print(y_train)
-print(y)
+ 
+# scaler =  MinMaxScaler()
+scaler = StandardScaler()
+scaler.fit(x_train)
+x_train = scaler.transform(x_train) # x_train을 수치로 변환해준다.
+x_test = scaler.transform(x_test) # 
+# print(np.min(x_train))   # 0.0
+# print(np.max(x_train))   # 1.0000000000000002
+# print(np.min(x_test))   # -0.06141956477526944
+# print(np.max(x_test))   # 1.1478180091225068
+ 
+##### [ 3가지 성능 비교 ] #####
+# scaler 사용하기 전
+# scaler =  MinMaxScaler()
+# scaler = StandardScaler()
 
 
 #2. 모델
@@ -132,40 +133,3 @@ print('acc스코어 : ', acc)
 
 model.summary()
 
-# cpu 걸린시간: 183.31732559204102
-# acc스코어 :  0.7139882045162474
-
-# gpu 걸린시간: 220.9035186767578
-
-# gpu 걸린시간: 25.514371156692505
-# acc스코어 :  0.7321633467964017
-# Model: "sequential"
-# _________________________________________________________________      
-# Layer (type)                 Output Shape              Param #
-# =================================================================      
-# dense (Dense)                (None, 30)                1650
-# _________________________________________________________________      
-# dense_1 (Dense)              (None, 200)               6200
-# _________________________________________________________________      
-# dense_2 (Dense)              (None, 300)               60300
-# _________________________________________________________________      
-# dense_3 (Dense)              (None, 350)               105350
-# _________________________________________________________________      
-# dense_4 (Dense)              (None, 350)               122850
-# _________________________________________________________________      
-# dense_5 (Dense)              (None, 350)               122850
-# _________________________________________________________________      
-# dense_6 (Dense)              (None, 350)               122850
-# _________________________________________________________________      
-# dense_7 (Dense)              (None, 350)               122850
-# _________________________________________________________________      
-# dense_8 (Dense)              (None, 400)               140400
-# _________________________________________________________________      
-# dense_9 (Dense)              (None, 150)               60150     
-# _________________________________________________________________      
-# dense_10 (Dense)             (None, 7)                 1057
-# =================================================================      
-# Total params: 866,507
-# Trainable params: 866,507
-# Non-trainable params: 0
-# _________________________________________________________________     

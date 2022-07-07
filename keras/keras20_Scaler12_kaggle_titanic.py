@@ -100,15 +100,15 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
                                                     train_size=0.7,
                                                     random_state=66
                                                     )
-# scaler =  MinMaxScaler()
-scaler = StandardScaler()
-scaler.fit(x_train)
-x_train = scaler.transform(x_train) # x_train을 수치로 변환해준다.
-x_test = scaler.transform(x_test) # 
-# print(np.min(x_train))   # 0.0
-# print(np.max(x_train))   # 1.0000000000000002
-# print(np.min(x_test))   # -0.06141956477526944
-# print(np.max(x_test))   # 1.1478180091225068
+scaler =  MinMaxScaler()
+# scaler = StandardScaler()
+# scaler.fit(x_train)
+# x_train = scaler.transform(x_train) # x_train을 수치로 변환해준다.
+# x_test = scaler.transform(x_test) # 
+print(np.min(x_train))   # 0.0
+print(np.max(x_train))   # 1.0000000000000002
+print(np.min(x_test))   # -0.06141956477526944
+print(np.max(x_test))   # 1.1478180091225068
  
 ##### [ 3가지 성능 비교 ] #####
 # scaler 사용하기 전
@@ -187,3 +187,8 @@ print('acc스코어 : ', acc)
 # 걸린시간: 28.166468381881714
 # loss :  [0.40371257066726685, 0.8358209133148193]
 # acc스코어 :  0.835820895522388
+
+# [418 rows x 1 columns]
+# 걸린시간: 27.431748867034912
+# loss :  [0.3961178660392761, 0.8507462739944458]
+# acc스코어 :  0.8507462686567164

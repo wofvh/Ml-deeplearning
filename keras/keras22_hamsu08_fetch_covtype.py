@@ -1,31 +1,23 @@
 import numpy as np
 import pandas as pd
-from sklearn.datasets import load_iris
+import matplotlib.pyplot as plt
+import time 
+import tensorflow as tf
 from sqlalchemy import false
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense
 from sklearn.model_selection import train_test_split
 from tensorflow.python.keras.callbacks import EarlyStopping
 from sklearn.metrics import r2_score, accuracy_score
-import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
 font_path = "C:/Windows/Fonts/gulim.TTc"
 font = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font)
-from tensorflow.keras.utils import to_categorical # https://wikidocs.net/22647 케라스 원핫인코딩
+from tensorflow.python.keras.utils import to_categorical # https://wikidocs.net/22647 케라스 원핫인코딩
 from sklearn.preprocessing import OneHotEncoder  # https://psystat.tistory.com/136 싸이킷런 원핫인코딩
 from sklearn.datasets import fetch_covtype
-import tensorflow as tf
-import time
-gpus = tf.config.experimental.list_physical_devices('GPU')
-print(gpus)
-if(gpus):
-    print("쥐피유돈다")
-    aaa ='gpu'
-else:
-    print("쥐피유 안도아")
-    aaa = 'cpu'
-
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MaxAbsScaler, RobustScaler
+from tensorflow.python.keras.models import Sequential, Model
+from tensorflow.python.keras.layers import Dense, Input
 
 #1. 데이터
 
@@ -66,34 +58,42 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
                                                     random_state=66
                                                     )
 
-print(y_test)
-print(y_train)
-print(y)
-
+# print(y_test)
+# print(y_train)
+# print(y)
 
 #2. 모델
 
-model = Sequential()
-model.add(Dense(30, input_dim=54, activation='linear')) #sigmoid : 이진분류일때 아웃풋에 activation = 'sigmoid' 라고 넣어줘서 아웃풋 값 범위를 0에서 1로 제한해줌
-model.add(Dense(100 activation='sigmoid'))               # 출력이 0 or 1으로 나와야되기 때문, 그리고 최종으로 나온 값에 반올림을 해주면 0 or 1 완성
-model.add(Dense(100, activation='relu'))               # relu : 히든에서만 쓸수있음, 요즘에 성능 젤좋음
-model.add(Dense(100, activation='relu'))               # relu : 히든에서만 쓸수있음, 요즘에 성능 젤좋음
-model.add(Dense(100, activation='relu'))               # relu : 히든에서만 쓸수있음, 요즘에 성능 젤좋음
-model.add(Dense(100, activation='relu'))               # relu : 히든에서만 쓸수있음, 요즘에 성능 젤좋음
-model.add(Dense(90, activation='linear'))               
-model.add(Dense(7, activation='softmax'))             # softmax : 다중분류일때 아웃풋에 활성화함수로 넣어줌, 아웃풋에서 소프트맥스 활성화 함수를 씌워 주면 그 합은 무조건 1로 변함
+# model = Sequential()
+# model.add(Dense(30, input_dim=54, activation='linear')) #sigmoid : 이진분류일때 아웃풋에 activation = 'sigmoid' 라고 넣어줘서 아웃풋 값 범위를 0에서 1로 제한해줌
+# model.add(Dense(100 activation='sigmoid'))               # 출력이 0 or 1으로 나와야되기 때문, 그리고 최종으로 나온 값에 반올림을 해주면 0 or 1 완성
+# model.add(Dense(100, activation='relu'))               # relu : 히든에서만 쓸수있음, 요즘에 성능 젤좋음
+# model.add(Dense(100, activation='relu'))               # relu : 히든에서만 쓸수있음, 요즘에 성능 젤좋음
+# model.add(Dense(100, activation='relu'))               # relu : 히든에서만 쓸수있음, 요즘에 성능 젤좋음
+# model.add(Dense(100, activation='relu'))               # relu : 히든에서만 쓸수있음, 요즘에 성능 젤좋음
+# model.add(Dense(90, activation='linear'))               
+# model.add(Dense(7, activation='softmax'))             # softmax : 다중분류일때 아웃풋에 활성화함수로 넣어줌, 아웃풋에서 소프트맥스 활성화 함수를 씌워 주면 그 합은 무조건 1로 변함
                                                 # ex 70, 20, 10 -> 0.7, 0.2, 0.
-
+input1 = Input(shape=(54,))
+dense1 = Dense(10)(input1)
+dense2 = Dense(35,activation='relu')(dense1)
+dense3 = Dense(25,activation='relu')(dense1)
+dense4 = Dense(25,activation='relu')(dense2)
+dense5 = Dense(25,activation='sigmoid')(dense3)
+dense5 = Dense(25,activation='linear')(dense3)
+output1 = Dense(1)(dense3)
+model = Model(inputs=input1, outputs=output1)
+model.summary()
 #3. 컴파일 훈련
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', # 다중 분류에서는 로스함수를 'categorical_crossentropy' 로 써준다 (99퍼센트로)
               metrics=['accuracy'])
 
-es = EarlyStopping(monitor='val_loss', patience=10, mode='auto', verbose=1, 
+es = EarlyStopping(monitor='val_loss', patience=100, mode='auto', verbose=1, 
                               restore_best_weights=True)   
 start_time = time.time()
 
-model.fit(x_train, y_train, epochs=10, batch_size=1000,
+model.fit(x_train, y_train, epochs=1000, batch_size=100,
                  validation_split=0.2,
                  callbacks=[es],
                  verbose=1)
@@ -104,9 +104,9 @@ end_time = time.time()  -start_time
 # print('loss : ', loss)
 # print('accuracy : ', acc)
 
-results= model.evaluate(x_test, y_test)
-print('loss : ', results[0])
-print('accuracy : ', results[1])
+loss,acc=model.evaluate(x_test, y_test)
+print('loss : ', loss)
+print('accuracy : ', acc)
 
 
 y_predict = model.predict(x_test)
@@ -122,7 +122,6 @@ print(np.unique(y_predict))
 print(np.unique(y_test))
 
 acc= accuracy_score(y_test, y_predict)
-
-print(aaa, "걸린시간:", end_time )
+print( "걸린시간:", end_time )
 
 print('acc스코어 : ', acc) 
