@@ -1,17 +1,14 @@
-from tensorflow.python.keras.models import Sequential,Model
-from tensorflow.python.keras.layers import Dense,Input
-# 캐글 자전거 문제풀이
 import numpy as np
 import pandas as pd
 from sqlalchemy import true #pandas : 엑셀땡겨올때 씀
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential, Model
+from tensorflow.python.keras.layers import Dense, Input
 from keras.layers.recurrent import LSTM, SimpleRNN
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
-import datetime as dt
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
-import time
+from sklearn.preprocessing import MaxAbsScaler, RobustScaler
+import datetime as dt
 
 #1. 데이터
 path = './_data/kaggle_bike/'
@@ -70,49 +67,54 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
                                                     train_size=0.75,
                                                     random_state=31
                                                     )
-# scaler =  MinMaxScaler()
+
+# scaler = MinMaxScaler()
 scaler = StandardScaler()
+# scaler = MaxAbsScaler()
+# scaler = RobustScaler()
 scaler.fit(x_train)
-x_train = scaler.transform(x_train) # x_train을 수치로 변환해준다.
-x_test = scaler.transform(x_test) # 
-# print(np.min(x_train))   # 0.0
-# print(np.max(x_train))   # 1.0000000000000002
-# print(np.min(x_test))   # -0.06141956477526944
-# print(np.max(x_test))   # 1.1478180091225068
- 
-##### [ 3가지 성능 비교 ] #####
-# scaler 사용하기 전
-# scaler =  MinMaxScaler()
-# scaler = StandardScaler()
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
+test_set = scaler.transform(test_set)
+print(np.min(x_train))  # 0.0
+print(np.max(x_train))  # 1.0
+
+print(np.min(x_test))  # 1.0
+print(np.max(x_test))  # 1.0
+
+
 
 #2. 모델구성
+
+# model = load_model("./_save/keras22_hamsu10_kaggle_bike.h5")
+
 # model = Sequential()
-# model.add(Dense(9, activation='swish', input_dim=12))
-# model.add(Dense(17, activation='elu'))
-# model.add(Dense(19, activation='swish'))
-# model.add(Dense(14, activation='elu'))
+# model.add(Dense(100, activation='swish', input_dim=12))
+# model.add(Dense(100, activation='elu'))
+# model.add(Dense(100, activation='swish'))
+# model.add(Dense(100, activation='elu'))
 # model.add(Dense(1))
+
 input1 = Input(shape=(12,))
-dense1 = Dense(10)(input1)
-dense2 = Dense(29,activation='relu')(dense1)
-dense3 = Dense(28,activation='sigmoid')(dense2)
-dense4 = Dense(28,activation='sigmoid')(dense3)
-dense5 = Dense(28,activation='sigmoid')(dense2)
-output1 = Dense(1)(dense3)
-model = Model(inputs=input1, outputs=output1)
-model.summary()
+dense1 = Dense(100, activation='swish')(input1)
+dense2 = Dense(100, activation='elu')(dense1)
+dense3 = Dense(100, activation='swish')(dense2)
+dense4 = Dense(100, activation='elu')(dense3)
+output1 = Dense(1)(dense4)
+model = Model(inputs=input1, outputs=output1)     
+
 
 #3. 컴파일, 훈련
 
 from tensorflow.python.keras.callbacks import EarlyStopping
 earlyStopping = EarlyStopping(monitor='val_loss', patience=500, mode='min', verbose=1, 
                               restore_best_weights=True)
-start_time = time.time()
 
 model.compile(loss='mse', optimizer='adam', metrics=['mae'])
-model.fit(x_train, y_train, epochs=80, batch_size=100, verbose=1,validation_split=0.2, callbacks=[earlyStopping])
+model.fit(x_train, y_train, epochs=800, batch_size=100, verbose=1,validation_split=0.2, callbacks=[earlyStopping])
 
-end_time = time.time()  -start_time
+model.save("./_save/keras22_hamsu10_kaggle_bike.h5")
+
 #4. 평가, 예측
 loss = model.evaluate(x, y) 
 print('loss : ', loss)
@@ -126,7 +128,32 @@ rmse = RMSE(y_test, y_predict)
 
 from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_predict)
-print("걸린시간:", end_time )
+
 print('loss : ', loss)
 print("RMSE : ", rmse)
 print('r2스코어 : ', r2)
+
+# y_summit = model.predict(test_set)
+
+# print(y_summit)
+# print(y_summit.shape) # (6493, 1)
+
+# submission_set = pd.read_csv(path + 'sampleSubmission.csv', # + 명령어는 문자를 앞문자와 더해줌
+#                              index_col=0) # index_col=n n번째 컬럼을 인덱스로 인식
+
+# print(submission_set)
+
+# submission_set['count'] = y_summit
+# print(submission_set)
+
+
+# submission_set.to_csv(path + 'submission_robust_scaler.csv', index = True)
+
+# 스탠다드
+# loss :  [44807.94140625, 156.9504852294922]
+# RMSE :  40.385026096679304
+# r2스코어 :  0.9501360120892682
+
+# loss :  [77177.328125, 218.48867797851562]
+# RMSE :  42.06061976287204
+# r2스코어 :  0.945912412806713

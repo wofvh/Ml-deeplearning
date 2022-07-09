@@ -1,15 +1,13 @@
-from tensorflow.python.keras.models import Sequential,Model
-from tensorflow.python.keras.layers import Dense,Input
-# 데이콘 따릉이 문제풀이
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MaxAbsScaler, RobustScaler
 import numpy as np
 import pandas as pd
 from sqlalchemy import true #pandas : 엑셀땡겨올때 씀
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential, Model
+from tensorflow.python.keras.layers import Dense, Input
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-import time
+
 
 #1. 데이터
 path = './_data/ddarung/'
@@ -47,53 +45,52 @@ print(y)
 print(y.shape) # (1459,)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,
-                                                    train_size=0.8,
-                                                    random_state=66
+                                                    train_size=0.75,
+                                                    random_state=31
                                                     )
-# scaler =  MinMaxScaler()
-scaler = StandardScaler()
-scaler.fit(x_train)
-x_train = scaler.transform(x_train) # x_train을 수치로 변환해준다.
-x_test = scaler.transform(x_test) # 
-# print(np.min(x_train))   # 0.0
-# print(np.max(x_train))   # 1.0000000000000002
-# print(np.min(x_test))   # -0.06141956477526944
-# print(np.max(x_test))   # 1.1478180091225068
- 
-##### [ 3가지 성능 비교 ] #####
-# scaler 사용하기 전
-# scaler =  MinMaxScaler()
+
+# scaler = MinMaxScaler()
 # scaler = StandardScaler()
+scaler = MaxAbsScaler()
+# scaler = RobustScaler()
+scaler.fit(x_train)
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
+test_set = scaler.transform(test_set)
+print(np.min(x_train))  # 0.0
+print(np.max(x_train))  # 1.0
+
+print(np.min(x_test))  # 1.0
+print(np.max(x_test))  # 1.0
+
+
 #2. 모델구성
+
+# model = load_model("./_save/keras22_hamsu09_ddarung.h5")
+
 # model = Sequential()
-# model.add(Dense(13, activation='selu', input_dim=9))
-# model.add(Dense(18, activation='selu'))
-# model.add(Dense(88, activation='relu'))
-# model.add(Dense(95, activation='sigmoid'))
-# model.add(Dense(85, activation='relu'))
-# model.add(Dense(75, activation='selu'))
+# model.add(Dense(100, activation='selu', input_dim=9))
+# model.add(Dense(100, activation='selu'))
+# model.add(Dense(100, activation='selu'))
 # model.add(Dense(1))
+
 input1 = Input(shape=(9,))
-dense1 = Dense(26)(input1)
-dense2 = Dense(17,activation='relu')(dense1)
-dense3 = Dense(23,activation='relu')(dense2)
-dense4 = Dense(23,activation='relu')(dense3)
-dense5 = Dense(26,activation='sigmoid')(dense4)
+dense1 = Dense(100, activation='selu')(input1)
+dense2 = Dense(100, activation='selu')(dense1)
+dense3 = Dense(100, activation='selu')(dense2)
 output1 = Dense(1)(dense3)
-model = Model(inputs=input1, outputs=output1)
-model.summary()
+model = Model(inputs=input1, outputs=output1)     
 
 #3. 컴파일, 훈련
 
 from tensorflow.python.keras.callbacks import EarlyStopping
 earlyStopping = EarlyStopping(monitor='val_loss', patience=500, mode='min', verbose=1, 
                               restore_best_weights=True)
-start_time = time.time()
 
 model.compile(loss='mse', optimizer='adam', metrics=['mae'])
 model.fit(x_train, y_train, epochs=10000, batch_size=100, verbose=1, validation_split=0.2, callbacks=[earlyStopping])
 
-end_time = time.time()  -start_time
+model.save("./_save/keras22_hamsu09_ddarung.h5")
 
 #4. 평가, 예측
 loss = model.evaluate(x, y) 
@@ -113,4 +110,32 @@ r2 = r2_score(y_test, y_predict)
 print('loss : ', loss)
 print("RMSE : ", rmse)
 print('r2스코어 : ', r2)
-print("걸린시간:", end_time )
+
+# y_summit = model.predict(test_set)
+
+# print(y_summit)
+# print(y_summit.shape) # (715, 1)
+
+# submission_set = pd.read_csv(path + 'submission.csv', # + 명령어는 문자를 앞문자와 더해줌
+#                              index_col=0) # index_col=n n번째 컬럼을 인덱스로 인식
+
+# print(submission_set)
+
+# submission_set['count'] = y_summit
+# print(submission_set)
+
+
+# submission_set.to_csv('./_data/ddarung/submission_maxabs.csv', index = True)
+
+# maxabs
+# loss :  [6217275904.0, 70742.96875]
+# RMSE :  41.53350820406913
+# r2스코어 :  0.7538575699674053
+
+# loss :  [201993072.0, 13276.8759765625]
+# RMSE :  43.35131064830914
+# r2스코어 :  0.7318401736033824
+
+# loss :  [6566530560.0, 73198.2578125]
+# RMSE :  44.036038145412206
+# r2스코어 :  0.7233021847450295

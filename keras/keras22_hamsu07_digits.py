@@ -1,4 +1,4 @@
-from tensorflow.python.keras.models import Sequential,Model
+from tensorflow.python.keras.models import Sequential,load_model,Model
 from tensorflow.python.keras.layers import Dense,Input
 import numpy as np
 import pandas as pd
@@ -78,6 +78,8 @@ model.fit(x_train, y_train, epochs=1000, batch_size=100,
                  callbacks=[es],
                  verbose=1)
 end_time = time.time() - start_time
+
+model.save("./_save/keras22_hamsu07_digits.h5")
 
 #4. 평가, 예측
 # loss, acc= model.evaluate(x_test, y_test)

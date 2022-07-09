@@ -10,6 +10,7 @@ import time
 from sklearn.metrics import r2_score,accuracy_score
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from tensorflow.python.keras.models import Sequential,load_model,Model
 
 #1.데이터
 datasets = load_breast_cancer()
@@ -68,8 +69,9 @@ start_time = time.time()
 
 hist = model.fit(x_train,y_train, epochs=1000, batch_size=100, verbose=1,
                  callbacks=[earlystopping], validation_split = 0.2)
-end_time = time.time() - start_time            
-
+end_time = time.time() - start_time           
+ 
+model.save("./_save/keras22_hamsu04_cancer.h5")
 #평가,예측
 loss = model.evaluate(x_test, y_test)
 print('loss:', loss)

@@ -8,6 +8,7 @@ from matplotlib import font_manager, rc
 from sklearn.datasets import load_diabetes
 import time
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from tensorflow.python.keras.models import Sequential,load_model,Model
 
 #1. 데이터
 datasets = load_diabetes()
@@ -65,6 +66,7 @@ hist = model.fit(x_train, y_train, epochs=1000, batch_size=100,verbose=1,
 
 end_time = time.time()
 
+model.save("./_save/keras22_hamsu03_diabets.h5")
 #4. 평가, 예측
 loss = model.evaluate(x_test, y_test)
 y_predict = model.predict(x_test)

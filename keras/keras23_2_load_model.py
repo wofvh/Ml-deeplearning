@@ -2,7 +2,7 @@ from gc import callbacks
 from tabnanny import verbose
 import numpy as np
 from tracemalloc import start
-from tensorflow.python.keras.models import Sequential,load_model
+from tensorflow.python.keras.models import Sequential,load_model,Model
 from tensorflow.python.keras.layers import Dense
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_boston 

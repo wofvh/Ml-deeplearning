@@ -9,7 +9,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler # 클래스 가�
 import time
 from tensorflow.python.keras.models import Sequential,Model
 from tensorflow.python.keras.layers import Dense,Input
-
+from tensorflow.python.keras.models import Sequential,load_model,Model
 # from sklearn.preprocessing import MaxAbsScaler, RobustScaler  (두개의 차이점 알아보기)
 # from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
@@ -86,9 +86,9 @@ model.save("./_save/keras22_hamsu01_boston.h5")
 loss = model.evaluate(x_test, y_test)
 y_predict = model.predict(x_test)
 
-print("걸린시간 : ", end_time)
 from sklearn.metrics import r2_score
-r2 = r2_score(y_test, y_predict)   
+r2 = r2_score(y_test, y_predict)
+   
 print('loss : ', loss)
 print('r2스코어 : ', r2)
 #StandardScaler()
