@@ -64,7 +64,7 @@ print(x_test.shape, y_test.shape)
 
 #2. 모델구성
 model = Sequential()
-model.add(Dense(10, input_shape = (32*32*3,)))
+model.add(LS(10, input_shape = (32*32*3,)))
 model.add(Flatten())  # (N, 5408)
 model.add(Dense(32, activation='relu'))
 model.add(Dense(32, activation='relu'))

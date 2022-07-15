@@ -4,6 +4,7 @@ from tensorflow.python.keras.layers import Dense, SimpleRNN ,LSTM
 import pandas as pd
 from tensorflow.python.keras.layers import Dense, Input
 from tensorflow.python.keras.models import Sequential,load_model,Model
+
 #1.데이터
 datasets = np.array([1,2,3,4,5,6,7,8,9,10])
 # x, y = zip(['1,2,3', 4], ['4,5,6', 7], ['7,8,9', 10])
@@ -32,7 +33,7 @@ model.add(Dense(50, activation='relu'))
 model.add(Dense(1))
 model.summary()
 
-_________________________________________________________________     
+# _________________________________________________________________     
 # Layer (type)                 Output Shape              Param #        
 # =================================================================     
 # lstm (LSTM)                  (None, 10)                480
@@ -63,7 +64,7 @@ _________________________________________________________________
 
 
 
-'''
+
 #3.컴파일 훈련
 model.compile(loss ='mse',optimizer='adam')
 model.fit(x,y, epochs=600)
@@ -77,4 +78,3 @@ print('[8,9,10]의 결과:',result)  #RNN input_shape 에서 들어간 차원을
 
 # loss: 9.897771633404773e-06
 # [8,9,10]의 결과: [[10.943413]]
-'''
