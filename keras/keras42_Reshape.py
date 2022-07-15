@@ -38,11 +38,11 @@ model.add(Conv2D(filters=64, kernel_size=(3, 3),   # 출력(4,4,10)
                  input_shape=(28, 28, 1)))                                                                
 model.add(MaxPooling2D())                   #(N,14,14,64)
 model.add(Conv2D(32,(3,3)))                 #(N,12,12,32)
-model.add(Reshape(target_shape=(100,1)))    #(N,100,1)
 model.add(Conv2D(7,(3,3)))                  #(N,10,10,7)
-model.add(Dense(100, activation= 'relu'))   #(N,100)
 model.add(Flatten())                        #(N,700)
-model.add(Conv1D(10, kernel_soize =3,))     #(N,98,10)
+model.add(Dense(100, activation= 'relu'))   #(N,100)
+model.add(Reshape(target_shape=(100,1)))    #(N,100,1)
+model.add(Conv1D(10, kernel_size =(3,)))    #(N,98,10)
 model.add(LSTM(16))                         #(N,16)
 model.add(Dense(32, activation= 'relu'))    #(N,32)
 model.add(Dense(10, activation= 'softmax')) #(N,10)
@@ -50,7 +50,7 @@ model.add(Dense(10, activation= 'softmax')) #(N,10)
 model.summary()
 
 
-'''
+
 #3. 컴파일 구성 
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -58,14 +58,14 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 earlystopping =EarlyStopping(monitor='loss', patience=15, mode='auto', 
               verbose=1, restore_best_weights = True)     
         
-hist = model.fit(x_train, y_train, epochs=50, batch_size=20,verbose=1,
+hist = model.fit(x_train, y_train, epochs=50, batch_size=1000,verbose=1,
                  validation_split=0.2, callbacks=[earlystopping])
 
 
 # model.save("./_save/keras23_9_load_diabet.h5")
 # model = load_model("./_save/keras23_9_load_diabet.h5")
 
-#4. 평가, 예측\
+#4. 평가, 예측
 results = model.evaluate(x_test,y_test)
 print('loss : ', results[0])
 # print('accuracy : ', results[1])
@@ -97,4 +97,3 @@ print('acc : ',acc)
 
 #      model.add(Dense(10, activation ='relu', input_dim =8)
 #      2차원일때 input shape ) Dense > (batch_size(행),input_dim(열))
-'''

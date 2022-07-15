@@ -30,37 +30,6 @@ model.add(Dense(100))
 model.add(Dense(100))
 model.add(Dense(100))
 model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
 model.add(Dense(1))
 
 #3.컴파일 훈련
@@ -78,6 +47,6 @@ from sklearn.metrics import r2_score
 r2 = r2_score(y, y_predict)
 print('r2스코어 :', r2 )
 
-#레이어를 늘렸을떄 지표가 낮게나옴 나옴 
-loss :  36.21261215209961
-r2스코어 : 0.458462218622419
+# #레이어를 늘렸을떄 지표가 낮게나옴 나옴 
+# loss :  36.21261215209961
+# r2스코어 : 0.458462218622419

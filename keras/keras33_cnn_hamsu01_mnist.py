@@ -92,9 +92,7 @@ print(date)
 earlyStopping = EarlyStopping(monitor='val_loss', patience=100, mode='auto', verbose=1, 
                               restore_best_weights=True)        
 
-# mcp = ModelCheckpoint(monitor='val_loss', mode='auto', verbose=1, save_best_only=True, 
-#                       filepath= "".join([save_filepath, date, '_', filename])
-#                       )
+
 
 hist = model.fit(x_train, y_train, epochs=1000, batch_size=1000,
                  validation_split=0.2,

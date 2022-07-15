@@ -12,19 +12,19 @@ x = datasets.data
 y = datasets.target
 x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.95, shuffle=True, random_state=77)
 
-#print (x)
-#print (y)
-#print(x.shape, y.shape)   #(506. 13) (506,)
+print (x)
+print (y)
+print(x.shape, y.shape)   #(506. 13) (506,)
 
-#print(datasets.feature_names)
-#print(datasets.DESCR)
+print(datasets.feature_names)
+print(datasets.DESCR)
 
-#[실습] 아래를 완성하기
+# # [실습] 아래를 완성하기
 # 1. train 0.7
 # 2. R2 0.8 이상
 
 
-#2. 모델구성
+# 2. 모델구성
 
 model = Sequential()
 model.add(Dense(5, input_dim=13))
@@ -34,6 +34,7 @@ model.add(Dense(85))
 model.add(Dense(95))
 model.add(Dense(82))
 model.add(Dense(1))
+
 
 #3.컴파일 훈련
 model.compile(loss='rmse', optimizer='adam')
