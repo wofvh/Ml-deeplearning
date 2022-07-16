@@ -4,7 +4,7 @@ from regex import B
 from sklearn import datasets 
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, SimpleRNN ,LSTM,GRU
-
+#.데이터 
 a = np.array(range(1,101)) #(1~~100)
 x_predict = np.array(range(96, 106))
 size1 = 5                               #<<< 이럴경우 x5 개 y는 1 개
