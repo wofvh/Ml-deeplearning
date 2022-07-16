@@ -1,6 +1,4 @@
-a = 1
-b = 2
-c = a + b 
-d = a * b
-print(c)
-print(d)
+def say_hello(who):
+    print("hello",who)
+
+say_hello("teddy")
