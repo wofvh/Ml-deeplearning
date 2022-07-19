@@ -139,7 +139,7 @@ print(y.shape) #(1006, )
 
 #시계열 데이터의 특성 상 연속성을 위해서 train_test_split에 셔플을 배제하기 위해
 #위 명령어로 정의한다.suffle을 False로 놓고 해도 될지는 모르겠다.
-from tensorflow.python.keras.models import Sequential,Model,load_model
+from tensorflow.python.keras.models import Sequential,Model
 from tensorflow.python.keras.layers import LSTM,Dense,Dropout,Reshape,Conv1D
 from tensorflow.python.keras.layers import Input
 from keras.callbacks import ModelCheckpoint,EarlyStopping
@@ -158,63 +158,63 @@ print(y_train.shape) #(754,)
 
 print(x2.shape) #(252, 2, 7) [:,-5:-2] #(252, 2, 7)
 
-# #2-1. 모델구성1
-# input1 = Input(shape=(4,7)) #(N,2)
-# dense1 = LSTM(80,activation='relu',name='jk1')(input1)
-# drop1 = Dropout(0.35)(dense1)
-# dense2 = Dense(284,activation='relu',name='jk2')(drop1) 
-# drop2 = Dropout(0.35)(dense2)
-# dense3 = Dense(150,activation='relu',name='out_jk1')(drop2)
-# drop3 = Dropout(0.45)(dense3)
-# output1 = Dense(10,activation='relu',name='out_jk2')(drop3)
+#2-1. 모델구성1
+input1 = Input(shape=(4,7)) #(N,2)
+dense1 = LSTM(80,activation='relu',name='jk1')(input1)
+drop1 = Dropout(0.35)(dense1)
+dense2 = Dense(48,activation='relu',name='jk2')(drop1) 
+drop2 = Dropout(0.35)(dense2)
+dense3 = Dense(65,activation='relu',name='out_jk1')(drop2)
+drop3 = Dropout(0.45)(dense3)
+output1 = Dense(1,activation='relu',name='out_jk2')(drop3)
 
-# #2-2. 모델구성2
-# input2 = Input(shape=(4,7)) #(N,2)
-# dense4 = LSTM(99,activation='relu',name='jk101')(input2)
-# drop4 = Dropout(0.5)(dense4)
-# dense5 = Dense(84,activation='relu',name='jk103')(drop4) 
-# drop5 = Dropout(0.5)(dense5)
-# dense6 = Dense(164,activation='relu',name='jk104')(drop5) 
-# drop6 = Dropout(0.4)(dense6)
-# dense7 = Dense(474,activation='relu',name='jk105')(drop6) 
-# drop7 = Dropout(0.6)(dense7)
-# output2 = Dense(10,activation='relu',name='out_jk3')(drop7)
+#2-2. 모델구성2
+input2 = Input(shape=(4,7)) #(N,2)
+dense4 = LSTM(99,activation='relu',name='jk101')(input2)
+drop4 = Dropout(0.3)(dense4)
+dense5 = Dense(84,activation='relu',name='jk103')(drop4) 
+drop5 = Dropout(0.3)(dense5)
+dense6 = Dense(64,activation='relu',name='jk104')(drop5) 
+drop6 = Dropout(0.3)(dense6)
+dense7 = Dense(474,activation='relu',name='jk105')(drop6) 
+drop7 = Dropout(0.3)(dense7)
+output2 = Dense(1,activation='relu',name='out_jk3')(drop7)
 
 
-# from tensorflow.python.keras.layers import concatenate,Concatenate
-# merge1 = concatenate([output1,output2],name= 'mg1')
-# merge2 = Dense(32,activation='relu',name='mg2')(merge1)
-# merge3= Dropout(0.3)(merge2)
-# merge4 = Dense(16,activation='relu',name='mg3')(merge3)
-# merge5= Dropout(0.4)(merge4)
-# merge6= Dense(16,activation='linear',name='mg4')(merge5)
-# last_output = Dense(1,name='last')(merge6)
-# model = Model(inputs=[input1,input2], outputs=last_output)
-# import datetime
-# date = datetime.datetime.now()
-# print(date)
+from tensorflow.python.keras.layers import concatenate,Concatenate
+merge1 = concatenate([output1,output2],name= 'mg1')
+merge2 = Dense(32,activation='relu',name='mg2')(merge1)
+merge3= Dropout(0.3)(merge2)
+merge4 = Dense(16,activation='relu',name='mg3')(merge3)
+merge5= Dropout(0.4)(merge4)
+merge6= Dense(16,activation='linear',name='mg4')(merge5)
+last_output = Dense(1,name='last')(merge6)
+model = Model(inputs=[input1,input2], outputs=last_output)
+import datetime
+date = datetime.datetime.now()
+print(date)
 
-# date = date.strftime("%m%d_%H%M") # 0707_1723
-# print(date)
+date = date.strftime("%m%d_%H%M") # 0707_1723
+print(date)
 
-# #3. 컴파일,훈련
-# filepath = './_ModelCheckPoint/K24/'
-# filename = '{epoch:04d}-{val_loss:.4f}.hdf5'
-# #04d :                  4f : 
-# earlyStopping = EarlyStopping(monitor='loss', patience=5, mode='min', 
-#                               verbose=1,restore_best_weights=True)
-# mcp = ModelCheckpoint(monitor='val_loss',mode='auto',verbose=1,
-#                       save_best_only=True, 
-#                       filepath="".join([filepath,'k24_', date, '_', filename])
-#                     )
-# model.compile(loss='mae', optimizer='Adam')
+#3. 컴파일,훈련
+filepath = './_ModelCheckPoint/K24/'
+filename = '{epoch:04d}-{val_loss:.4f}.hdf5'
+#04d :                  4f : 
+earlyStopping = EarlyStopping(monitor='loss', patience=50, mode='min', 
+                              verbose=1,restore_best_weights=True)
+mcp = ModelCheckpoint(monitor='val_loss',mode='auto',verbose=1,
+                      save_best_only=True, 
+                      filepath="".join([filepath,'k24_', date, '_', filename])
+                    )
+model.compile(loss='mae', optimizer='Adam')
 
-# model.fit([x1_train,x2_train], y_train, 
-#           validation_split=0.25, 
-#           epochs=10,verbose=2
-#           ,batch_size=40
-#           ,callbacks=[earlyStopping,mcp])
-model = load_model('./_ModelCheckPoint/K24/k24_0718_2114_0009-74269.8047')
+model.fit([x1_train,x2_train], y_train, 
+          validation_split=0.20, 
+          epochs=650,verbose=2
+          ,batch_size=100
+          ,callbacks=[earlyStopping])
+model.save_weights("./_save/keras46_1_save_weights2.h5")
 
 #4. 평가,예측
 loss = model.evaluate([x1_test,x2_test], y_test)
@@ -229,12 +229,6 @@ print("0719자 시가 :",y_predict)
 
 # id_pred_df.to_csv(path + 'sample_submission.csv', index=True)
 
-#스케일링 전
-# loss : 1615.2457275390625
+# loss : 71854.9453125
 # ====================
-# 0719자 시가 : [[156286.]]
-
-# scaler = StandardScaler() 했을 때 
-# loss : 432307.78125
-# ====================
-# 0719자 시가 : [[473035.94]]
+# 0719자 시가 : [[103615.4]]
