@@ -2,8 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.utils import shuffle
-from tensorflow.keras import utils
-import os
+from tensorflow.python.keras.models import  load_model 
 import matplotlib
 from sklearn.preprocessing import LabelEncoder
 matplotlib.rcParams['font.family']='Malgun Gothic'
@@ -11,9 +10,9 @@ matplotlib.rcParams['axes.unicode_minus']=False
 
 path = './_data/test_amore_0718/' # ".은 현재 폴더"
 # Amo1 = pd.read_csv(path + '아모레220718.csv' ,sep='\t',engine='python',encoding='CP949')
-Amo = pd.read_csv(path + '아모레220718.csv',thousands=',')
+Amo = pd.read_csv(path + '아모레220718.csv',thousands=',',encoding='CP949')
 
-Sam = pd.read_csv(path + '삼성전자220718.csv',thousands=',')
+Sam = pd.read_csv(path + '삼성전자220718.csv',thousands=',',encoding='CP949')
 
 # print(Amo) #[3180 rows x 17 columns]
 # print(Sam) #[3040 rows x 17 columns]
@@ -39,10 +38,10 @@ print(Sam.shape) #3037,17
 # Sam.at[:1036, '시가'] =1
 # print(Sam['시가'])
 print(Amo) #2018/05/04
-Amo.at[1035:,'시가'] = 0
+Amo.at[1035:,'종가'] = 0
 print(Amo) #2018/05/04
 
-
+'''
 # Amo.index = pd.to_datetime(Amo['일자'],
 #                             format = "%Y/%m/%d") 
 # Sam.index = pd.to_datetime(Sam['일자'],
@@ -158,7 +157,7 @@ print(y_train.shape) #(754,)
 
 print(x2.shape) #(252, 2, 7) [:,-5:-2] #(252, 2, 7)
 
-#2-1. 모델구성1
+# 2-1. 모델구성1
 input1 = Input(shape=(4,7)) #(N,2)
 dense1 = LSTM(80,activation='relu',name='jk1')(input1)
 drop1 = Dropout(0.35)(dense1)
@@ -189,7 +188,7 @@ merge4 = Dense(16,activation='relu',name='mg3')(merge3)
 merge5= Dropout(0.4)(merge4)
 merge6= Dense(16,activation='linear',name='mg4')(merge5)
 last_output = Dense(1,name='last')(merge6)
-model = Model(inputs=[input1,input2], outputs=last_output)
+# model = Model(inputs=[input1,input2], outputs=last_output)
 import datetime
 date = datetime.datetime.now()
 print(date)
@@ -211,10 +210,12 @@ model.compile(loss='mae', optimizer='Adam')
 
 model.fit([x1_train,x2_train], y_train, 
           validation_split=0.20, 
-          epochs=650,verbose=2
+          epochs=10,verbose=2
           ,batch_size=100
           ,callbacks=[earlyStopping])
-model.save_weights("./_save/keras46_1_save_weights2.h5")
+model.save_weights("./_save/keras46_1_save_weights4.h5")
+model = load_model("./_ModelCheckPoint/K24/k24_0719_0046_0269-138391.5469.hdf5")
+
 
 #4. 평가,예측
 loss = model.evaluate([x1_test,x2_test], y_test)
@@ -232,3 +233,4 @@ print("0719자 시가 :",y_predict)
 # loss : 71854.9453125
 # ====================
 # 0719자 시가 : [[103615.4]]
+'''

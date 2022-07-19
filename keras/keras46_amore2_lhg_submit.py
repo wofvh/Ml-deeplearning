@@ -10,7 +10,7 @@ matplotlib.rcParams['font.family']='Malgun Gothic'
 matplotlib.rcParams['axes.unicode_minus']=False
 
 path = './_data/test_amore_0718/' # ".은 현재 폴더"
-# Amo1 = pd.read_csv(path + '아모레220718.csv' ,sep='\t',engine='python',encoding='CP949')
+# sam1 = pd.read_csv(path + '아모레220718.csv' ,sep='\t',engine='python',encoding='CP949')
 Amo = pd.read_csv(path + '아모레220718.csv',thousands=',')
 
 Sam = pd.read_csv(path + '삼성전자220718.csv',thousands=',')
@@ -39,7 +39,7 @@ print(Sam.shape) #3037,17
 # Sam.at[:1036, '시가'] =1
 # print(Sam['시가'])
 print(Amo) #2018/05/04
-Amo.at[1035:,'시가'] = 0
+Amo.at[1035:,'종가'] = 0
 print(Amo) #2018/05/04
 
 
@@ -62,10 +62,10 @@ Sam['day'] = Sam['Date'].dt.strftime('%d')
 
 
 
-Sam = Sam[Sam['시가'] < 100000] #[1035 rows x 17 columns]
+Sam = Sam[Sam['종가'] < 100000] #[1035 rows x 17 columns]
 print(Sam.shape)
 print(Sam)
-Amo = Amo[Amo['시가'] > 100] #[1035 rows x 17 columns]
+Amo = Amo[Amo['종가'] > 100] #[1035 rows x 17 columns]
 print(Amo.shape)
 print(Amo) #2018/05/04
 
@@ -93,15 +93,15 @@ Sam = Sam.drop(['일자'], axis=1)
 
 print(Amo) #[70067 rows x 15 columns] 중복되는 값은 제거한다 행이 70091->에서 70067로 줄어든 것을 확인
 
-# Amo1 = Amo.drop([ '전일비', '금액(백만)','신용비','개인','기관','외인(수량)','외국계','프로그램','외인비'],axis=1) #axis는 컬럼 
+# sam1 = Amo.drop([ '전일비', '금액(백만)','신용비','개인','기관','외인(수량)','외국계','프로그램','외인비'],axis=1) #axis는 컬럼 
 # Sam1 = Sam.drop([ '전일비', '금액(백만)','신용비','개인','기관','외인(수량)','외국계','프로그램','외인비'],axis=1) #axis는 컬럼 
 
-Amo1 = Amo[[ '시가', '고가', '저가', '종가','year','month','day']]
+sam1 = Amo[[ '시가', '고가', '저가', '종가','year','month','day']]
 Sam1 = Sam[[ '시가', '고가', '저가', '종가','year','month','day']]
-Amo2 = Amo1['시가']
+sam2 = sam1['종가']
 
 
-print(Amo1) #[1035 rows x 8 columns]
+print(sam1) #[1035 rows x 8 columns]
 print(Sam1) #[1035 rows x 8 columns]
 
 
@@ -119,10 +119,10 @@ def generator(data, window, offset):
     return np.array(X)
 WINDOW = 5
 OFFSET = 24
-print(Amo1.shape) #(1031, 3, 10)
+print(sam1.shape) #(1031, 3, 10)
 
-aaa = generator(Amo1,WINDOW,OFFSET) #x1를 위한 데이터 drop 제외 모든 amo에 데이터
-bbb = generator(Amo2,WINDOW,OFFSET) #Y를 위한 시가만있는 데이터
+aaa = generator(sam1,WINDOW,OFFSET) #x1를 위한 데이터 drop 제외 모든 amo에 데이터
+bbb = generator(sam2,WINDOW,OFFSET) #Y를 위한 시가만있는 데이터
 x1 = aaa[:,:-1]
 y = bbb[:,-1]
 ccc = generator(Sam1,WINDOW,OFFSET) #x2를 위한 데이터 drop 제외 모든 Sam에 데이터
@@ -176,7 +176,7 @@ dense5 = Dense(84,activation='relu',name='jk103')(drop4)
 drop5 = Dropout(0.3)(dense5)
 dense6 = Dense(64,activation='relu',name='jk104')(drop5) 
 drop6 = Dropout(0.3)(dense6)
-dense7 = Dense(474,activation='relu',name='jk105')(drop6) 
+dense7 = Dense(47,activation='relu',name='jk105')(drop6) 
 drop7 = Dropout(0.3)(dense7)
 output2 = Dense(1,activation='relu',name='out_jk3')(drop7)
 
@@ -209,12 +209,13 @@ mcp = ModelCheckpoint(monitor='val_loss',mode='auto',verbose=1,
                     )
 model.compile(loss='mae', optimizer='Adam')
 
-model.fit([x1_train,x2_train], y_train, 
-          validation_split=0.20, 
-          epochs=650,verbose=2
-          ,batch_size=100
-          ,callbacks=[earlyStopping])
-model.save_weights("./_save/keras46_1_save_weights2.h5")
+# model.fit([x1_train,x2_train], y_train, 
+#           validation_split=0.20, 
+#           epochs=650,verbose=2
+#           ,batch_size=100
+#           ,callbacks=[earlyStopping])
+# model.save_weights("./_save/keras46_1_save_weights2.h5")
+model.load_weights("./_save/keras46_1_save_weights2.h5")
 
 #4. 평가,예측
 loss = model.evaluate([x1_test,x2_test], y_test)
@@ -224,7 +225,7 @@ x1= x1_test[-3:-2]
 x2= x2_test[-3:-2]
 
 y_predict = model.predict([x1,x2])
-print("0719자 시가 :",y_predict)
+print("0720자 종가 :",y_predict)
 
 
 # id_pred_df.to_csv(path + 'sample_submission.csv', index=True)
@@ -232,3 +233,5 @@ print("0719자 시가 :",y_predict)
 # loss : 71854.9453125
 # ====================
 # 0719자 시가 : [[103615.4]]
+
+# [[109713.38]
