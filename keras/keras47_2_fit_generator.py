@@ -31,7 +31,7 @@ test_datagen = ImageDataGenerator(
 
 xy_train = train_datagen.flow_from_directory(
     'D:/_data/image/brain/train/',
-    target_size=(200,200),
+    target_size=(200,100),
     batch_size=5,
     class_mode='binary',
     color_mode='grayscale',   #color_mode 안쓸경우 디폴드값은 컬러(3)
@@ -42,7 +42,7 @@ xy_train = train_datagen.flow_from_directory(
 
 xy_test = test_datagen.flow_from_directory(
     'D:/_data/image/brain/test/',
-    target_size=(200,200),
+    target_size=(200,100),
     batch_size=5,
     class_mode='binary',
     color_mode='grayscale',
@@ -76,21 +76,25 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense , Conv2D , Flatten
 
 model = Sequential()
-model.add(Conv2D(32,(2,2),input_shape = (200,200,1), activation='relu'))
+model.add(Conv2D(35,(2,2),input_shape = (200,200,1), activation='relu'))
 model.add(Conv2D(64,(3,3),activation= 'relu'))
 model.add(Flatten())
 model.add(Dense(16,activation='relu'))
+model.add(Dense(18,activation='relu'))
+model.add(Dense(16,activation='relu'))
+model.add(Dense(19,activation='relu'))
+model.add(Dense(17,activation='relu'))
 model.add(Dense(1,activation='sigmoid'))
 model.summary()
 
 #3.컴파일 훈련
-model.compile(loss= 'binary_crossentropy',optimizer='adam', metrics=['accruracy'])
+model.compile(loss= 'binary_crossentropy',optimizer='adam', metrics=['accuracy'])
 
 #model.fit(cy_train[0][0], xy_train[0][1])# 배치를 최대로 자으면 이것도 가능 
 hist = model.fit_generator(xy_train ,epochs=30,steps_per_epoch=32,
                                             #전체데이터/batch = 160/5 = 32
-                    valldation_data =xy_test, 
-                    valldation_steps=4)
+                    validation_data =xy_test, 
+                    validation_steps=4)
 accuracy = hist.history['accuracy']
 val_accuracy = hist.history['val_accuracy']
 loss = hist.history['loss']
@@ -100,3 +104,19 @@ print('loss : ' ,loss[-1])
 print('val_loss : ' ,val_loss[-1])
 print('accuracy : ' ,accuracy[-1])
 print('val_accuracy : ' ,val_accuracy[-1])
+
+# loss :  0.6939082741737366
+# val_loss :  0.7051507830619812
+# accuracy :  0.512499988079071
+# val_accuracy :  0.30000001192092896
+
+# loss :  0.638691782951355
+# val_loss :  0.652228832244873
+# accuracy :  0.637499988079071
+# val_accuracy :  0.75
+
+
+# loss :  0.23685601353645325
+# val_loss :  0.08810751140117645
+# accuracy :  0.9125000238418579
+# val_accuracy :  1.0
