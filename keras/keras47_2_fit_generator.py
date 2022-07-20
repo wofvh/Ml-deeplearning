@@ -3,6 +3,10 @@ import numpy as np
 from keras.preprocessing.image import ImageDataGenerator
 from sklearn import datasets
 
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.rcParams['font.family']='Malgun Gothic'
+matplotlib.rcParams['axes.unicode_minus']=False
 #############이미지 수치화 or 증폭가능############## 
 train_datagen = ImageDataGenerator(
     rescale=1./255,  # rescale다른 처리 전에 데이터를 곱할 값입니다.1/255로 스케일링하여 대신 0과 1 사이의 값을 목표로 합니다
@@ -73,7 +77,7 @@ print(type(xy_train[0][1]))  #<class 'numpy.ndarray'>
 
 #2. 모델구성
 from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense , Conv2D , Flatten
+from tensorflow.python.keras.layers import Dense , Conv2D , Flatten,MaxPool2D
 
 model = Sequential()
 model.add(Conv2D(35,(2,2),input_shape = (200,200,1), activation='relu'))
@@ -104,6 +108,19 @@ print('loss : ' ,loss[-1])
 print('val_loss : ' ,val_loss[-1])
 print('accuracy : ' ,accuracy[-1])
 print('val_accuracy : ' ,val_accuracy[-1])
+
+import matplotlib.pyplot as plt
+matplotlib.rcParams
+plt.figure(figsize=(9,6))
+plt.plot(hist.history['loss'],marker='.',c='red',label='loss') #순차적으로 출력이므로  y값 지정 필요 x
+plt.plot(hist.history['val_loss'],marker='.',c='blue',label='val_loss')
+plt.grid()
+plt.title('show') #맥플러립 한글 깨짐 현상 알아서 해결해라 
+plt.ylabel('loss')
+plt.xlabel('epochs')
+# plt.legend(loc='upper right')
+plt.legend()
+plt.show()
 
 # loss :  0.6939082741737366
 # val_loss :  0.7051507830619812

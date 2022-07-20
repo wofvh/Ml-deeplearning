@@ -2,6 +2,10 @@ from bitarray import test
 import numpy as np
 from keras.preprocessing.image import ImageDataGenerator
 from sklearn import datasets
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.rcParams['font.family']='Malgun Gothic'
+matplotlib.rcParams['axes.unicode_minus']=False
 
 #############이미지 수치화 or 증폭가능############## 
 train_datagen = ImageDataGenerator(
@@ -32,7 +36,7 @@ test_datagen = ImageDataGenerator(
 xy_train = train_datagen.flow_from_directory(
     'D:/_data/image/brain/train/',
     target_size=(200,200),
-    batch_size=5,
+    batch_size=1000,
     class_mode='binary',
     color_mode='grayscale',   #color_mode 안쓸경우 디폴드값은 컬러(3)
     shuffle = True,
@@ -43,7 +47,7 @@ xy_train = train_datagen.flow_from_directory(
 xy_test = test_datagen.flow_from_directory(
     'D:/_data/image/brain/test/',
     target_size=(200,200),
-    batch_size=5,
+    batch_size=1000,
     class_mode='binary',
     color_mode='grayscale',
     shuffle = True,
@@ -76,7 +80,7 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense , Conv2D , Flatten
 
 model = Sequential()
-model.add(Conv2D(35,(2,2),input_shape = (200,200,1), padding='same' activation='relu'))
+model.add(Conv2D(35,(2,2),input_shape = (200,200,1), padding='same', activation='relu'))
 model.add(Conv2D(64,(3,3),activation= 'relu'))
 model.add(Flatten())
 model.add(Dense(16,activation='relu'))
@@ -88,7 +92,7 @@ model.summary()
 #3.컴파일 훈련
 model.compile(loss= 'binary_crossentropy',optimizer='adam', metrics=['accuracy'])
 
-hist = model.fit(xy_train[0][0], xy_train[0][1],epochs=30,validation_split=0.2,verbose=2)# 배치를 최대로 잡으면 이것도 가능 
+hist = model.fit(xy_train[0][0], xy_train[0][1],epochs=100,validation_split=0.2,verbose=2)# 배치를 최대로 잡으면 이것도 가능 
 # hist = model.fit_generator(xy_train ,epochs=30,steps_per_epoch=32,
 #                                             #전체데이터/batch = 160/5 = 32
 #                     validation_data =xy_test, 
@@ -103,6 +107,20 @@ print('loss : ' ,loss[-1])
 print('val_loss : ' ,val_loss[-1])
 print('accuracy : ' ,accuracy[-1])
 print('val_accuracy : ' ,val_accuracy[-1])
+
+
+import matplotlib.pyplot as plt
+matplotlib.rcParams
+plt.figure(figsize=(9,6))
+plt.plot(hist.history['loss'],marker='.',c='red',label='loss') #순차적으로 출력이므로  y값 지정 필요 x
+plt.plot(hist.history['val_loss'],marker='.',c='blue',label='val_loss')
+plt.grid()
+plt.title('show') #맥플러립 한글 깨짐 현상 알아서 해결해라 
+plt.ylabel('loss')
+plt.xlabel('epochs')
+# plt.legend(loc='upper right')
+plt.legend()
+plt.show()
 
 # loss :  0.6939082741737366
 # val_loss :  0.7051507830619812
