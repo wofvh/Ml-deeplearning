@@ -53,7 +53,6 @@ print(train_set.isnull().sum())
 # print(y.shape) #(891,)
 
 
-'''
 x = train_set.drop(['count'], axis=1)  # drop 데이터에서 ''사이 값 빼기
 print(x)
 print(x.columns)
@@ -70,6 +69,7 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
 
 #2. 모델구성
 model = Sequential()
+model.add(LSTM(31,input_shape=(5,1)))
 model.add(Dense(9, activation='swish', input_dim=12))
 model.add(Dense(17, activation='elu'))
 model.add(Dense(19, activation='swish'))
@@ -102,4 +102,3 @@ r2 = r2_score(y_test, y_predict)
 print('loss : ', loss)
 print("RMSE : ", rmse)
 print('r2스코어 : ', r2)
-'''
