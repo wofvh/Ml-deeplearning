@@ -7,6 +7,7 @@ import matplotlib
 matplotlib.rcParams['font.family']='Malgun Gothic'
 matplotlib.rcParams['axes.unicode_minus']=False
 
+
 #############이미지 수치화 or 증폭가능############## 
 train_datagen = ImageDataGenerator(
     rescale=1./255,  # rescale다른 처리 전에 데이터를 곱할 값입니다.1/255로 스케일링하여 대신 0과 1 사이의 값을 목표로 합니다
@@ -19,7 +20,6 @@ train_datagen = ImageDataGenerator(
     #  shear_range=0.7,  # shear_range무작위로 전단 변환 을 적용하기 위한 것입니다.
     #  fill_mode='nearest'
 )
-
 # rotation_range사진을 무작위로 회전할 범위인 도(0-180) 값입니다.
 # width_shift그림 을 height_shift수직 또는 수평으로 무작위로 변환하는 범위(총 너비 또는 높이의 일부)입니다.
 # rescale다른 처리 전에 데이터를 곱할 값입니다. 원본 이미지는 0-255의 RGB 계수로 구성되지만 이러한 값은 모델이 처리하기에는 너무 높기 때문에(주어진 일반적인 학습률) 1/255로 스케일링하여 대신 0과 1 사이의 값을 목표로 합니다. 요인.
@@ -114,7 +114,6 @@ print('val_loss : ' ,val_loss[-1])
 print('accuracy : ' ,accuracy[-1])
 print('val_accuracy : ' ,val_accuracy[-1])
 
-    
 #4. 평가,예측
 loss = model.evaluate(x_test, y_test)
 print("loss :",loss)
@@ -127,25 +126,22 @@ y_predict=model.predict(a)
 # print('loss : ' , loss)
 # print('r2스코어 : ', r2)
 
-if 	y_predict >= 0.5 :
+if 	y_predict <= 0.6 :
     print('여자다') # 출력값: 
 else :
     print('남자다') # 출력값:
     
 
-
-
-
-# import matplotlib.pyplot as plt
-# matplotlib.rcParams
-# plt.figure(figsize=(9,6))
-# plt.plot(hist.history['loss'],marker='.',c='red',label='loss') #순차적으로 출력이므로  y값 지정 필요 x
-# plt.plot(hist.history['val_loss'],marker='.',c='blue',label='val_loss')
-# plt.grid()
-# plt.title('show') #맥플러립 한글 깨짐 현상 알아서 해결해라 
-# plt.ylabel('loss')
-# plt.xlabel('epochs')
-# # plt.legend(loc='upper right')
-# plt.legend()
-# plt.show()
+import matplotlib.pyplot as plt
+matplotlib.rcParams
+plt.figure(figsize=(9,6))
+plt.plot(hist.history['loss'],marker='.',c='red',label='loss') #순차적으로 출력이므로  y값 지정 필요 x
+plt.plot(hist.history['val_loss'],marker='.',c='blue',label='val_loss')
+plt.grid()
+plt.title('show') #맥플러립 한글 깨짐 현상 알아서 해결해라 
+plt.ylabel('loss')
+plt.xlabel('epochs')
+# plt.legend(loc='upper right')
+plt.legend()
+plt.show()
 

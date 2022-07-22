@@ -14,7 +14,6 @@ import time
 start = time.time()
 
 
-
 ###########################폴더 생성시 현재 파일명으로 자동생성###########################################
 import inspect, os
 a = inspect.getfile(inspect.currentframe()) #현재 파일이 위치한 경로 + 현재 파일 명

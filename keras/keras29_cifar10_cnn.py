@@ -84,7 +84,7 @@ def model_build():
      
      model = Model(input=[input], outputs=output)
      
-     model.compile(optimizer = Adam(learning_rate=1e-4),
+     model.compile(optimizer = 'Adam'(learning_rate=1e-4),
                    loss ='sparse_catrgorical_crossentropy',
                    metrics=['accuracy',])
      return model

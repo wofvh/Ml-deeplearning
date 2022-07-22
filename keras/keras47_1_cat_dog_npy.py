@@ -76,7 +76,6 @@ print(x_test.shape)
 print(y_test.shape)
 
 
-
 # print(type(xy_train))     #반복자 DirectoryIterator
 # print(type(xy_train[0]))  #<class 'tuple'> 수정할수없는 Lsit
 # print(type(xy_train[0][0]))  #<class 'numpy.ndarray'>
@@ -148,5 +147,3 @@ print('val_accuracy : ' ,val_accuracy[-1])
 # val_loss :  0.08810751140117645
 # accuracy :  0.9125000238418579
 # val_accuracy :  1.0
-
-
