@@ -1,8 +1,8 @@
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense, Conv2D, Flatten, MaxPooling2D,Dropout 
-from keras.datasets import mnist,cifar10
-import pandas as pd
-import mediapipe as mp
-import numpy as np
+import time
+import zipfile
+import random
+import cv2  # 얼굴 인식을 위한 opencv 설치
+import numpy
+from matplotlib import pyplot as plt
 
-mp.facemesh
+print(cv2.__version__)
