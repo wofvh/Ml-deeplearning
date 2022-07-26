@@ -50,9 +50,6 @@ np.save('d:/study_data/_save/_npy/men_women_3_12351_x.npy',arr=xy[0][0])
 
 
 
-'''
-
-
 #2. 모델구성
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense , Conv2D , Flatten,MaxPool2D
@@ -115,4 +112,3 @@ plt.show()
 # val_loss :  0.08810751140117645
 # accuracy :  0.9125000238418579
 # val_accuracy :  1.0
-'''
