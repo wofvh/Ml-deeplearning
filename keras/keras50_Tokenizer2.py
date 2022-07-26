@@ -47,10 +47,3 @@ print(x_new.shape)
 #  [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 1.]]
 # (18, 14)
 
-ohe = OneHotEncoder(categories= 'auto',sparse=True)
-x = ohe.fit_transform(x.reshape(-1,1,0))
-x = np.array(x_new)
-x = x.reshape(-1, 1)
-onehot_encoder.fit(x)
-x = onehot_encoder.transform(x)
-print(x)

@@ -1,75 +1,76 @@
 from keras.datasets import imdb
-import numpy as np
-from lib2to3.pgen2 import token
+from keras.datasets import reuters
 from keras.preprocessing.text import Tokenizer
+import numpy as np
+from tensorflow.python.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense,LSTM,Embedding,Flatten,Conv1
-(x_train,y_train),(x_test,y_test)= imdb.load_data(
+from tensorflow.python.keras.layers import Dense, LSTM, Embedding
+from tensorflow.python.keras.models import Sequential, Model
+from tensorflow.python.keras.layers import Activation, Dense, Conv2D, Flatten, MaxPooling2D, Input, Dropout
+from keras.layers import BatchNormalization
+import pandas as pd
+
+(x_train, y_train), (x_test, y_test) = imdb.load_data(
     num_words=10000
 )
-# print(x_train)
-# print(x_train.shape, x_test.shape) #(25000,) (25000,)
-print(y_train)  #[1 0 0 ... 0 1 0]
-
-print(np.unique(y_train, return_counts = True))   #2
-print(len(np.unique(y_train)))                    #2
-
-#(array([0, 1], dtype=int64), array([12500, 12500], dtype=int64)) 2
 
 
-print(type(x_train), type(x_train)) #<class 'numpy.ndarray'> <class 'numpy.ndarray'>
-print(type(x_train[0]))             #<class 'list'> 일정하지 않음
+print(x_train.shape, x_test.shape) # (25000,) (25000,)
+print(y_train.shape, y_test.shape) # (25000,) (25000,)
+print(np.unique(y_train, return_counts=True)) # [0, 1]
+print(len(np.unique(y_train))) # 2
 
-print(len (x_train[0]))             #56  (8982,)<<전부다 다른길이 
-print(len (x_train[1]))             #71
+print(type(x_train), type(y_train)) #<class 'numpy.ndarray'> <class 'numpy.ndarray'>
+print(type(x_train[0])) #<class 'list'>
+print(len(x_train[0])) #218
+print(len(x_train[1])) #189
 
-print(len(max(x_train)))            #83
-          
-print("뉴스기사의 최대길이 :", max(len(i) for i in x_train)) #2376
-print("뉴스기사의 평균길이 :", sum(map(len,x_train)) / len(x_train)) #뉴스기사의 평균길이 : 145.5398574927633\
+print(max(len(i) for i in x_train)) 
 
+print("뉴스기사의 최대길이 : " ,max(len(i) for i in x_train))
+print("뉴스기사의 평균길이 : " , sum(map(len, x_train)) / len(x_train))
+# 뉴스기사의 최대길이 :  2494
+# 뉴스기사의 평균길이 :  238.71364
 
 #전처리
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils.np_utils import to_categorical
 
-x_train = pad_sequences(x_train, padding='pre',maxlen=100,truncating='pre') #(8928,) > (8928)
+x_train = pad_sequences(x_train, padding='pre', maxlen=100, truncating='pre')
+                        #(8982,) -> (8982,100)
+x_test = pad_sequences(x_test, padding='pre', maxlen=100, truncating='pre')
 
 
-x_test = pad_sequences(x_test, padding='pre',maxlen=100,truncating='pre') #(8928,) > (8928)
+# y_train = to_categorical(y_train)
+# y_test = to_categorical(y_test)
 
-y_train = to_categorical(y_train)
-y_train = to_categorical(y_test)
-
-print(x_train.shape,y_train.shape)  #(8982, 100) (2246, 46)
-print(x_test.shape,y_test.shape)    #(2246, 100) (2246,)
+print(x_train.shape, y_train.shape) #(25000, 100) (25000,)               
+print(x_test.shape, y_test.shape) #(25000, 100) (25000,)
 
 #2. 모델 구성
-from tensorflow.python.keras.models import Sequential
-from keras.preprocessing.sequence import pad_sequences
-
-#[맹그러오]
-x_train = pad_sequences(x_train,padding='pre',maxlen=100,truncating='pre')
-x_test = pad_sequences(x_test,padding='pre',maxlen=100,truncating='pre')
+             
 model = Sequential()
-model.add(Embedding(input_dim=46,output_dim=10,input_length=100)) #단어사전의 갯수 * output_dim(아웃풋 노드) =파라미터
-# input_dim이 꼭 단어 갯수와 일치해야하는 것은 아니지만 가급적 맞춰야 좋다.
-# model.add(Embedding(input_dim=31,output_dim=10)) #length를 명시하지 않아도 N개로 인식해서 실행한다.
-# model.add(Embedding(31,10)) # 명시하지 않아도 위치에 따라 옵션을 자동으로 인식한다.
-# model.add(Embedding(31,10,5)) # error input_length는 명시해야 한다.
-# model.add(Embedding(31,3,input_length = 5)) 
+                    #단어사전의 갯수  
+# model.add(Embedding(input_dim=31, output_dim=11, input_length=5)) #embedding 에선 아웃풋딤이 뒤로 들어감
+# model.add(Embedding(input_dim=31, output_dim=10)) # 인풋렝쓰는 모를 경우 안넣어줘도 자동으로 잡아줌
+# model.add(Embedding(31, 10))
+# model.add(Embedding(31, 10, 5)) # error
+model.add(Embedding(10000, 20, input_length=100))
+model.add(LSTM(32, return_sequences=True))
 model.add(LSTM(32))
-model.add(Dense(32,activation='sigmoid'))
-model.add(Dense(32,activation='sigmoid'))
-model.add(Dense(1,activation='sigmoid'))
-model.summary() #Total params: 5,847
+model.add(Dense(1, activation='sigmoid'))
+model.summary()             
+
 
 #3. 컴파일, 훈련
-model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['acc'])
-model.fit(x_train,y_train,epochs=20,batch_size=5000)
+es = EarlyStopping(monitor='val_loss', patience=5, mode='auto', verbose=1, 
+                              restore_best_weights=True)
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.fit(x_train, y_train, epochs=20, batch_size=500 ,validation_split=0.2,callbacks=[es])
+
+
 
 #4. 평가, 예측
-acc = model.evaluate(x_test,y_test)[1]
-print('acc :',acc)
-y_predict = model.predict(x_test)
-print('predict :',y_predict)
+
+acc = model.evaluate(x_test, y_test)[1]
+print('acc : ', acc)
