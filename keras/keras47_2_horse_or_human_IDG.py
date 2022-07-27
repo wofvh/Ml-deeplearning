@@ -35,7 +35,7 @@ test_datagen = ImageDataGenerator(
     rescale=1./255
 )
 
-xy = train_datagen.flow_from_directory(
+xy_train = train_datagen.flow_from_directory(
     'd:/study_data/_data/image/horse-or-human/',
     target_size=(100,100),
     batch_size=1500,
@@ -46,10 +46,21 @@ xy = train_datagen.flow_from_directory(
     #타겟싸이즈 맞춰야함 
 )
 
-x = xy[0][0]
-y = xy[0][1]
+x = xy_train[0][0]
+y = xy_train[0][1]
 
 print(x.shape,y.shape) #(1027, 100, 100, 3) (1027,)
+
+
+xy_test = test_datagen.flow_from_directory(
+    'D:/study_data/_data/image/horse-or-human/',
+    target_size=(150,150),
+    batch_size=500,
+    class_mode='binary',
+    color_mode='grayscale',
+    shuffle = True,
+    #Found 120 images belonging to 2 classes 0~1로 데이터가 됬다
+)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,
                                                     train_size=0.75,
@@ -60,29 +71,19 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
 print(x_test.shape,y_test.shape)       #(257, 100, 100, 3) (257,)
 print(x_train.shape,y_train.shape)     #(770, 100, 100, 3) (770,)
 
-# xy_test = test_datagen.flow_from_directory(
-#     'D:/study_data/_data/image/horse-or-human/',
-#     target_size=(150,150),
-#     batch_size=500,
-#     class_mode='binary',
-#     color_mode='grayscale',
-#     shuffle = True,
-#     #Found 120 images belonging to 2 classes 0~1로 데이터가 됬다
-# )
+print(xy_train)
+<keras.preprocessing.image.DirectoryIterator object at 0x000001F0E08D7A90>
 
-# print(xy_train)
-#<keras.preprocessing.image.DirectoryIterator object at 0x000001F0E08D7A90>
+from sklearn.datasets import load_boston
+datasets = load_boston()
+print(datasets)
 
-# from sklearn.datasets import load_boston
-# datasets = load_boston()
-# print(datasets)
+print(xy_train[0])            #마지막 배치 
+print(xy_train[0][0])  
+print(xy_train[0][1])     #(5, 150, 150, 1) 
 
-# print(xy_train[0])            #마지막 배치 
-# print(xy_train[0][0])  
-# print(xy_train[0][1])     #(5, 150, 150, 1) 
-
-# print(x_train[0][0].shape, y_train[0][1].shape)#(160, 150, 150, 1) (160,)
-# print(x_test[0][0].shape, y_test[0][1].shape) #(120, 150, 150, 1) (120,)
+print(x_train[0][0].shape, y_train[0][1].shape)#(160, 150, 150, 1) (160,)
+print(x_test[0][0].shape, y_test[0][1].shape) #(120, 150, 150, 1) (120,)
 
 np.save('d:/study_data/_save/_npy/horse-or-human_2_train_x.npy',arr=x_train)
 np.save('d:/study_data/_save/_npy/horse-or-human_2_train_y.npy',arr=y_train)
@@ -160,3 +161,6 @@ plt.show()
 # val_loss :  0.08810751140117645
 # accuracy :  0.9125000238418579
 # val_accuracy :  1.0
+
+
+8.12
