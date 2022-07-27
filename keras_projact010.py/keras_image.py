@@ -5,6 +5,6 @@ from urllib.request import urlopen
 
 response = urlopen('https://en.wikipedia.org/wiki/Main_Page')
 
-    soup = BeautifulSoup(response, 'html.parser')
-    for anchor in soup.find_all('a'):
-        print(anchor.get('href', '/'))
+soup = BeautifulSoup(response, 'html.parser')
+for anchor in soup.find_all('a'):
+    print(anchor.get('href', '/'))
