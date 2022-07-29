@@ -1,8 +1,18 @@
-import tensorflow as tf
-from tensorflow import keras
-from sklearn.model_selection import train_test_split
+from warnings import filters
+from tensorflow.python.keras.models import Sequential, Model
+from tensorflow.python.keras.layers import Activation, Dense, Conv2D, Flatten, MaxPooling2D, Input, Dropout
+from keras.datasets import mnist, fashion_mnist, cifar10, cifar100
 import numpy as np
-from glob import
+import pandas as pd
+from tensorflow.keras.utils import to_categorical # https://wikidocs.net/22647 케라스 원핫인코딩
+from sklearn.preprocessing import OneHotEncoder  # https://psystat.tistory.com/136 싸이킷런 원핫인코딩
+from sklearn.metrics import r2_score, accuracy_score
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler
+from keras.layers import BatchNormalization
+from keras.preprocessing.image import ImageDataGenerator
+from sklearn.model_selection import train_test_split
+
+
 ###########################폴더 생성시 현재 파일명으로 자동생성###########################################
 import inspect, os
 a = inspect.getfile(inspect.currentframe()) #현재 파일이 위치한 경로 + 현재 파일 명
@@ -41,7 +51,7 @@ train_set = train_datagen.flow_from_directory(
 test_set = train_datagen.flow_from_directory(
     'D:/test/choiminsik/',
     target_size=(250,250),
-    batch_size=100,
+    batch_size=2,
     class_mode='binary'
 ) #Found 1 images belonging to 1 classes.
 
