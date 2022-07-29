@@ -1,18 +1,8 @@
-from warnings import filters
-from tensorflow.python.keras.models import Sequential, Model
-from tensorflow.python.keras.layers import Activation, Dense, Conv2D, Flatten, MaxPooling2D, Input, Dropout
-from keras.datasets import mnist, fashion_mnist, cifar10, cifar100
-import numpy as np
-import pandas as pd
-from tensorflow.keras.utils import to_categorical # https://wikidocs.net/22647 케라스 원핫인코딩
-from sklearn.preprocessing import OneHotEncoder  # https://psystat.tistory.com/136 싸이킷런 원핫인코딩
-from sklearn.metrics import r2_score, accuracy_score
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler
-from keras.layers import BatchNormalization
-from keras.preprocessing.image import ImageDataGenerator
+import tensorflow as tf
+from tensorflow import keras
 from sklearn.model_selection import train_test_split
-
-
+import numpy as np
+from glob import
 ###########################폴더 생성시 현재 파일명으로 자동생성###########################################
 import inspect, os
 a = inspect.getfile(inspect.currentframe()) #현재 파일이 위치한 경로 + 현재 파일 명
@@ -40,37 +30,34 @@ train_datagen = ImageDataGenerator(
 test_datagen = ImageDataGenerator()
 
 
-men_women = train_datagen.flow_from_directory(
-    'd:/study_data/_data/image/men_women/data/',
-    target_size=(100,100),
-    batch_size=3309,
+train_set = train_datagen.flow_from_directory(
+    'D:/test/choiminsik/',
+    target_size=(250,250),
+    batch_size=100,
     class_mode='binary',
     shuffle=False
 ) #Found 3309 images belonging to 2 classes.
 
 test_set = train_datagen.flow_from_directory(
-    'd:/study_data/_data/image/men_women/test_set/',
-    target_size=(100,100),
-    batch_size=1,
+    'D:/test/choiminsik/',
+    target_size=(250,250),
+    batch_size=100,
     class_mode='binary'
 ) #Found 1 images belonging to 1 classes.
 
 
 
-# [1][0] 남자
-# [0][1] 여자
-
-x = men_women[0][0]
-y = men_women[0][1]
+x = train_set[0][0]
+y = train_set[0][1]
 
 test_set_x = test_set[0][0]
 print(x) 
 print(y) 
+
+
 print(test_set) 
-
-
 print(x.shape,y.shape) #(840, 100, 100, 3) (840, 3)
-
+'''
 x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7,
                                                     shuffle=True
                                                     )
@@ -142,3 +129,4 @@ np.save('d:/study_data/_save/_npy/keras49_9_train_y.npy', arr=xy_train[0][1])
 np.save('d:/study_data/_save/_npy/keras49_9_test_x.npy', arr=x_test)
 np.save('d:/study_data/_save/_npy/keras49_9_test_y.npy', arr=y_test)
 np.save('d:/study_data/_save/_npy/keras49_9_test_set.npy', arr=test_set)
+'''
