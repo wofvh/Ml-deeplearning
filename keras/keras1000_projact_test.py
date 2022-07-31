@@ -105,9 +105,10 @@ model.summary()
 
 print(train_gen)
 
-
+'''
 #3. 컴파일, 훈련
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model.fit(train_gen , validation_data = valid_gen , epochs=30)
 
 conv_base = VGG16(weights='imagenet', include_top=False, input_shape=(150, 150, 3))
+'''

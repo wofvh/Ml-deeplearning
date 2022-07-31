@@ -41,7 +41,7 @@ test_datagen = ImageDataGenerator()
 
 
 train_set = train_datagen.flow_from_directory(
-    'D:/test/choiminsik/',
+    'C:\study\_data\project',
     target_size=(250,250),
     batch_size=100,
     class_mode='binary',
@@ -49,7 +49,7 @@ train_set = train_datagen.flow_from_directory(
 ) #Found 3309 images belonging to 2 classes.
 
 test_set = train_datagen.flow_from_directory(
-    'D:/test/choiminsik/',
+    'C:\study\_data\project',
     target_size=(250,250),
     batch_size=2,
     class_mode='binary'
@@ -67,18 +67,18 @@ print(y)
 
 print(test_set) 
 print(x.shape,y.shape) #(840, 100, 100, 3) (840, 3)
+
+# x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7,
+#                                                     shuffle=True
+#                                                     )
+
+
+
+# print(x_train.shape,x_test.shape) #(8005, 100, 100, 3) (2023, 100, 100, 3)
+# print(y_train.shape,y_test.shape) #(8005, 2) (2023, 2)
+
+
 '''
-x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7,
-                                                    shuffle=True
-                                                    )
-
-
-
-print(x_train.shape,x_test.shape) #(8005, 100, 100, 3) (2023, 100, 100, 3)
-print(y_train.shape,y_test.shape) #(8005, 2) (2023, 2)
-
-
-
 #################################### 스케일링 ######################################
 x_train1 = x_train.reshape((x_train.shape[0]), (x_train.shape[1])*(x_train.shape[2])*3)
 x_test1 = x_test.reshape((x_test.shape[0]), (x_test.shape[1])*(x_test.shape[2])*3)
