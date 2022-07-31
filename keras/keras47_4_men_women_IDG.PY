@@ -70,9 +70,9 @@ model.summary()
 model.compile(loss= 'binary_crossentropy',optimizer='adam', metrics=['accuracy'])
 
 #model.fit(cy_train[0][0], xy_train[0][1])# 배치를 최대로 자으면 이것도 가능 
-hist = model.fit_generator(xy_train ,epochs=2,steps_per_epoch=32,
+hist = model.fit_generator(xy ,epochs=2,steps_per_epoch=32,
                                             #전체데이터/batch = 160/5 = 32
-                    validation_data =xy_test, 
+                    validation_data =xy, 
                     validation_steps=4)
 accuracy = hist.history['accuracy']
 val_accuracy = hist.history['val_accuracy']
