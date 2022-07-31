@@ -92,7 +92,8 @@ print(valid_gen[0][1].shape)  #(4,)
 #모델구성 
 
 model = Sequential()
-model.add(Conv2D(35,(2,2),input_shape = (128,128,3), activation='relu'))
+conv_base = VGG16(weights='imagenet', include_top=False, input_shape=(150, 150, 3))
+# model.add(Conv2D(35,(2,2),input_shape = (128,128,3), activation='relu'))
 model.add(Conv2D(64,(3,3),activation= 'relu'))
 model.add(Flatten())
 model.add(Dense(512,activation='relu'))
@@ -107,6 +108,5 @@ print(train_gen)
 
 
 #3. 컴파일, 훈련
-model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.compile(loss='sparse_categorical_crossentrop', optimizer='adam', metrics=['accuracy'])
 model.fit(train_gen , validation_data = valid_gen , epochs=30)
-
