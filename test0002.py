@@ -11,6 +11,8 @@
 # car1.show_info()
 
 
-def hello():
-    print("sxe")
-hello()
+def hello(i):
+    print(f'zzzzzzzzzz {i} ')
+hello("김플")
+hello("김플")
+

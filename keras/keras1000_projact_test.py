@@ -81,8 +81,8 @@ for idx, (t, v) in enumerate(skf.split(data, data['label']), 1):
     data.loc[v, 'fold'] = idx
 
 
-train_gen = DataGenerator(batch_size=4, df = data, mode = 'train', image_size = 128)
-valid_gen = DataGenerator(batch_size=4, df = data, mode = 'valid', image_size = 128)
+train_gen = DataGenerator(batch_size=4, df = data, mode = 'train', image_size = 94)
+valid_gen = DataGenerator(batch_size=4, df = data, mode = 'valid', image_size = 94)
 
 print(train_gen[0][0].shape)  #(4, 128, 128, 3)
 print(train_gen[0][1].shape)  #(4,)
@@ -91,49 +91,32 @@ print(valid_gen[0][1].shape)  #(4,)
 
 
 #모델구성 
-
-# model = Sequential()
-# model.add(Conv2D(35,(2,2),input_shape = (128,128,3), activation='relu'))
-# model.add(Conv2D(64,(3,3),activation= 'relu'))
-# model.add(Flatten())
-# model.add(Dense(512,activation='relu'))
-# model.add(Dense(256,activation='relu'))
-# model.add(Dense(128,activation='relu'))
-# model.add(Dense(64,activation='relu'))
-# model.add(Dense(32,activation='relu'))
-# model.add(Dense(30,activation='softmax'))
-# model.summary()
 model = Sequential()
-
-# model.add(Dense(units=10, input_shape=(3,)))
-# model.summary()
-#(input_dim + bias) * units = summary param (Dense모델 )
-#5X5 이미지(1 흑백 3 컬러 ) (rows, columns,channels)
-model.add(Conv2D(filters=64, kernel_size=(3, 3), #(4,4,10) 
-                 padding='same',
-                 input_shape=(128, 128, 3)))  #kernel_size 이미지 분석을 위해 2x2로 잘라서 분석
+model.add(Conv2D(filters=64,kernel_size=(3, 3), padding='same', input_shape=(94,94,3), activation='relu'))
 model.add(MaxPooling2D())
-model.add(Conv2D(32, (2,2), 
-                 padding='valid',
-                 activation='relu')) #(7필터 2,2 ) / (None, 3, 3, 7) 
-model.add(Flatten())  #(N, 63)
-model.add(Dense(512, activation='relu'))
-model.add(Dense(256, activation='relu'))
-model.add(Dense(128, activation='relu'))
-model.add(Dense(64, activation = 'relu'))
-model.add(Dense(32, activation ='relu'))
-model.add(Dense(30, activation ='softmax'))
+model.add(Conv2D(512,(3,3), activation='relu'))
+model.add(MaxPooling2D())
+model.add(Conv2D(256,(3,3), activation='relu'))
+model.add(MaxPooling2D())
+model.add(Conv2D(128,(3,3), activation='relu'))
+model.add(Flatten())
+model.add(Dense(64, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(30, activation='softmax'))
 model.summary()
 
-print(train_gen)
-print(valid_gen)
+
+print(data)
+
+# print(train_gen)
+# print(valid_gen)
 
 
-#3. 컴파일, 훈련\
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-model.fit(train_gen , validation_data = valid_gen , epochs=30)
+# #3. 컴파일, 훈련\
+# model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+# model.fit(train_gen , validation_data = valid_gen , epochs=30)
 
-# conv_base = VGG16(weights='imagenet', include_top=False, input_shape=(150, 150, 3))
+# # conv_base = VGG16(weights='imagenet', include_top=False, input_shape=(150, 150, 3))
 
 
 # model = Sequential()
@@ -159,25 +142,26 @@ model.fit(train_gen , validation_data = valid_gen , epochs=30)
 
 
 
-class 반복되는 불필요한 소스최소화 현실세계 화물을 프로그ㅎ램 상에서 쉽게 표현할수있는 기술 
+# class 반복되는 불필요한 소스최소화 현실세계 화물을 프로그ㅎ램 상에서 쉽게 표현할수있는 기술 
 
 
-if 자동차가 오브젝트가 프로젝트에 존재 
+# if 자동차가 오브젝트가 프로젝트에 존재 
 
-class 를 이용해 자동차라는틀을 실제 프로그램에서 할수있게 함 
+# class 를 이용해 자동차라는틀을 실제 프로그램에서 할수있게 함 
 
 
-init : 클래스로 정의된 객채를 프로그램 상에서 이용할수 있개 만듬 
+# init : 클래스로 정의된 객채를 프로그램 상에서 이용할수 있개 만듬 
 
-class 의 맴버 : 클래스 내부에 포함되는 변수 
+# class 의 맴버 : 클래스 내부에 포함되는 변수 
 
-class 함수 : 클래스 내부에 포함되는 함수 . 메소드라고 함 
+# class 함수 : 클래스 내부에 포함되는 함수 . 메소드라고 함 
 
-class DataGenerator(keras.utils.Sequence):
-    def __init__(self, batch_size, df, image_size, mode='train', shuffle=True): # 생성자 :
-        # 배치사이즈, 데이터프레임, 모드(학습,검증) , 셔플(섞어서들어가기)
-        self.batch_size = batch_size 
-        self.mode = mode
-        self.image_size = image_size
-        self.shuffle = shuffle
-        self.df = df
+# class DataGenerator(keras.utils.Sequence):
+#     def __init__(self, batch_size, df, image_size, mode='train', shuffle=True): # 생성자 :
+#         # 배치사이즈, 데이터프레임, 모드(학습,검증) , 셔플(섞어서들어가기)
+#         self.batch_size = batch_size 
+#         self.mode = mode
+#         self.image_size = image_size
+#         self.shuffle = shuffle
+#         self.df = df
+        
