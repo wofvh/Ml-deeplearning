@@ -11,6 +11,9 @@ path = './_data/kaggle_house/'
 train_df =  pd.read_csv(path + 'train.csv')
 test_df = pd.read_csv(path + 'test.csv') 
 
+
+data = pd.read_csv('./_data/project/cls_data.csv',index_col=0)
+
 train_df.head()
 
 # set index
