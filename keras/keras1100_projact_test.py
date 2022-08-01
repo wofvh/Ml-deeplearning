@@ -96,7 +96,6 @@ model.add(Dense(64, activation='relu'))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(30, activation='softmax'))
 model.summary()
-
 print(data)
 
 

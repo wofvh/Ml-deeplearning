@@ -78,7 +78,7 @@ print(x.shape,y.shape) #(840, 100, 100, 3) (840, 3)
 # print(y_train.shape,y_test.shape) #(8005, 2) (2023, 2)
 
 
-'''
+
 #################################### 스케일링 ######################################
 x_train1 = x_train.reshape((x_train.shape[0]), (x_train.shape[1])*(x_train.shape[2])*3)
 x_test1 = x_test.reshape((x_test.shape[0]), (x_test.shape[1])*(x_test.shape[2])*3)
@@ -139,4 +139,3 @@ np.save('d:/study_data/_save/_npy/keras49_9_train_y.npy', arr=xy_train[0][1])
 np.save('d:/study_data/_save/_npy/keras49_9_test_x.npy', arr=x_test)
 np.save('d:/study_data/_save/_npy/keras49_9_test_y.npy', arr=y_test)
 np.save('d:/study_data/_save/_npy/keras49_9_test_set.npy', arr=test_set)
-'''
