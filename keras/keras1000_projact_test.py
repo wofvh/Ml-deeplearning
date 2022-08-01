@@ -41,7 +41,7 @@ class DataGenerator(keras.utils.Sequence):
         data = self.df.iloc[strt:fin] # ex) idx가 0 이고 배치사이즈 64 일 경우  dataframe의 [0:64] 그다음은 [64:128]로 찢어서 나갈 수 있게 iterator(반복자) 개념 필요
         batch_x, batch_y = self.get_data(data) # 아래 정의된 get data에서 데이터 받아옴
 
-        return np.array(batch_x), np.array(batch_y)
+        return np.array(batch_x), np.array(batch_y).reshape((1,-1))
 
 
     def get_data(self, data):
@@ -112,37 +112,15 @@ print(data)
 # print(valid_gen)
 
 
-# #3. 컴파일, 훈련\
-# model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-# model.fit(train_gen , validation_data = valid_gen , epochs=30)
+#3. 컴파일, 훈련\
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.fit(train_gen , validation_data = valid_gen , epochs=30)
 
 # # conv_base = VGG16(weights='imagenet', include_top=False, input_shape=(150, 150, 3))
 
 
-# model = Sequential()
 
-# # model.add(Dense(units=10, input_shape=(3,)))
-# # model.summary()
-# #(input_dim + bias) * units = summary param (Dense모델 )
-# #5X5 이미지(1 흑백 3 컬러 ) (rows, columns,channels)
-                                                                
-# model.add(Conv2D(filters=64, kernel_size=(3, 3), #(4,4,10) 
-#                  padding='same',
-#                  input_shape=(28, 28, 1)))  #kernel_size 이미지 분석을 위해 2x2로 잘라서 분석
-# model.add(MaxPooling2D())
-# model.add(Conv2D(32, (2,2), 
-#                  padding='valid',
-#                  activation='relu')) #(7필터 2,2 ) / (None, 3, 3, 7) 
-# model.add(Flatten())  #(N, 63)
-# model.add(Dense(32, activation='relu'))
-# model.add(Dense(32, activation='relu'))
-# model.add(Dense(10, activation='softmax'))
-# model.summary()
-
-
-
-
-# class 반복되는 불필요한 소스최소화 현실세계 화물을 프로그ㅎ램 상에서 쉽게 표현할수있는 기술 
+# class 반복되는 불필요한 소스최소화 현실세계 화물을 프로그ㅎ램 상에서 쉽게 표현할수있음
 
 
 # if 자동차가 오브젝트가 프로젝트에 존재 
