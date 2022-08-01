@@ -1,39 +1,31 @@
-import time
-import numpy as np      
-import pandas as pd
-import matplotlib.pyplot as plt
-from keras.callbacks import ModelCheckpoint,EarlyStopping
+from bitarray import test
+import numpy as np
 from keras.preprocessing.image import ImageDataGenerator
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Conv2D,Flatten,Dense,MaxPool2D,Dropout
-
-
-# path = './_data/project/' # ".은 현재 폴더"
-# data = pd.read_csv(path + 'cls_data.csv',index_col=0 )
-
+from sklearn import datasets
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.rcParams['font.family']='Malgun Gothic'
+matplotlib.rcParams['axes.unicode_minus']=False
+import cv2
+import math
+from tensorflow.python.keras.models import Sequential, Model
+from tensorflow.python.keras.layers import Activation, Dense, Conv2D, Flatten, MaxPooling2D, Input, Dropout
+from tensorflow.python.keras.utils.np_utils import to_categorical
+from sklearn.model_selection import StratifiedKFold
+from tensorflow import keras
 #############이미지 수치화 or 증폭가능############## 
 train_datagen = ImageDataGenerator(
     rescale=1./255,  # rescale다른 처리 전에 데이터를 곱할 값입니다.1/255로 스케일링하여 대신 0과 1 사이의 값을 목표로 합니다
-     horizontal_flip=True, # 이미지의 절반을 가로로 무작위로 뒤집기 위한 것입니다. 수평 비대칭에 대한 가정이 없을 때 관련이 있습니다
-     vertical_flip=True,  #수직방향으로 뒤집기를 한다
-     width_shift_range=0.1, # width_shift그림 을 height_shift수직 또는 수평으로 무작위로 변환하는 범위(총 너비 또는 높이의 일부)입니다.
-     height_shift_range=0.1, #지정된 수직방향 이동 범위내에서 임의로 원본이미지를 이동시킨다. 예를 들어 0.1이고 전체 높이가 100이면, 10픽셀 내외로 상하 이동시킨다. 
-     rotation_range=5,   # rotation_range사진을 무작위로 회전할 범위인 도(0-180) 값입니다.
-     zoom_range=1.2,   # zoom_range내부 사진을 무작위로 확대하기 위한 것입니다.
-     shear_range=0.7,  # shear_range무작위로 전단 변환 을 적용하기 위한 것입니다.
-     fill_mode='nearest'
+    horizontal_flip=True, # 이미지의 절반을 가로로 무작위로 뒤집기 위한 것입니다. 수평 비대칭에 대한 가정이 없을 때 관련이 있습니다
+    vertical_flip=True,  #수직방향으로 뒤집기를 한다
+    width_shift_range=0.1, # width_shift그림 을 height_shift수직 또는 수평으로 무작위로 변환하는 범위(총 너비 또는 높이의 일부)입니다.
+    height_shift_range=0.1, #지정된 수직방향 이동 범위내에서 임의로 원본이미지를 이동시킨다. 예를 들어 0.1이고 전체 높이가 100이면, 10픽셀 내외로 상하 이동시킨다. 
+    rotation_range=5,   # rotation_range사진을 무작위로 회전할 범위인 도(0-180) 값입니다.
+    zoom_range=1.2,   # zoom_range내부 사진을 무작위로 확대하기 위한 것입니다.
+    shear_range=0.7,  # shear_range무작위로 전단 변환 을 적용하기 위한 것입니다.
+    fill_mode='nearest'
 )
-train_datagen = ImageDataGenerator(
-    rescale=1./255,  # rescale다른 처리 전에 데이터를 곱할 값입니다.1/255로 스케일링하여 대신 0과 1 사이의 값을 목표로 합니다
-     horizontal_flip=True, # 이미지의 절반을 가로로 무작위로 뒤집기 위한 것입니다. 수평 비대칭에 대한 가정이 없을 때 관련이 있습니다
-     vertical_flip=True,  #수직방향으로 뒤집기를 한다
-     width_shift_range=0.1, # width_shift그림 을 height_shift수직 또는 수평으로 무작위로 변환하는 범위(총 너비 또는 높이의 일부)입니다.
-     height_shift_range=0.1, #지정된 수직방향 이동 범위내에서 임의로 원본이미지를 이동시킨다. 예를 들어 0.1이고 전체 높이가 100이면, 10픽셀 내외로 상하 이동시킨다. 
-     rotation_range=5,   # rotation_range사진을 무작위로 회전할 범위인 도(0-180) 값입니다.
-     zoom_range=1.2,   # zoom_range내부 사진을 무작위로 확대하기 위한 것입니다.
-     shear_range=0.7,  # shear_range무작위로 전단 변환 을 적용하기 위한 것입니다.
-     fill_mode='nearest'
-)
+
 # rotation_range사진을 무작위로 회전할 범위인 도(0-180) 값입니다.
 # width_shift그림 을 height_shift수직 또는 수평으로 무작위로 변환하는 범위(총 너비 또는 높이의 일부)입니다.
 # rescale다른 처리 전에 데이터를 곱할 값입니다. 원본 이미지는 0-255의 RGB 계수로 구성되지만 이러한 값은 모델이 처리하기에는 너무 높기 때문에(주어진 일반적인 학습률) 1/255로 스케일링하여 대신 0과 1 사이의 값을 목표로 합니다. 요인.
@@ -43,44 +35,106 @@ train_datagen = ImageDataGenerator(
 # fill_mode회전 또는 너비/높이 이동 후에 나타날 수 있는 새로 생성된 픽셀을 채우는 데 사용되는 전략입니다.
 
 ########테스트 데이터는 증폭 안함#####
+test_datagen = ImageDataGenerator(
+    rescale=1./255
+)
 
+xy_train = train_datagen.flow_from_directory(
+    'D:/study_data/test',
+    target_size=(100,100),
+    batch_size=30,
+    class_mode='categorical',  
+    shuffle = True,
+    #Found 160 images belonging to 2 classes 160 데이터가 0~1로 데이터가 됬다
+    #타겟싸이즈 맞춰야함 
+)
 
- xy_train = train_datagen.flow_from_directory(
-     'D:/test/',
-     target_size=(128,128),
-     batch_size=5000,
-     class_mode='categorical',      #color_mode 안쓸경우 디폴드값은 컬러(3)
-     shuffle = True,
-     #Found 160 images belonging to 2 classes 160 데이터가 0~1로 데이터가 됬다
-     #타겟싸이즈 맞춰야함 
- )
- xy_test = test_datagen.flow_from_directory(
-     'D:/test/',
-     target_size=(128,128),
-     batch_size=5000,
+xy_test = test_datagen.flow_from_directory(
+    'D:/study_data/test',
+    target_size=(100,100),
+    batch_size=30,
     class_mode='categorical',
-     shuffle = True,
-     #Found 120 images belonging to 2 classes 0~1로 데이터가 됬다
- )
-
-x = xy_test[0][0]
-y = xy_train[0][1]
-
-test_set_x = test_set[0][0]
-print(x) 
-print(y) 
+    shuffle = True,
+    #Found 120 images belonging to 2 classes 0~1로 데이터가 됬다
+)
 
 
-print(test_set) 
-print(x.shape,y.shape) #(840, 100, 100, 3) (840, 3)
 
 
-# print(xy_train)
-# <keras.preprocessing.image.DirectoryIterator object at 0x000001F0E08D7A90>
 
 
-print(xy_train[0])            #마지막 배치 
-print(xy_train[0][0])  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#2. 모델구성
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense , Conv2D , Flatten,MaxPooling2D
+
+
+model = Sequential()
+model.add(Conv2D(filters=64,kernel_size=(2, 2), padding='same', input_shape=(100,100,3), activation='relu'))
+model.add(MaxPooling2D())
+model.add(Conv2D(512,(3,3), activation='relu'))
+model.add(MaxPooling2D())
+model.add(Conv2D(256,(3,3), activation='relu'))
+model.add(MaxPooling2D())
+model.add(Conv2D(128,(3,3), activation='relu'))
+model.add(Flatten())
+model.add(Dense(64, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(30, activation='softmax'))
+model.summary()
+
+#3.컴파일 훈련
+model.compile(loss= 'binary_crossentropy',optimizer='adam', metrics=['accuracy'])
+
+#model.fit(cy_train[0][0], xy_train[0][1])# 배치를 최대로 자으면 이것도 가능 
+hist = model.fit_generator(xy_train ,epochs=30,steps_per_epoch=32,
+                                            #전체데이터/batch = 160/5 = 32
+                    validation_data =xy_test, 
+                    validation_steps=4)
+accuracy = hist.history['accuracy']
+val_accuracy = hist.history['val_accuracy']
+loss = hist.history['loss']
+val_loss = hist.history['val_loss']
+
+print('loss : ' ,loss[-1])
+print('val_loss : ' ,val_loss[-1])
+print('accuracy : ' ,accuracy[-1])
+print('val_accuracy : ' ,val_accuracy[-1])
+
+
+
+'''
+import matplotlib.pyplot as plt
+matplotlib.rcParams
+plt.figure(figsize=(9,6))
+plt.plot(hist.history['loss'],marker='.',c='red',label='loss') #순차적으로 출력이므로  y값 지정 필요 x
+plt.plot(hist.history['val_loss'],marker='.',c='blue',label='val_loss')
+plt.grid()
+plt.title('show') #맥플러립 한글 깨짐 현상 알아서 해결해라 
+plt.ylabel('loss')
+plt.xlabel('epochs')
+# plt.legend(loc='upper right')
+plt.legend()
+plt.show()
 
 ##########################################################################################################
 # x_train = np.load('D:\study_data\_save\_npy\_train_x10.npy')
@@ -169,3 +223,4 @@ print(xy_train[0][0])
 # elif y_predict[0] ==   19 : print('진지한 표정-추천 노래 :',bal)  
 # elif y_predict[0] ==   20 : print('억울한 표정-추천 노래 :',bal)
 # elif y_predict[0] ==   21 : print('승리한 표정-추천 노래 :',bal)  
+'''

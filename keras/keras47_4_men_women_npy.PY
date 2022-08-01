@@ -57,8 +57,6 @@ print(xy_train)
 # <keras.preprocessing.image.DirectoryIterator object at 0x000002A370973F40>
 
 
-'''
-
 
 print(xy_train[0])            #마지막 배치 
 print(xy_train[0][0])  
@@ -144,5 +142,3 @@ plt.xlabel('epochs')
 # plt.legend(loc='upper right')
 plt.legend()
 plt.show()
-
-'''
