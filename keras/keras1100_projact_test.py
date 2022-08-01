@@ -68,7 +68,7 @@ class DataGenerator(keras.utils.Sequence):
 #################################################################################
 ################################# PATH 보완 #####################################
 
-data = pd.read_csv('./_data/project/cls_data.csv',index_col=0)
+data = pd.read_csv('./_data/project/cls_data.csv',index_col=1)
 
 # data['image_path'] = data['image_path'].apply(cp)
 # Fold
@@ -101,6 +101,6 @@ model.summary()
 print(data)
 
 
-# #3. 컴파일, 훈련\
-# model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-# model.fit(train_gen , validation_data = valid_gen , epochs=10)
+#3. 컴파일, 훈련\
+model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.fit(train_gen , validation_data = valid_gen , epochs=10)
