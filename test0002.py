@@ -7,31 +7,31 @@
 from unicodedata import name
 
 
-# class Car:           #class란 어떤 사물을 객채로 컴퓨터가 받아 드릴수있게 지정해줌 
-#     #클래스의 생성자
-#     def __init__(self, name , color, high,peple):    #  __init__ <<(생성자 ,self 라는 것을 기본적으로 가지고있음)
-#         self.name = name   #classs 맴머  #(생성자)__init__문 클래스로 정의된 객체를 프로그램 상에서 이용할수있게만든변수
-#         self.color = color  #class 맴버   
-#         self.high = high
-#         self.peple = peple
-#     #class 소멸자  del << 변수 마지막에 사용 사용시 그전 변수값이 다 사라짐 
-#     #def __del__(self):
-#         print("인스턴스를 소멸시킵니다.")
-#     #class의 매소드
-#     def show_info(self):
-#         print("소나타:",self.name, "/색상:",self.color,"/높이:",self.high,"/인용:",self.peple)
-#         #Setter 메소드 (set_name) < 이름을 바꾸는 매소드 
-#     def set_name(self, name):
-#         self.name = name
+class Car:           #class란 어떤 사물을 객채로 컴퓨터가 받아 드릴수있게 지정해줌 
+    #클래스의 생성자
+    def __init__(self, name , color, high,peple):    #  __init__ <<(생성자 ,self 라는 것을 기본적으로 가지고있음)
+        self.name = name   #classs 맴머  #(생성자)__init__문 클래스로 정의된 객체를 프로그램 상에서 이용할수있게만든변수
+        self.color = color  #class 맴버   
+        self.high = high
+        self.peple = peple
+    #class 소멸자  del << 변수 마지막에 사용 사용시 그전 변수값이 다 사라짐 
+    #def __del__(self):
+        print("인스턴스를 소멸시킵니다.")
+    #class의 매소드
+    def show_info(self):
+        print("소나타:",self.name, "/색상:",self.color,"/높이:",self.high,"/인용:",self.peple)
+        #Setter 메소드 (set_name) < 이름을 바꾸는 매소드 
+    def set_name(self, name):
+        self.name = name
          
-# car1 = Car("소나타","검은색","너무낮다","4인용")
-# car1.set_name("아반떄")
-# car1.show_info()
-# del car1        
+car1 = Car("소나타","검은색","너무낮다","4인용")
+car1.set_name("아반떄")
+car1.show_info()
+del car1        
 
-# class 상속개념 다른클래스의 멤버 변수와 메소드를 물려 받아 사용하는 기법
-# 상속 class 에는 부모와 자식관계가 존재함 
-#자식 클래스 : 부모 클래스를 상속 받은 클래스
+class 상속개념 다른클래스의 멤버 변수와 메소드를 물려 받아 사용하는 기법
+상속 class 에는 부모와 자식관계가 존재함 
+자식 클래스 : 부모 클래스를 상속 받은 클래스
 class Unit:
     def __init__(self,name,power):
         self.name = name

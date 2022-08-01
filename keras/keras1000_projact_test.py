@@ -1,3 +1,4 @@
+from datetime import date
 from mimetypes import init
 from tensorflow import keras
 import pandas as pd
@@ -5,7 +6,7 @@ import numpy as np
 import cv2
 import math
 from tensorflow.python.keras.models import Sequential, Model
-from tensorflow.python.keras.layers import Activation, Dense, Conv2D, Flatten, MaxPooling2D, Input, Dropout
+from tensorflow.python.keras.layers import Activation, Dense, Conv2D, Flatten, MaxPooling2D, Input, Dropout,Conv1D
 from tensorflow.python.keras.utils.np_utils import to_categorical
 from keras.applications.vgg16 import VGG16 
 from keras.preprocessing import image 
@@ -81,18 +82,22 @@ for idx, (t, v) in enumerate(skf.split(data, data['label']), 1):
     data.loc[v, 'fold'] = idx
 
 
-train_gen = DataGenerator(batch_size=4, df = data, mode = 'train', image_size = 94)
-valid_gen = DataGenerator(batch_size=4, df = data, mode = 'valid', image_size = 94)
+train_gen = DataGenerator(batch_size=10, df = data, mode = 'train', image_size = 94)
+valid_gen = DataGenerator(batch_size=10, df = data, mode = 'valid', image_size = 94)
 
-print(train_gen[0][0].shape)  #(4, 128, 128, 3)
-print(train_gen[0][1].shape)  #(4,)
-print(valid_gen[0][0].shape)  #(4, 128, 128, 3)
-print(valid_gen[0][1].shape)  #(4,)
+print(data.shape)
 
+print(train_gen[0][0].shape)  #(10, 94, 94, 3)
+print(train_gen[0][1].shape)  #(1,4)
+print(valid_gen[0][0].shape)  #(10, 94, 94, 3)
+print(valid_gen[0][1].shape)  #(1,4)
+
+data = data.reshape(4369, 3 ,1 )
 
 #모델구성 
 model = Sequential()
-model.add(Conv2D(filters=64,kernel_size=(3, 3), padding='same', input_shape=(94,94,3), activation='relu'))
+model.add(Conv1D(64, input_shape = (3,1)))
+# model.add(Conv2D(filters=64,kernel_size=(3, 3), input_shape=(9,94,3), activation='relu'))
 model.add(MaxPooling2D())
 model.add(Conv2D(512,(3,3), activation='relu'))
 model.add(MaxPooling2D())
@@ -105,18 +110,15 @@ model.add(Dense(32, activation='relu'))
 model.add(Dense(30, activation='softmax'))
 model.summary()
 
-
 print(data)
-
+'''
 # print(train_gen)
 # print(valid_gen)
 
 
 #3. 컴파일, 훈련\
-# model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-# model.fit(train_gen , validation_data = valid_gen , epochs=30)
-
-# # conv_base = VGG16(weights='imagenet', include_top=False, input_shape=(150, 150, 3))
+model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.fit(train_gen , validation_data = valid_gen , epochs=10)
 
 
 
@@ -142,4 +144,4 @@ print(data)
 #         self.image_size = image_size
 #         self.shuffle = shuffle
 #         self.df = df
-        
+'''
