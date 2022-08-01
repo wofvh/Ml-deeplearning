@@ -81,10 +81,12 @@ for idx, (t, v) in enumerate(skf.split(data, data['label']), 1):
     
 train_gen = DataGenerator(batch_size=4, df = data, mode = 'train', image_size = 94)
 valid_gen = DataGenerator(batch_size=4, df = data, mode = 'valid', image_size = 94)
-    
-    
+
+
+print(data.shape)
+
 model = Sequential()
-model.add(Conv2D(filters=64,kernel_size=(3, 3), padding='same', input_shape=(94,94,3), activation='relu'))
+model.add(Conv2D(filters=64,kernel_size=(2, 2), padding='same', input_shape=(94,94,3), activation='relu'))
 model.add(MaxPooling2D())
 model.add(Conv2D(512,(3,3), activation='relu'))
 model.add(MaxPooling2D())
@@ -99,6 +101,6 @@ model.summary()
 print(data)
 
 
-#3. 컴파일, 훈련\
-model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-model.fit(train_gen , validation_data = valid_gen , epochs=10)
+# #3. 컴파일, 훈련\
+# model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+# model.fit(train_gen , validation_data = valid_gen , epochs=10)
