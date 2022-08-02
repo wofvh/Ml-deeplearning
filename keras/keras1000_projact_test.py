@@ -83,21 +83,15 @@ for idx, (t, v) in enumerate(skf.split(data, data['label']), 1):
 
 
 train_gen = DataGenerator(batch_size=10, df = data, mode = 'train', image_size = 94)
+print('check')
+
 valid_gen = DataGenerator(batch_size=10, df = data, mode = 'valid', image_size = 94)
 
 print(data.shape)
 
-print(train_gen[0][0].shape)  #(10, 94, 94, 3)
-print(train_gen[0][1].shape)  #(1,4)
-print(valid_gen[0][0].shape)  #(10, 94, 94, 3)
-print(valid_gen[0][1].shape)  #(1,4)
-
-data = data.reshape(4369, 3 ,1 )
-
 #모델구성 
 model = Sequential()
-model.add(Conv1D(64, input_shape = (3,1)))
-# model.add(Conv2D(filters=64,kernel_size=(3, 3), input_shape=(9,94,3), activation='relu'))
+model.add(Conv2D(filters=64,kernel_size=(3, 3), input_shape=(94,94,3), activation='relu'))
 model.add(MaxPooling2D())
 model.add(Conv2D(512,(3,3), activation='relu'))
 model.add(MaxPooling2D())
@@ -107,21 +101,21 @@ model.add(Conv2D(128,(3,3), activation='relu'))
 model.add(Flatten())
 model.add(Dense(64, activation='relu'))
 model.add(Dense(32, activation='relu'))
-model.add(Dense(30, activation='softmax'))
+model.add(Dense(29, activation='softmax'))
 model.summary()
 
 print(data)
-'''
+
 # print(train_gen)
 # print(valid_gen)
 
 
-#3. 컴파일, 훈련\
+#3. 컴파일, 훈련
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model.fit(train_gen , validation_data = valid_gen , epochs=10)
 
 
-
+'''
 # class 반복되는 불필요한 소스최소화 현실세계 화물을 프로그ㅎ램 상에서 쉽게 표현할수있음
 
 

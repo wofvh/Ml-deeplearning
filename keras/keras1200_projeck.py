@@ -1,7 +1,7 @@
 from bitarray import test
 import numpy as np
 from keras.preprocessing.image import ImageDataGenerator
-from sklearn import datasets
+from sklearn import datasets, utils
 import matplotlib
 import matplotlib.pyplot as plt
 matplotlib.rcParams['font.family']='Malgun Gothic'
@@ -13,6 +13,8 @@ from tensorflow.python.keras.layers import Activation, Dense, Conv2D, Flatten, M
 from tensorflow.python.keras.utils.np_utils import to_categorical
 from sklearn.model_selection import StratifiedKFold
 from tensorflow import keras
+from sklearn.model_selection import train_test_split
+
 #############이미지 수치화 or 증폭가능############## 
 train_datagen = ImageDataGenerator(
     rescale=1./255,  # rescale다른 처리 전에 데이터를 곱할 값입니다.1/255로 스케일링하여 대신 0과 1 사이의 값을 목표로 합니다
@@ -42,46 +44,29 @@ test_datagen = ImageDataGenerator(
 xy_train = train_datagen.flow_from_directory(
     'D:/study_data/test',
     target_size=(100,100),
-    batch_size=30,
+    batch_size=5000,
     class_mode='categorical',  
     shuffle = True,
     #Found 160 images belonging to 2 classes 160 데이터가 0~1로 데이터가 됬다
     #타겟싸이즈 맞춰야함 
 )
 
-xy_test = test_datagen.flow_from_directory(
-    'D:/study_data/test',
-    target_size=(100,100),
-    batch_size=30,
-    class_mode='categorical',
-    shuffle = True,
-    #Found 120 images belonging to 2 classes 0~1로 데이터가 됬다
-)
+
+x = xy_train[0][0]
+y = xy_train[0][1]
 
 
+x_train, x_test, y_train, y_test = train_test_split(
+     x, y, train_size=0.8, shuffle=True
+    )
 
 
+print(x_train.shape) #(21, 100, 100, 3)
 
 
+#print(x.shape, y.shape)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#batch_size = 64
 
 #2. 모델구성
 from tensorflow.python.keras.models import Sequential
@@ -121,8 +106,6 @@ print('accuracy : ' ,accuracy[-1])
 print('val_accuracy : ' ,val_accuracy[-1])
 
 
-
-'''
 import matplotlib.pyplot as plt
 matplotlib.rcParams
 plt.figure(figsize=(9,6))
@@ -183,44 +166,44 @@ plt.show()
 # # model.save_weights("D:\study_data\_save\keras60_project4.h5")
 # # model.save_weights("./_save/keras23_5_save_weights1.h5")
 
-# #4. 평가,예측
-# loss = model.evaluate(x_test, y_test)
-# print('loss :', loss)
-# end_time = time.time()-start_time
-# print("걸린 시간 :",end_time)
-# x_data = np.load('D:\study_data\_save\_npy\_train_x12.npy')
-# y_predict = model.predict(x_data)
-# y_predict = np.argmax(y_predict,axis=1)
-# print('y_predict :',y_predict) 
-# from random import *
+#4. 평가,예측
+loss = model.evaluate(x_test, y_test)
+print('loss :', loss)
+end_time = time.time()-start_time
+print("걸린 시간 :",end_time)
+x_data = np.load('D:\study_data\_save\_npy\_train_x12.npy')
+y_predict = model.predict(x_data)
+y_predict = np.argmax(y_predict,axis=1)
+print('y_predict :',y_predict) 
+from random import *
 
 # is_bal = df['Genre'] == '발라드'
 
-# # 조건를 충족하는 데이터를 필터링하여 새로운 변수에 저장합니다.
-# bal = df[is_bal]
-# i = randrange(40)  # 0부터 39 사이의 임의의 정수
-# print(i)
-# bal = '{} - {}'.format(bal['title'][i],bal['artist'][i])
-# # 결과를 출력합니다.
-# if y_predict[0]   ==   1  : print('분노한 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   2  : print('혐오하는 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   3  : print('공포스러워하는 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   4  : print('행복해하는 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   5  : print('무표정-추천 노래 :',bal)
-# elif y_predict[0] ==   6  : print('슬픈 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   7  : print('놀라워하는 표정-추천 노래 :',bal)  
-# elif y_predict[0] ==   8  : print('불안한 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   9  : print('감동받은 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   10 : print('지루한 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   11 : print('의기양양한 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   12 : print('실망한 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   13 : print('의심하는 표정-추천 노래 :',bal)  
-# elif y_predict[0] ==   14 : print('흥미로운 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   15 : print('죄책감 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   16 : print('질투 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   17 : print('외로운 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   18 : print('만족한 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   19 : print('진지한 표정-추천 노래 :',bal)  
-# elif y_predict[0] ==   20 : print('억울한 표정-추천 노래 :',bal)
-# elif y_predict[0] ==   21 : print('승리한 표정-추천 노래 :',bal)  
+조건를 충족하는 데이터를 필터링하여 새로운 변수에 저장합니다.
+bal = df[is_bal]
+i = randrange(40)  # 0부터 39 사이의 임의의 정수
+print(i)
+bal = '{} - {}'.format(bal['title'][i],bal['artist'][i])
+결과를 출력합니다.
+if y_predict[0]   ==   1  : print('분노한 표정-추천 노래 :',bal)
+elif y_predict[0] ==   2  : print('혐오하는 표정-추천 노래 :',bal)
+elif y_predict[0] ==   3  : print('공포스러워하는 표정-추천 노래 :',bal)
+elif y_predict[0] ==   4  : print('행복해하는 표정-추천 노래 :',bal)
+elif y_predict[0] ==   5  : print('무표정-추천 노래 :',bal)
+elif y_predict[0] ==   6  : print('슬픈 표정-추천 노래 :',bal)
+elif y_predict[0] ==   7  : print('놀라워하는 표정-추천 노래 :',bal)  
+elif y_predict[0] ==   8  : print('불안한 표정-추천 노래 :',bal)
+elif y_predict[0] ==   9  : print('감동받은 표정-추천 노래 :',bal)
+elif y_predict[0] ==   10 : print('지루한 표정-추천 노래 :',bal)
+elif y_predict/[0] ==   11 : print('의기양양한 표정-추천 노래 :',bal)
+elif y_predict[0] ==   12 : print('실망한 표정-추천 노래 :',bal)
+elif y_predict[0] ==   13 : print('의심하는 표정-추천 노래 :',bal)  
+elif y_predict[0] ==   14 : print('흥미로운 표정-추천 노래 :',bal)
+elif y_predict[0] ==   15 : print('죄책감 표정-추천 노래 :',bal)
+elif y_predict[0] ==   16 : print('질투 표정-추천 노래 :',bal)
+elif y_predict[0] ==   17 : print('외로운 표정-추천 노래 :',bal)
+elif y_predict[0] ==   18 : print('만족한 표정-추천 노래 :',bal)
+elif y_predict[0] ==   19 : print('진지한 표정-추천 노래 :',bal)  
+elif y_predict[0] ==   20 : print('억울한 표정-추천 노래 :',bal)
+elif y_predict[0] ==   21 : print('승리한 표정-추천 노래 :',bal)  
 '''
