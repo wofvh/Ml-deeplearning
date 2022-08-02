@@ -1,109 +1,115 @@
-
-from tabnanny import verbose
-import numpy as np
+from datetime import date
+from mimetypes import init
+from tensorflow import keras
 import pandas as pd
-import os
-from keras.preprocessing import image
-from keras.preprocessing.text import Tokenizer
-from keras.utils import np_utils
+import numpy as np
+import cv2
+import math
+from tensorflow.python.keras.models import Sequential, Model
+from tensorflow.python.keras.layers import Activation, Dense, Conv2D, Flatten, MaxPooling2D, Input, Dropout,Conv1D
+from tensorflow.python.keras.utils.np_utils import to_categorical
+from keras.applications.vgg16 import VGG16 
+from keras.preprocessing import image 
+from keras.applications.vgg16 import preprocess_input 
+from sklearn.model_selection import StratifiedKFold
+import matplotlib.pyplot as plt
 from keras.preprocessing.image import ImageDataGenerator
-from keras.applications import ResNet50, ResNet101
-from sklearn.model_selection import train_test_split
-import tensorflow as tf
-from PIL import Image
+
+class DataGenerator(keras.utils.Sequence):
+    def __init__(self, batch_size, df, image_size, mode='train', shuffle=True): # 생성자 : 배치사이즈, 데이터프레임, 모드(학습,검증) , 셔플(섞어서들어가기)
+        self.batch_size = batch_size 
+        self.mode = mode
+        self.image_size = image_size
+        self.shuffle = shuffle
+        self.df = df
+ 
+        if self.mode == 'train': # mode가 train일때 검증용 데이터 (지금은 fold == 1 ) 빼고 학습을 진행
+            self.df = self.df[self.df['fold'] != 1]
+        elif self.mode =='valid': # mode 가 validation(검증) 일때는 얘만 따로 학습검증을함
+            self.df = self.df[self.df['fold'] == 1]
+
+        self.on_epoch_end()
 
 
-#1. 데이터 로드
-
-train = pd.read_csv('./_data/project/cls_data.csv',index_col=0)
-# print(train.head)
-train_img = 'C:/study/_data/test/yoonyeojeong/'
+    def __len__(self): # 길이정의 (전체 dataset 길이에서 batch사이즈만큼 나눠줌)
+        return math.ceil(len(self.df) / self.batch_size)
 
 
-# 이미지 데이터 가져오기
-img_result = []
-
-for file in os.listdir(train_img): 
-    img_file = file
-    img_result.append(img_file) 
-# print(len(img_result))  # 2039
-
-
-# 라벨링 tokenizer    
-labels = train['label']
-print(labels.head)
-
-y = np.array(labels[0])
-for i in range(1,30):
-    y = np.vstack((y, labels[i]))
-y = np.array(y)
-print(y.shape) #(30, 1)
+    def __getitem__(self, idx): # 실질적으로 빠지는 부분 
+        strt = idx * self.batch_size 
+        fin = (idx+1) * self.batch_size
+        data = self.df.iloc[strt:fin] # ex) idx가 0 이고 배치사이즈 64 일 경우  dataframe의 [0:64] 그다음은 [64:128]로 찢어서 나갈 수 있게 iterator(반복자) 개념 필요
+        batch_x, batch_y = self.get_data(data) # 아래 정의된 get data에서 데이터 받아옴
+        
+        return np.array(batch_x), np.array(batch_y).reshape(-1,1) 
 
 
-# Image DataGenerator
+    def get_data(self, data):
+        batch_x = []
+        batch_y = []
 
-import tqdm
-from tensorflow.keras.utils import load_img, img_to_array
-train_image = []
-for i in tqdm.tqdm(range(train.shape[0])):
-    img = load_img(train_img + str(i + 1) +'.jpg', target_size=(100, 100, 3))
-    img = img_to_array(img)
-    img = img/255
-    train_image.append(img)
-x = np.array(train_image)
-print(x.shape) # (3227, 50, 60, 3), (2298, 50, 60, 3), (1830, 50, 60, 3), (1539, 50, 60, 3)
+        for _ , r in data.iterrows(): # data iterrows 로 한개씩 훑고 지나감(이미지를 불러오기 위함) 연습필요 당장 이해 힘듬
+            file_path = r['image_path'] 
+            
+            image = plt.imread(file_path) #이미지 불러오고
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) #cvtColor 할거임
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, shuffle=False) 
+            image = cv2.resize(image , (self.image_size , self.image_size)) # model input size로 resize 해주기
+            image = image / 255. # 정규화 0~1
+
+            # label = r.iloc[:,2:-1] # label로 지정된 int형 (정답지 : ground Truth)
+            label = r['label']
+            batch_x.append(image) # 앞선 리스트에 정의
+            batch_y.append(label)
+
+        return batch_x, batch_y # return => __getitem__
+
+    def on_epoch_end(self):
+
+        if self.shuffle:
+            self.df = self.df.sample(frac=1).reset_index(drop=True)
+
+#################################################################################
+################################# PATH 보완 #####################################
+#################################################################################
 
 
+data = pd.read_csv('./_data/project/cls_data.csv',index_col=0)
+# data['image_path'] = data['image_path'].apply(cp)
+# Fold
+skf = StratifiedKFold(n_splits=8, shuffle = True, random_state=42)
+data['fold'] = -1
 
-
-# test_datagen = ImageDataGenerator(
-#     rescale=1./255,)  
-
-# xy_train = test_datagen.flow(x_train,y_train,
-#                                   batch_size=4380,shuffle=False)
-
-
-# xy_test = test_datagen.flow(x_test,y_test,
-#                        batch_size=4380,shuffle=False)
-# x_train = xy_train[0][0]
-# y_train = xy_train[0][1]
-# x_test = xy_test[0][0]
-# y_test = xy_test[0][1]
-
-print(x_train.shape)  
-print(y_train.shape) 
-print(x_test.shape)   
-print(y_test.shape)
-# (3492, 4, 2)
-# (3492, 2)
-# (873, 4, 2)
-# (873, 2)
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense , Conv2D , Flatten,MaxPooling2D
-
+for idx, (t, v) in enumerate(skf.split(data, data['label']), 1):
+    data.loc[v, 'fold'] = idx
+    
+for batch in data:
+    x,y = batch
+    print(x)
+    print(y)
+    print(y.shape)
+    break
+'''
 model = Sequential()
-model.add(Conv2D(filters=32,kernel_size=(2, 2), padding='same', input_shape=(4,2), activation='relu'))
-# model.add(MaxPooling2D())
-model.add(Conv2D(32,(3,3), activation='relu'))
-# model.add(MaxPooling2D())
+model.add(Conv2D(filters=64 ,kernel_size=(2, 2), padding='same', input_shape=(94,94,3), activation='relu'))
+model.add(MaxPooling2D())
+model.add(Conv2D(512,(3,3), activation='relu'))
+model.add(MaxPooling2D())
 model.add(Conv2D(256,(3,3), activation='relu'))
-# model.add(MaxPooling2D())
+model.add(MaxPooling2D())
 model.add(Conv2D(128,(3,3), activation='relu'))
 model.add(Flatten())
 model.add(Dense(64, activation='relu'))
 model.add(Dense(32, activation='relu'))
-model.add(Dense(2, activation='softmax'))
+model.add(Dense(30, activation='softmax'))
 model.summary()
 
 
-#3. 컴파일, 훈련\
+#3. 컴파일, 훈련
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-model.fit(x_train, y_train, validation_split = 0.2, epochs=10 , batch_size=32)
+model.fit(train_gen , validation_data = valid_gen , epochs=10)
 
 
-'''
 #4. 평가, 예측
 loss = model.evaluate([train_gen ]) 
 y_predict = model.predict(valid_gen)
@@ -116,11 +122,14 @@ r2 = r2_score(y_predict)
 print('loss : ' , loss)
 print('r2스코어 : ', r2)
 
+
 loss = model.evaluate(valid_gen)
 print('loss :', loss)
 y_predict = np.argmax(y_predict,axis=1)
 print('y_predict :',y_predict) 
 from random import *
+
+# is_bal = df['Genre'] == '발라드'
 
 # 조건를 충족하는 데이터를 필터링하여 새로운 변수에 저장합니다.
 # bal = df[valid_gen]
