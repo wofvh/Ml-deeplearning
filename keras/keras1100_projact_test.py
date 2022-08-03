@@ -92,6 +92,10 @@ for batch in train_gen:
     print(y.shape)
     break
 
+y_train = np.load('d:/study_data/_save/_npy/keras101_5_train_y.npy')
+y_test = np.load('d:/study_data/_save/_npy/keras101_5_test_y.npy')
+
+'''
 model = Sequential()
 model.add(Conv2D(filters=64 ,kernel_size=(2, 2), padding='same', input_shape=(94,94,3), activation='relu'))
 model.add(MaxPooling2D())
@@ -111,7 +115,7 @@ model.summary()
 # model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 # # hist = model.fit(train_gen , validation_data = valid_gen , epochs=10)
 # hist = model.fit(train_gen,epochs=10,validation_data = valid_gen ,batch_size=16,) 
-'''
+
 #4. 평가, 예측
 loss = model.evaluate([train_gen ]) 
 y_predict = model.predict(valid_gen)

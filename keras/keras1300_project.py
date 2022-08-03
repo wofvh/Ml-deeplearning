@@ -41,7 +41,7 @@ print(y.shape) #(30, 1)
 
 
 # Image DataGenerator
-
+'''
 import tqdm
 from tensorflow.keras.utils import load_img, img_to_array
 train_image = []
@@ -103,7 +103,7 @@ model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=
 model.fit(x_train, y_train, validation_split = 0.2, epochs=10 , batch_size=32)
 
 
-'''
+
 #4. 평가, 예측
 loss = model.evaluate([train_gen ]) 
 y_predict = model.predict(valid_gen)

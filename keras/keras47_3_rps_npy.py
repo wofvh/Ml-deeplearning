@@ -29,55 +29,55 @@ train_datagen = ImageDataGenerator(
 # horizontal_flip이미지의 절반을 가로로 무작위로 뒤집기 위한 것입니다. 수평 비대칭에 대한 가정이 없을 때 관련이 있습니다(예: 실제 사진).
 # fill_mode회전 또는 너비/높이 이동 후에 나타날 수 있는 새로 생성된 픽셀을 채우는 데 사용되는 전략입니다.
 
-# ########테스트 데이터는 증폭 안함#####
-# test_datagen = ImageDataGenerator(
-#     rescale=1./255
-# # )
+########테스트 데이터는 증폭 안함#####
+test_datagen = ImageDataGenerator(
+    rescale=1./255
+ )
 
-# xy_train = train_datagen.flow_from_directory(
-#     'd:/study_data/_data/image/brain/train/',
-#     target_size=(150,150),
-#     batch_size=500,
-#     class_mode='binary',
-#     color_mode='grayscale',   #color_mode 안쓸경우 디폴드값은 컬러(3)
-#     shuffle = True,
-#     #Found 160 images belonging to 2 classes 160 데이터가 0~1로 데이터가 됬다
-#     #타겟싸이즈 맞춰야함 
-# )
+xy_train = train_datagen.flow_from_directory(
+    'd:/study_data/_data/image/brain/train/',
+    target_size=(150,150),
+    batch_size=500,
+    class_mode='binary',
+    color_mode='grayscale',   #color_mode 안쓸경우 디폴드값은 컬러(3)
+    shuffle = True,
+    #Found 160 images belonging to 2 classes 160 데이터가 0~1로 데이터가 됬다
+    #타겟싸이즈 맞춰야함 
+)
 
-# xy_test = test_datagen.flow_from_directory(
-#     'd:/study_data/_data/image/brain/test/',
-#     target_size=(150,150),
-#     batch_size=500,
-#     class_mode='binary',
-#     color_mode='grayscale',
-#     shuffle = True,
-#     #Found 120 images belonging to 2 classes 0~1로 데이터가 됬다
-# )
+xy_test = test_datagen.flow_from_directory(
+    'd:/study_data/_data/image/brain/test/',
+    target_size=(150,150),
+    batch_size=500,
+    class_mode='binary',
+    color_mode='grayscale',
+    shuffle = True,
+    #Found 120 images belonging to 2 classes 0~1로 데이터가 됬다
+)
 
-# # print(xy_train)
-# #<keras.preprocessing.image.DirectoryIterator object at 0x000001F0E08D7A90>
+print(xy_train)
+#<keras.preprocessing.image.DirectoryIterator object at 0x000001F0E08D7A90>
 
-# # from sklearn.datasets import load_boston
-# # datasets = load_boston()
-# # print(datasets)
+from sklearn.datasets import load_boston
+datasets = load_boston()
+print(datasets)
 
-# # print(xy_train[0])            #마지막 배치 
-# # print(xy_train[0][0])  
-# # print(xy_train[0][1])     #(5, 150, 150, 1) 
+print(xy_train[0])            #마지막 배치 
+print(xy_train[0][0])  
+print(xy_train[0][1])     #(5, 150, 150, 1) 
 
-# # print(xy_train[0][0].shape, xy_train[0][1].shape)#(160, 150, 150, 1) (160,)
-# # print(xy_test[0][0].shape, xy_test[0][1].shape) #(120, 150, 150, 1) (120,)
+print(xy_train[0][0].shape, xy_train[0][1].shape)#(160, 150, 150, 1) (160,)
+print(xy_test[0][0].shape, xy_test[0][1].shape) #(120, 150, 150, 1) (120,)
 
-# # np.save('D:/study_data/_save/_npy/keras46_5_train_x.npy',arr=xy_train[0][0])
-# # np.save('D:/study_data/_save/_npy/keras46_5_train_x.npy',arr=xy_train[0][1])
-# # np.save('D:/study_data/_save/_npy/keras46_5_train_x.npy',arr=xy_test[0][0])
-# # np.save('D:/study_data/_save/_npy/keras46_5_train_x.npy',arr=xy_test[0][1])
+np.save('D:/study_data/_save/_npy/keras46_5_train_x.npy',arr=xy_train[0][0])
+np.save('D:/study_data/_save/_npy/keras46_5_train_x.npy',arr=xy_train[0][1])
+np.save('D:/study_data/_save/_npy/keras46_5_train_x.npy',arr=xy_test[0][0])
+np.save('D:/study_data/_save/_npy/keras46_5_train_x.npy',arr=xy_test[0][1])
 
-# # # print(type(xy_train))     #반복자 DirectoryIterator
-# # print(type(xy_train[0]))  #<class 'tuple'> 수정할수없는 Lsit
-# # print(type(xy_train[0][0]))  #<class 'numpy.ndarray'>
-# # print(type(xy_train[0][1]))  #<class 'numpy.ndarray'>
+# print(type(xy_train))     #반복자 DirectoryIterator
+print(type(xy_train[0]))  #<class 'tuple'> 수정할수없는 Lsit
+print(type(xy_train[0][0]))  #<class 'numpy.ndarray'>
+print(type(xy_train[0][1]))  #<class 'numpy.ndarray'>
 
 
 #현대 5,200,200,1 짜리 데이터가 32 덩어러 
@@ -121,6 +121,8 @@ print('loss : ' ,loss[-1])
 print('val_loss : ' ,val_loss[-1])
 print('accuracy : ' ,accuracy[-1])
 print('val_accuracy : ' ,val_accuracy[-1])
+
+
 
 import matplotlib.pyplot as plt
 matplotlib.rcParams

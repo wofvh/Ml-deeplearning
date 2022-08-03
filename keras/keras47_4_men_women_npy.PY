@@ -129,7 +129,7 @@ if 	y_predict <= 0.6 :
 else :
     print('남자다') # 출력값:
     
-
+'''
 import matplotlib.pyplot as plt
 matplotlib.rcParams
 plt.figure(figsize=(9,6))
@@ -142,3 +142,4 @@ plt.xlabel('epochs')
 # plt.legend(loc='upper right')
 plt.legend()
 plt.show()
+'''

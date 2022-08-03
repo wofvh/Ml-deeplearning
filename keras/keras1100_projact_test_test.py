@@ -124,7 +124,6 @@ y_predict = np.argmax(y_predict,axis=1)
 print('y_predict :',y_predict) 
 from random import *
 
-# is_bal = df['Genre'] == '발라드'
 
 # 조건를 충족하는 데이터를 필터링하여 새로운 변수에 저장합니다.
 # bal = df[valid_gen]

@@ -87,7 +87,7 @@ print('check')
 
 valid_gen = DataGenerator(batch_size=10, df = data, mode = 'valid', image_size = 94)
 
-print(data.shape)
+
 
 #모델구성 
 model = Sequential()
