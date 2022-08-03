@@ -96,7 +96,6 @@ y_predict = model.predict(x_test)
 # acc = accuracy_score(y_test, y_predict)
 print('loss: ', loss)
 print('acc스코어 : ', acc[-1])
-# print('내일 종가 : ', y_predict)
 print("time :", time.time() - start)
 
 # loss:  [0.013227352872490883, 0.9960317611694336]

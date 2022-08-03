@@ -107,10 +107,10 @@ model.add(Dense(30, activation='softmax'))
 model.summary()
 
 
-#3. 컴파일, 훈련\
-model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-model.fit(train_gen , validation_data = valid_gen , epochs=10)
-
+# #3. 컴파일, 훈련\
+# model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+# # hist = model.fit(train_gen , validation_data = valid_gen , epochs=10)
+# hist = model.fit(train_gen,epochs=10,validation_data = valid_gen ,batch_size=16,) 
 '''
 #4. 평가, 예측
 loss = model.evaluate([train_gen ]) 

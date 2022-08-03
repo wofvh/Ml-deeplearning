@@ -146,24 +146,24 @@ plt.show()
 # # model.summary()
 
 
-# model.load_weights("D:\study_data\_save\keras60_project4.h5")
-# start_time = time.time()
-# #3. 컴파일,훈련
-# # filepath = './_test/'
-# # filename = '{epoch:04d}-{val_loss:.4f}.hdf5'
-# earlyStopping = EarlyStopping(monitor='val_loss', patience=10, mode='min', 
-#                               verbose=1,restore_best_weights=True)
-# # mcp = ModelCheckpoint(monitor='val_loss',mode='auto',verbose=1,
-# #                       save_best_only=True, 
-# #                       filepath="".join([filepath,'k24_', date, '_', filename])
-# #                     )
-# model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
-# # hist = model.fit(x_train,y_train,epochs=50,verbose=2,
-# #                  validation_split=0.25,
-# #                  callbacks=[earlyStopping]
-# #                  ,batch_size=500)
-# # model.save_weights("D:\study_data\_save\keras60_project4.h5")
-# # model.save_weights("./_save/keras23_5_save_weights1.h5")
+model.load_weights("D:\study_data\_save\keras60_project4.h5")
+start_time = time.time()
+#3. 컴파일,훈련
+# filepath = './_test/'
+# filename = '{epoch:04d}-{val_loss:.4f}.hdf5'
+earlyStopping = EarlyStopping(monitor='val_loss', patience=10, mode='min', 
+                              verbose=1,restore_best_weights=True)
+# mcp = ModelCheckpoint(monitor='val_loss',mode='auto',verbose=1,
+#                       save_best_only=True, 
+#                       filepath="".join([filepath,'k24_', date, '_', filename])
+#                     )
+model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
+# hist = model.fit(x_train,y_train,epochs=50,verbose=2,
+#                  validation_split=0.25,
+#                  callbacks=[earlyStopping]
+#                  ,batch_size=500)
+# model.save_weights("D:\study_data\_save\keras60_project4.h5")
+# model.save_weights("./_save/keras23_5_save_weights1.h5")
 
 #4. 평가,예측
 loss = model.evaluate(x_test, y_test)
