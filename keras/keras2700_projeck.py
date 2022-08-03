@@ -13,8 +13,8 @@ from keras import Input
 from keras.models import Model
 
 
-
-face = np.load('d:/study_data/_save/_npy/face_project13.npy')
+path = 'C:/study/_data/hoho/coco/'
+# face = np.load('d:/study_data/_save/_npy/face_project13.npy')
 x_train = np.load('d:/study_data/_save/_npy/keras106_8_train_x.npy')
 y_train = np.load('d:/study_data/_save/_npy/keras106_8_train_y.npy')
 x_test = np.load('d:/study_data/_save/_npy/keras106_8_test_x.npy' )
@@ -34,24 +34,26 @@ print(y_test.shape)
 
 
 #모델구성
-from keras.applications.vgg16 import VGG16
-pre_trained_vgg = VGG16(weights='imagenet', 
-    include_top=False, input_shape=(70,70,3))
-pre_trained_vgg.trainable = False
+from keras.applications.resnet import ResNet50
+pre_trained_Res = ResNet50(weights='imagenet',
+                           include_top=False, input_shape=(70,70,3))
+pre_trained_Res.trainable = True
+pre_trained_Res.summary()
 model = models.Sequential()
-model.add(pre_trained_vgg)
+model.add(pre_trained_Res)
 model.add(Flatten())
-model.add(layers.Dense(512,activation='relu'))
-model.add(layers.Dense(256,activation='relu'))
-model.add(layers.Dense(128,activation='relu'))
-model.add(layers.Dense(64,activation='relu'))
-model.add(layers.Dense(32,activation='relu'))
-model.add(layers.Dense(30,activation='softmax'))
+model.add(layers.Dense(256, activation='relu'))
+model.add(layers.Dense(128, activation='relu'))
+model.add(layers.Dense(64, activation='relu'))
+model.add(layers.Dense(32, activation='relu'))
+model.add(layers.Dense(15, activation='relu'))
+model.add(layers.Dense(30, activation='softmax'))
+
 
 # model.load_weights("D:\study_data\_save\keras60_project5.h5")
 #3. 컴파일, 훈련\
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-hist = model.fit(x_train,y_train, epochs=100,validation_split=0.2,verbose=2,batch_size=1000,) 
+hist = model.fit(x_train,y_train, epochs=260,validation_split=0.2,verbose=2,batch_size=50,) 
 
 # model.save_weights("D:\study_data\_save\keras60_project5.h5")
 
@@ -60,12 +62,17 @@ loss = model.evaluate(x_test,y_test)
 y_predict = model.predict(face)
 print('loss',loss)
 
+
+# accuracy = hist.history['accuracy']
+# val_accuracy = hist.history['val_accuracy']
+# loss = hist.history['loss']
+# val_loss = hist.history['val_loss']
+
+# y_test1 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27]
+# y_test1 = [0,1,2,3]
 y_predict = np.argmax(y_predict, axis=1)
 y_test = np.argmax(y_test, axis=1)
 print('predict : ',y_predict)
-
-# acc = accuracy_score(y_predict,y_test)
-# print('acc : ',acc)
 
 if y_predict[0] == 0:
     print(' 재벌가의 눈썹을 지녔고 \
@@ -104,6 +111,7 @@ elif y_predict[0] ==   4  : print('강한 기를 가지고 있는 관상\
 볼은 욕심이 많고 고집이 강하며 이기적인 면도 있지만 재복이 \
 좋고 생활력이 강하며 인복이 좋습니다. 전체적으로 흠잡을 곳이 없는 \
 완벽한 관상이지만 단점으로는 얼굴에서 나오는 기가 강합니다. ')
+
 elif y_predict[0] ==   5  : print('평범한 인생을 살지 않을 관상\
 이마를 볼때 성격은 착하고 인정이 많습니다. 하지만 뺀질이 기질도 있고 남의 말을 \
 잘 안 듣는 성향이강합니다. 눈은 다정하면서 차분하고 사색적이고 반항아기질이 있고 개성이 강하고\
@@ -244,10 +252,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 matplotlib.rcParams
 plt.figure(figsize=(9,6))
-plt.plot(hist.history['loss'],marker='.',c='red',label='loss') #순차적으로 출력이므로  y값 지정 필요 없음
+plt.plot(hist.history['loss'],marker='.',c='red',label='loss') #순차적으로 출력이므로  y값 지정 필요 x
 plt.plot(hist.history['val_loss'],marker='.',c='blue',label='val_loss')
 plt.grid()
-plt.title('show') #
+plt.title('show') #맥플러립 한글 깨짐 현상 알아서 해결해라 
 plt.ylabel('loss')
 plt.xlabel('epochs')
 # plt.legend(loc='upper right')

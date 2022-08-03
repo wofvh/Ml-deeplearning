@@ -9,30 +9,27 @@ from sklearn.model_selection import StratifiedKFold
 from tensorflow import keras
 from sklearn.metrics import r2_score, accuracy_score
 
-face = np.load('d:/study_data/_save/_npy/face_project05.npy')
-y = np.load('d:/study_data/_save/_npy/keras105_5_train_y.npy')
-x = np.load('d:/study_data/_save/_npy/keras105_5_train_x.npy')
+face = np.load('d:/study_data/_save/_npy/face_project13.npy')
+x_train = np.load('d:/study_data/_save/_npy/keras106_8_train_x.npy')
+y_train = np.load('d:/study_data/_save/_npy/keras106_8_train_y.npy')
+x_test = np.load('d:/study_data/_save/_npy/keras106_8_test_x.npy' )
+y_test = np.load('d:/study_data/_save/_npy/keras106_8_test_y.npy' )
 
 print(face.shape)
 
-x_train, x_test,y_train,y_test = train_test_split(x,y,
-                                  train_size=0.8, shuffle=True, random_state=30)
+print(x_train.shape)
+print(x_test.shape)
+print(y_train.shape)
+print(y_test.shape)
 
-
-print(x_train.shape) 
-print(y_train.shape) 
-print(x_test.shape)   
-print(y_test.shape)   
-
-# (3495, 75, 75, 3)
-# (3495, 30)
-# (874, 75, 75, 3)
-# (874, 30)
-
+# (3472, 80, 80, 3)
+# (869, 80, 80, 3) 
+# (3472, 30)       
+# (869, 30)
 
 #모델구성
 model = Sequential()
-model.add(Conv2D(filters=64 ,kernel_size=(2, 2), padding='same', input_shape=(75,75,3), activation='relu'))
+model.add(Conv2D(filters=64 ,kernel_size=(2, 2), padding='same', input_shape=(70,70,3), activation='relu'))
 model.add(MaxPooling2D())
 model.add(Conv2D(512,(3,3), activation='relu'))
 model.add(MaxPooling2D())
@@ -45,31 +42,32 @@ model.add(Dense(30, activation='softmax'))
 model.summary()
 
 
+model.load_weights("D:\study_data\_save\keras53_project2.h5")
+
 #3. 컴파일, 훈련\
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-hist = model.fit(x_train,y_train, epochs=5,validation_split=0.2,verbose=2,batch_size=100,) 
+hist = model.fit(x_train,y_train, epochs=100,validation_split=0.2,verbose=2,batch_size=100,) 
+
+model.save_weights("D:\study_data\_save\keras53_project5.h5")
 
 # 4. 평가, 예측
 loss = model.evaluate(x_test,y_test)
 y_predict = model.predict(face)
 print('loss',loss)
-print('predict : ',y_predict)
-
 
 # accuracy = hist.history['accuracy']
 # val_accuracy = hist.history['val_accuracy']
 # loss = hist.history['loss']
 # val_loss = hist.history['val_loss']
 
-# y_test1 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+# y_test1 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27]
 # y_test1 = [0,1,2,3]
 y_predict = np.argmax(y_predict, axis=1)
 y_test = np.argmax(y_test, axis=1)
 print('predict : ',y_predict)
 
-'''''
-acc = accuracy_score(y_predict,y_test)
-print('acc : ',acc)
+# acc = accuracy_score(y_predict,y_test)
+# print('acc : ',acc)
 
 if y_predict[0] == 0:
     print(' 재벌가의 눈썹을 지녔고 \
@@ -240,18 +238,16 @@ elif y_predict[0] ==   29 : print('눈썹이 재복이 좋은 눈썹입니다. �
 턱은 말년에 운이 좋아 연말에 행운을 기대해도 좋을 것 같습니다.\
 귀가 낭비벽이 심한 귀라 절제를 해야합니다. 하나 문제라면 이마때문에 \
 남편이 사고칠 수 있는 이마인데 착한 남편을 만나면 좋을 관상입니다.')  
-
-
-
-
-# plt.figure(figsize = (9,6))
-# plt.plot(hist.history['loss'], marker='.', label = 'loss',color='red' )
-# plt.plot(hist.history['val_loss'], marker='.', label ='val_loss',color='blue' )
-# plt.grid()
-# plt.title("천재")
-# plt.ylabel("loss")
-# plt.xlabel("epochs")
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.rcParams
+plt.figure(figsize=(9,6))
+plt.plot(hist.history['loss'],marker='.',c='red',label='loss') #순차적으로 출력이므로  y값 지정 필요 x
+plt.plot(hist.history['val_loss'],marker='.',c='blue',label='val_loss')
+plt.grid()
+plt.title('show') #맥플러립 한글 깨짐 현상 알아서 해결해라 
+plt.ylabel('loss')
+plt.xlabel('epochs')
 # plt.legend(loc='upper right')
-# plt.show()
-
-'''
+plt.legend()
+plt.show()
