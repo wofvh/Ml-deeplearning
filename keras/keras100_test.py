@@ -31,7 +31,7 @@ test_datagen = ImageDataGenerator(
 #D:\project\actor\actor\actor
 xy_data = train_datagen.flow_from_directory(
     'C:/study/_data/test/',
-    target_size=(75,75),
+    target_size=(70,70),
     batch_size=5000, 
     class_mode='categorical', 
     # color_mode='grayscale',
@@ -43,7 +43,6 @@ xy_data = train_datagen.flow_from_directory(
 #      'C:/study/_data/test/',
 #      target_size=(75,75)
 # )
-
 x = xy_data[0][0]
 y = xy_data[0][1]
 
@@ -52,12 +51,14 @@ print(x.shape)   #(4369, 75, 75, 3)
 print(y.shape)   #(4369, 30)
 
 
+x_train, x_test,y_train,y_test = train_test_split(x,y,
+                                  train_size=0.8, shuffle=True, random_state=30)
 
 
-np.save('d:/study_data/_save/_npy/keras105_6_train_x.npy', arr=x)
-np.save('d:/study_data/_save/_npy/keras105_6_train_y.npy', arr=y)
-# np.save('d:/study_data/_save/_npy/keras104_5_test_x.npy', arr=test[0][0])
-# np.save('d:/study_data/_save/_npy/keras104_5_test_y.npy', arr=test[0][1])
+np.save('d:/study_data/_save/_npy/keras106_8_train_x.npy', arr=x_train)
+np.save('d:/study_data/_save/_npy/keras106_8_train_y.npy', arr=y_train)
+np.save('d:/study_data/_save/_npy/keras106_8_test_x.npy', arr=x_test)
+np.save('d:/study_data/_save/_npy/keras106_8_test_y.npy', arr=y_test)
 
 # x_train = np.load('d:/study_data/_save/_npy/keras103_5_train_x.npy')
 # y_train = np.load('d:/study_data/_save/_npy/keras103_5_train_y.npy')

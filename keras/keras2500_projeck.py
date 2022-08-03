@@ -11,12 +11,12 @@ season = ImageDataGenerator(
     rescale=1./255)
 
 season1 = season.flow_from_directory(
-    'C:/study/_data/face1/',
-    target_size=(75,75),# 크기들을 일정하게 맞춰준다.
-    batch_size=5,
+    'C:/study/_data/hoho/',
+    target_size=(70,70),# 크기들을 일정하게 맞춰준다.
+    batch_size=50,
     class_mode='categorical', 
     # color_mode='grayscale', #디폴트값은 컬러
     shuffle=True,
     )
 
-np.save('d:/study_data/_save/_npy/face_project06.npy',  arr=season1[0][0])
+np.save('d:/study_data/_save/_npy/face_project13.npy',  arr=season1[0][0])
