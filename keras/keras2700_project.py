@@ -34,33 +34,33 @@ print(y_test.shape)
 # (3472, 30)       
 # (869, 30)
 
-#
-# 모델구성
-# from keras.applications.resnet import ResNet50
-# pre_trained_Res = ResNet50(weights='imagenet',
-#                            include_top=False, input_shape=(70,70,3))
-# pre_trained_Res.trainable = True
-# pre_trained_Res.summary()
-# model = models.Sequential()
-# model.add(pre_trained_Res)
-# model.add(Flatten())
-# model.add(layers.Dense(512, activation='relu'))
-# model.add(layers.Dense(256, activation='relu'))
-# model.add(layers.Dense(128, activation='relu'))
-# model.add(layers.Dense(64, activation='relu'))
-# model.add(layers.Dense(32, activation='relu'))
-# model.add(layers.Dense(15, activation='relu'))
-# model.add(layers.Dense(30, activation='softmax'))
 
-# model.save("D:\study_data\_save\keras30_project10.h5")
+#모델구성
+from keras.applications.resnet import ResNet50
+pre_trained_Res = ResNet50(weights='imagenet',
+                           include_top=False, input_shape=(70,70,3))
+pre_trained_Res.trainable = True
+pre_trained_Res.summary()
+additional_model = models.Sequential()
+additional_model.add(pre_trained_Res)
+additional_model.add(Flatten())
+additional_model.add(layers.Dense(512, activation='relu'))
+additional_model.add(layers.Dense(256, activation='relu'))
+additional_model.add(layers.Dense(128, activation='relu'))
+additional_model.add(layers.Dense(64, activation='relu'))
+additional_model.add(layers.Dense(32, activation='relu'))
+additional_model.add(layers.Dense(15, activation='relu'))
+additional_model.add(layers.Dense(30, activation='softmax'))
 
 
-# # 3. 컴파일, 훈련
-# additional_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-# hist = additional_model.fit(x_train,y_train, epochs=10,validation_split=0.2,verbose=2,batch_size=50,) 
+# 3. 컴파일, 훈련
+additional_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+hist = additional_model.fit(x_train,y_train, epochs=10,validation_split=0.2,verbose=2,batch_size=50,) 
 
-additional_model = load_model("D:/study_data/_save/vgg16_project10.h5")
+additional_model.save("D:/study_data/_save/resnet50_project11.h5")
+# additional_model = load_model("D:/study_data/_save/vgg16_project10.h5")
 # model = load_model("D:\study_data\_save/resnet50_project6.h5")
+
 
 # 4. 평가, 예측
 loss = additional_model.evaluate(x_test,y_test)
