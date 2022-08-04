@@ -10,6 +10,10 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import OneHotEncoder  # https://psystat.tistory.com/136 싸이킷런 원핫인코딩
 from sklearn.svm import LinearSVC
 from sklearn import datasets
+from sklearn.linear_model import LogisticRegression,LinearRegression   #LogisticRegression  로지스틱 분류모델 
+from sklearn.neighbors import KNeighborsClassifier,KNeighborsTransformer    #
+from sklearn.tree import DecisionTreeClassifier , DecisionTreeRegressor     # 
+from sklearn.ensemble import RandomForestClassifier ,RandomForestRegressor  # decisiontreeclassfier 가 랜덤하게 앙상블로 역김 
 
 import tensorflow as tf
 tf.random.set_seed(66)
@@ -34,8 +38,8 @@ print(y.shape)
 x_train, x_test, y_train, y_test = train_test_split(x, y, 
                                                     train_size=0.8, shuffle= True,
                                                     random_state=66 )
-print(y_train)
-print(y_test)
+print(y_train.shape)
+print(y_test.shape)
 
 scaler = RobustScaler()
 scaler.fit(x_train)
@@ -53,5 +57,3 @@ model.fit(x_train, y_train)
 results = model.score(x_test,y_test)
 
 print('결과 acc:', results)
-
-#회기모델 r2 스코어 
