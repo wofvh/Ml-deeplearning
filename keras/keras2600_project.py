@@ -31,36 +31,31 @@ print(y_test.shape)
 # (869, 30)
 
 
-# #모델구성
-# from keras.applications.vgg16 import VGG16
-# pre_trained_vgg = VGG16(weights='imagenet', include_top=False, input_shape=(70, 70, 3))
-# pre_trained_vgg.trainable = False
-# pre_trained_vgg.summary()
-# additional_model = models.Sequential()
-# additional_model.add(pre_trained_vgg)
-# additional_model.add(layers.Flatten())
-# additional_model.add(layers.Dense(512, activation='relu'))
-# additional_model.add(layers.Dense(256, activation='relu'))
-# additional_model.add(layers.Dense(128, activation='relu'))
-# additional_model.add(layers.Dense(64, activation='relu'))
-# additional_model.add(layers.Dense(32, activation='relu'))
-# additional_model.add(layers.Dense(30, activation='softmax'))
-# additional_model.summary()
+#모델구성
+model = Sequential()
+model.add(Conv2D(filters=64,kernel_size=(3, 3), padding='same', input_shape=(70,70,3), activation='relu'))
+model.add(MaxPooling2D())
+model.add(Conv2D(512,(3,3), activation='relu'))
+model.add(MaxPooling2D())
+model.add(Conv2D(256,(3,3), activation='relu'))
+model.add(MaxPooling2D())
+model.add(Conv2D(128,(3,3), activation='relu'))
+model.add(Flatten())
+model.add(Dense(64, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(30, activation='softmax'))
 
 
+#3. 컴파일, 훈련\
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+hist = model.fit(x_train,y_train, epochs=60,validation_split=0.2,verbose=2,batch_size=100,) 
 
+#model.save("D:/study_data/_save/vgg16_project10.h5")
 
-# #3. 컴파일, 훈련\
-# additional_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-# hist = additional_model.fit(x_train,y_train, epochs=100,validation_split=0.2,verbose=2,batch_size=1000,) 
-
-# additional_model.save("D:/study_data/_save/vgg16_project10.h5")
-
-additional_model = load_model("D:/study_data/_save/vgg16_project10.h5")
 
 # 4. 평가, 예측
-loss = additional_model.evaluate(x_test,y_test)
-y_predict = additional_model.predict(face)
+loss = model.evaluate(x_test,y_test)
+y_predict = model.predict(face)
 print('loss',loss)
 
 y_predict = np.argmax(y_predict, axis=1)
