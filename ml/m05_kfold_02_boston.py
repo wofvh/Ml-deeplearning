@@ -1,6 +1,6 @@
 from unittest import result
 import numpy as np
-from sklearn.datasets import load_iris
+from sklearn.datasets import load_boston
 from sklearn import metrics
 from sklearn.preprocessing import OneHotEncoder
 from sqlalchemy import true
@@ -10,13 +10,11 @@ from sklearn.preprocessing import OneHotEncoder  # https://psystat.tistory.com/1
 from sklearn.model_selection import train_test_split,KFold,cross_val_score
 from sklearn.metrics import accuracy_score
 
-
-
 import tensorflow as tf
 tf.random.set_seed(66)
 
 #1.데이터
-datasets = load_iris()
+datasets = load_boston()
 print(datasets.DESCR)
 print(datasets.feature_names)
 x = datasets['data']

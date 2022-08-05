@@ -44,7 +44,7 @@ model = SVC()
 # model.fit(x_train, y_train)
 scores = cross_val_score(model, x, y, cv=Kfold)
 
-print('ACC :', scores,'\n cross_val_score:', round(np.mean(scores),1)) # cross_val_score: 0.9667
+print('ACC :', scores,'\n cross_val_score:', round(np.mean(scores),4)) # cross_val_score: 0.9667
 #평가,예측
 # results = model.evaluate(x_test, y_test)
 # print('loss:',results[0])

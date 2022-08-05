@@ -33,8 +33,8 @@ x_test = scaler.transform(x_test)
 
 # #2. 모델구성
 
-allAgorithms = all_estimators(type_filter='classifier')
-# allAgorithms = all_estimators(type_filter='regressor')
+allAgorithms = all_estimators(type_filter='classifier')  #분류모델
+# allAgorithms = all_estimators(type_filter='regressor') #회기모델
 
 print('allAgorithms:', allAgorithms )
 print('모델의 갯수:',len(allAgorithms)) #41
@@ -52,6 +52,7 @@ for (name, algorithm) in allAgorithms:
     except:
         # continue
         print(name,"은 안나온놈 !!!")
+        
 # 모델의 갯수: 41
 # AdaBoostClassifier 의 정갑률: 0.9
 # BaggingClassifier 의 정갑률: 0.8666666666666667
