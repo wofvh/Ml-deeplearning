@@ -9,7 +9,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.datasets import load_diabetes 
 from sklearn.utils import all_estimators
 from sklearn.model_selection import train_test_split,KFold,cross_val_score ,StratifiedKFold
-from sklearn.utils import all_estimators
 from sklearn.metrics import accuracy_score
 
 #1.데이터

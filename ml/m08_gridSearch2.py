@@ -61,6 +61,6 @@ y_predict = model.predict(x_test)
 print('accuracy_score:', accuracy_score(y_test, y_predict))
 # print('accuracy', results[1])
 
-# y_pred_best = model.best_estimator_.predict(x_test)
-# print('최적 튠 ACC:', accuracy_score(y_test, y_pred_best))
+y_pred_best = model.best_estimator_.predict(x_test)
+print('최적 튠 ACC:', accuracy_score(y_test, y_pred_best))
 

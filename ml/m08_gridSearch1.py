@@ -47,6 +47,8 @@ model = GridSearchCV(SVC(),Parameters, cv=kfold, verbose=1, refit=True, n_jobs=-
 
 
 #컴파일 훈련
+import time
+start = time.time()
 model.fit(x_train, y_train)
 print("최적의 매개변수 : ", model.best_estimator_)
 
@@ -55,7 +57,7 @@ print("최적의 파라미터 : ",model.best_params_)
 print('best_score_:', model.best_score_)
 
 print("model.score:", model.score(x_test,y_test))
-
+end_time = time.time()
 #평가,예측\
   
 y_predict = model.predict(x_test)
@@ -65,3 +67,13 @@ print('accuracy_score:', accuracy_score(y_test, y_predict))
 y_pred_best = model.best_estimator_.predict(x_test)
 print('최적 튠 ACC:', accuracy_score(y_test, y_pred_best))
 
+print("걸린시간:", round(end_time - start, 4))
+
+
+# Fitting 5 folds for each of 136 candidates, totalling 680 fits
+# 최적의 매개변수 :  RandomForestRegressor(min_samples_leaf=7, min_samples_split=10)
+# 최적의 파라미터 :  {'min_samples_leaf': 7, 'min_samples_split': 10}
+# best_score_: 0.7961299240928633
+# model.score: 0.787215998109486
+# r2_score: 0.787215998109486
+# 최적 튠 ACC: 0.787215998109486
