@@ -1,21 +1,17 @@
-#2. 모델 구성
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
 from sklearn.model_selection import train_test_split
-from sklearn.datasets import load_boston
-from tensorflow.python.keras.callbacks import EarlyStopping
-import matplotlib.pyplot as plt
-import matplotlib
-# matplotlib.rcParams['font.family']='Malgun Gothic'
-# matplotlib.rcParams['axes.unicode_minus']=False
-import time
-
+from sklearn.datasets import load_digits
+from sklearn.metrics import r2_score
 #1. 데이터
-datasets = load_boston()
-x = datasets.data #데이터를 리스트 형태로 불러올 때 함
+datasets = load_digits()
+x = datasets.data
 y = datasets.target
-x_train, x_test ,y_train, y_test = train_test_split(
-          x, y, train_size=0.75,shuffle=True,random_state=100)
+x_train, x_test, y_train, y_test = train_test_split(
+    x, y, train_size=0.95,shuffle=True, random_state=12 ) 
 #2. 모델구성
 from sklearn.svm import LinearSVC,SVC
+from sklearn.linear_model import Perceptron ,LogisticRegression 
 #LogisticRegression은 유일하게 Regression이름이지만 분류 모델이다.
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier #공부하자 
