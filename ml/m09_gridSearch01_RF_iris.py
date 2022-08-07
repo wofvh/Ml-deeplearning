@@ -2,8 +2,11 @@
 from mmap import ACCESS_WRITE
 from sre_parse import FLAGS
 import numpy as np
-from sklearn.datasets import load_breast_cancer
-from sklearn.model_selection import train_test_split, RandomizedSearchCV
+from sklearn.datasets import load_iris
+from sklearn import metrics
+from sklearn.preprocessing import OneHotEncoder
+from tensorboard import summary
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder  # https://psystat.tistory.com/136 싸이킷런 원핫인코딩
 from sklearn.model_selection import KFold, cross_val_score , GridSearchCV
 from sklearn.metrics import accuracy_score
@@ -11,7 +14,8 @@ from sklearn.model_selection import train_test_split,KFold,cross_val_score ,Stra
 
 #
 # 1.데이터
-datasets = load_breast_cancer()
+datasets = load_iris()
+
 
 x = datasets.data
 y = datasets.target
@@ -24,12 +28,11 @@ n_splits = 5 #다섯 번씩 모든 데이터를 훈련해준다고 지정
 
 kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=66)
 
-Parameters= [
-    {"n_estimators":[100,200], "max_depth":[6,12,14],'min_samples_leaf':[3, 10]},
-    {"max_depth": [6, 82, 10 ,12],"min_samples_leaf" :[4, 16, 8,10],},
-    {'min_samples_leaf':[3,15,71,10],"n_jobs":[14,20,9,12],"max_depth":[6, 18, 10 ,12]},
-    {"min_samples_split":[2,3,15,10],"min_samples_split":[15,20,15,12],'min_samples_leaf':[12,25,7,10],},
-    {'n_jobs':[-1,2,4],"max_depth":[6,11,12],"max_depth":[6, 8, 10 ,12]}
+Parameters = [ 
+            {"C":[1, 10, 100,1000], "kernel":["linear"],"degree":[3, 4, 5]},        #12
+            {"C":[1, 10 ,100], "kernel":["rbf"], "gamma":[0.001, 0.0001]},     #6
+            {"C":[1, 10,100,1000], "kernel":["sigmoid"],                        #24
+            "gamma":[0.01, 0.001, 0.0001], "degree":[3,4]}                    #총42
 ]
 
 # #2. 모델구성
@@ -38,10 +41,10 @@ from sklearn.linear_model import Perceptron,LogisticRegression   #LogisticRegres
 from sklearn.neighbors import KNeighborsClassifier    #
 from sklearn.tree import DecisionTreeClassifier       # 
 from sklearn.ensemble import RandomForestClassifier   # decisiontreeclassfier 가 랜덤하게 앙상블로 역김 
-# model = SVC(C=1, kernel="linear", degree=3)
-model = RandomizedSearchCV(RandomForestClassifier(),Parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1)  #n_jobs cpu 갯수사용 정의 예) 1 cup 1 -1 cup8 
 
-#RandomizedSearchC 10 개만 빼서 훈련함 
+model = SVC(C=1, kernel="linear", degree=3)
+model = GridSearchCV(SVC(),Parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1)  #n_jobs cpu 갯수사용 정의 예) 1 cup 1 -1 cup8 
+
 
 #컴파일 훈련
 import time
@@ -66,10 +69,11 @@ print('최적 튠 ACC:', accuracy_score(y_test, y_pred_best))
 
 print("걸린시간:", round(end_time - start, 4))
 
-# 최적의 매개변수 :  RandomForestClassifier(max_depth=6, min_samples_leaf=10, n_jobs=12)
-# 최적의 파라미터 :  {'n_jobs': 12, 'min_samples_leaf': 10, 'max_depth': 6}
-# best_score_: 0.9549407114624506
-# model.score: 0.9342105263157895
-# accuracy_score: 0.9342105263157895
-# 최적 튠 ACC: 0.9342105263157895
-# 걸린시간: 2.2737
+
+# Fitting 5 folds for each of 136 candidates, totalling 680 fits
+# 최적의 매개변수 :  RandomForestRegressor(min_samples_leaf=7, min_samples_split=10)
+# 최적의 파라미터 :  {'min_samples_leaf': 7, 'min_samples_split': 10}
+# best_score_: 0.7961299240928633
+# model.score: 0.787215998109486
+# r2_score: 0.787215998109486
+# 최적 튠 ACC: 0.787215998109486
