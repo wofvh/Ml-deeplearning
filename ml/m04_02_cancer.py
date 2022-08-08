@@ -1,18 +1,8 @@
 import numpy as np
 from sklearn.datasets import load_breast_cancer
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense
 from sklearn.model_selection import train_test_split
 from tensorflow.python.keras.callbacks import EarlyStopping
 from sklearn.metrics import accuracy_score
-import matplotlib.pyplot as plt
-from sklearn.svm import LinearSVC 
-from sklearn.svm import LinearSVR 
-import matplotlib
-from tqdm import tqdm
-matplotlib.rcParams['font.family']='Malgun Gothic'
-matplotlib.rcParams['axes.unicode_minus']=False
-#1. 데이터
 datasets= load_breast_cancer()
 x = datasets['data']
 y = datasets['target']

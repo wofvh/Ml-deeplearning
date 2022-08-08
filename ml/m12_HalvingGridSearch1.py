@@ -1,9 +1,7 @@
 import numpy as np
 from sklearn.datasets import load_iris
 from sklearn import metrics
-from sklearn.preprocessing import OneHotEncoder
 from tensorboard import summary
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder  # https://psystat.tistory.com/136 싸이킷런 원핫인코딩
 from sklearn.model_selection import KFold, cross_val_score , GridSearchCV
 from sklearn.metrics import accuracy_score
