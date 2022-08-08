@@ -11,7 +11,7 @@ from sklearn.svm import LinearSVC
 from sklearn.svm import LinearSVR 
 
 #1. 데이터
-path = 'D:\study_data\_data\_csv\kaggle_bike/' # ".은 현재 폴더"
+path = './_data/kaggle_bike/'# ".은 현재 폴더"
 train_set = pd.read_csv(path + 'train.csv',
                         index_col=0)
 print(train_set)

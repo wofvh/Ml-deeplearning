@@ -16,7 +16,7 @@ from sklearn.model_selection import RandomizedSearchCV
 
 #1.데이터
 
-path = 'D:\study_data\_data\_csv\kaggle_titanic/' # ".은 현재 폴더"
+path = './_data/kaggle_titanic/' # ".은 현재 폴더"
 train_set = pd.read_csv(path + 'train.csv',
                         )
 test_set = pd.read_csv(path + 'test.csv', #예측에서 쓸거야!!
