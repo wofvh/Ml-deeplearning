@@ -24,11 +24,12 @@ x_train ,x_test, y_train ,y_test = train_test_split(x,y, train_size=0.8,
 from sklearn.svm import LinearSVC, SVC
 from sklearn.ensemble import RandomForestClassifier
 
-from sklearn.pipeline import make_pipeline
-from sklearn.decomposition import PCA  #주성분 분석 #컬럼 조절할때 사용 #피처 조절할때 사용
+from sklearn.pipeline import make_pipeline ,Pipeline
 
 # model= SVC()
-model = make_pipeline(MinMaxScaler(),PCA(), RandomForestClassifier())
+# model = make_pipeline(MinMaxScaler(),RandomForestClassifier())
+
+model = Pipeline([("minmax", MinMaxScaler()),("RF",RandomForestClassifier())])
 
 #훈련
 model.fit(x_train,y_train)
@@ -38,11 +39,5 @@ result = model.score(x_test,y_test)
 
 print("model.score:", result)
 
-#pipeline
-# model.score: 1.0
 
-# 2 +scaler 썼을때
-# model.score: 1.0
-
-# PCA
 # model.score: 1.0
