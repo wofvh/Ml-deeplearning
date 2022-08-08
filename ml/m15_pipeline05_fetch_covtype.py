@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 import numpy as np
-from sklearn.datasets import load_wine
+from sklearn.datasets import fetch_covtype
 from sklearn.preprocessing import MinMaxScaler,StandardScaler
 
 #데이터
 
-datasets = load_wine()
+datasets = fetch_covtype()
 x = datasets.data
 y = datasets.target
 

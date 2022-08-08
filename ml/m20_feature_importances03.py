@@ -13,12 +13,12 @@ y = datasets.target
 
 print(x.shape)
 
-x = np.delete(x,[1], axis=1)
-
+x = np.delete(x,[1], axis=1)   # (axis< 열) 
+  
 
 print(x.shape)
 
-'''
+
 from sklearn.model_selection import train_test_split
 
 x_train, x_test,y_train, y_test= train_test_split(x,y, train_size=0.8, shuffle=True, random_state=1234)
@@ -31,8 +31,8 @@ from xgboost import XGBRegressor
 
 # model = DecisionTreeRegressor()
 # model = GradientBoostingRegressor()
-# model = RandomForestRegressor()
-model = XGBRegressor()
+model = RandomForestRegressor()
+# model = XGBRegressor()
 
 #3. 훈련
 
@@ -71,4 +71,11 @@ print(model)
 
 # XGBRegressor() [0.0260045  0.29435775 0.05291139 0.05066145 0.06820749 0.07702424
 #  0.20247848 0.14291398 0.08544067
-'''
+
+# model.score: 0.39816887360815867
+# r2_score: <function r2_score at 0x0000027A1748F5E0>
+# ===================================
+# RandomForestRegressor() : [0.05626905 0.3197349  0.0855404  0.0534594  0.0582387  0.05949721
+#  0.03157539 0.24639448 0.08929046]
+# RandomForestRegressor()
+

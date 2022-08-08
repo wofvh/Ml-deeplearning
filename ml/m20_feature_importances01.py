@@ -36,7 +36,6 @@ print('accuracy_score:', acc)
 
 print("===================================")
 print(model,':',model.feature_importances_)
-print(model)
 
 
 # DecisionTreeClassifier() : [0.         0.01669101 0.07659085 0.90671814]
