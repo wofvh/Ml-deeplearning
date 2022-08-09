@@ -59,13 +59,13 @@ x_train, x_test ,y_train, y_test = train_test_split(
 # x_test = scaler.transform(x_test)
 
 
-# parameters = [
-#     {'n_estimators':[100, 200],'max_depth':[6, 8],'min_samples_leaf':[3,5],
-#      'min_samples_split':[2, 3],'n_jobs':[-1, 2]},
-#     {'n_estimators':[300, 400],'max_depth':[6, 8],'min_samples_leaf':[7, 10],
-#      'min_samples_split':[4, 7],'n_jobs':[-1, 4]}
-#     ]     
-#2. 모델 구성
+parameters = [
+    {'n_estimators':[100, 200],'max_depth':[6, 8],'min_samples_leaf':[3,5],
+     'min_samples_split':[2, 3],'n_jobs':[-1, 2]},
+    {'n_estimators':[300, 400],'max_depth':[6, 8],'min_samples_leaf':[7, 10],
+     'min_samples_split':[4, 7],'n_jobs':[-1, 4]}
+    ]     
+# 2. 모델 구성
 
 from sklearn.svm import LinearSVC, SVC
 from sklearn.ensemble import RandomForestClassifier,RandomForestRegressor
