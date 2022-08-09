@@ -19,6 +19,7 @@ from xgboost import XGBClassifier
 # model = DecisionTreeClassifier()
 # model = RandomForestClassifier()
 # model = GradientBoostingClassifier()
+
 model = XGBClassifier()
 
 #3. 훈련

@@ -8,10 +8,24 @@ import time
 from pathlib import Path
 from tensorflow.keras.utils import to_categorical
 from tensorflow.python.keras.layers import Dense, SimpleRNN ,LSTM
+import pandas as pd
 
 #1. 데이터
 datasets = load_breast_cancer()
 x, y = datasets.data, datasets.target
+
+
+df = pd.DataFrame (x, columns=[['mean radius' 'mean texture' 'mean perimeter' 'mean area'
+ 'mean smoothness' 'mean compactness' 'mean concavity'
+ 'mean concave points' 'mean symmetry' 'mean fractal dimension'
+ 'radius error' 'texture error' 'perimeter error' 'area error'
+ 'smoothness error' 'compactness error' 'concavity error'
+ 'concave points error' 'symmetry error' 'fractal dimension error'
+ 'worst radius' 'worst texture' 'worst perimeter' 'worst area'
+ 'worst smoothness' 'worst compactness' 'worst concavity'
+ 'worst concave points' 'worst symmetry' 'worst fractal dimension']])
+
+print(datasets.feature_names)
 
 print(x.shape,y.shape) #(569, 30) (569,)
 
@@ -86,5 +100,8 @@ print('loss : ' , loss)
 print('acc스코어 : ', acc) 
 print("걸린시간 : ", end_time)
 
-# loss :  [0.47901904582977295, 0.9736841917037964]        
-# acc스코어 :  0.7017543859649122
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set(font_scale=1.2)
+sns.heatmap(data=df.corr(), square=True, annot =True, cbar =True)
+plt.show()
