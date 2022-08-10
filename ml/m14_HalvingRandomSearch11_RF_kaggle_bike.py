@@ -9,13 +9,12 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.experimental import enable_halving_search_cv
 from sklearn.model_selection import HalvingGridSearchCV
 from sklearn.model_selection import HalvingRandomSearchCV
-
-
 matplotlib.rcParams['font.family']='Malgun Gothic'
 matplotlib.rcParams['axes.unicode_minus']=False
 from sklearn.svm import LinearSVC 
 from sklearn.svm import LinearSVR 
 from sklearn.metrics import r2_score
+
 #1. 데이터
 path = './_data/kaggle_bike/'
 train_set = pd.read_csv(path + 'train.csv',

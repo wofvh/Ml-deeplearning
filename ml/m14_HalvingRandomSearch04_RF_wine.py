@@ -18,6 +18,19 @@ from sklearn.model_selection import KFold,cross_val_score,cross_val_predict
 x_train, x_test ,y_train, y_test = train_test_split(
           x, y, train_size=0.8,shuffle=True,random_state=100)
 
+
+print(x_train)
+print(x_test)
+print(y_train)
+print(y_test)
+
+# x_train (142, 13)
+# x_test  (36, 13)
+# y_train (142,)
+# y_test  (36,)
+
+
+
 kfold = KFold(n_splits=5, shuffle=True, random_state=66)
 from sklearn.preprocessing import MaxAbsScaler,RobustScaler 
 from sklearn.preprocessing import MinMaxScaler,StandardScaler
@@ -25,10 +38,20 @@ from sklearn.preprocessing import MinMaxScaler,StandardScaler
 scaler = StandardScaler()
 # scaler = MaxAbsScaler()
 # scaler = RobustScaler()
+
 scaler.fit(x_train) #여기까지는 스케일링 작업을 했다.
 scaler.transform(x_train)
 x_train = scaler.transform(x_train)
 x_test = scaler.transform(x_test)
+
+print(x_train)
+print(x_test)
+print(y_train)
+print(y_test)
+
+
+
+
 from sklearn.svm import LinearSVC,SVC
 from sklearn.ensemble import RandomForestClassifier #공부하자 
 from sklearn.model_selection import KFold,cross_val_score,GridSearchCV,StratifiedKFold
@@ -99,3 +122,5 @@ print("걸린 시간 :",round(end,2),"초")
 # 최적 튠  ACC : 0.9649122807017544
 # 걸린 시간 : 21.36 초
 #=============halvingrandomsearch
+
+'''

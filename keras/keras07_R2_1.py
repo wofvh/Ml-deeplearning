@@ -9,8 +9,14 @@ y = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,8,5,16,17,23,21,20])
 from posixpath import split
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,
-        train_size=0.7, shuffle=True, random_state=66)
+        train_size=0.8, shuffle=True, random_state=66)
 
+
+print(x_train)            #[18  9  3 15  7 13 12  8  1 19 11 16 14 20]
+print(x_test)             #[ 2 17  5  6  4 10]
+print(y_train)            #[23  9  3  5  7 13 12  8  1 21 11 16  8 20]
+print(y_test)             #[ 2 17  5  6  4 10]
+            
 #2. 모델구성
 model = Sequential()
 model.add(Dense(4, input_dim=1))

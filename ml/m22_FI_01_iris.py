@@ -43,7 +43,8 @@ x_train, x_test, y_train, y_test = train_test_split(
 
 #2. 모델구성
 from sklearn.tree import DecisionTreeRegressor, DecisionTreeClassifier
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, RandomForestClassifier, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor,\
+    RandomForestClassifier, GradientBoostingClassifier
 from xgboost import XGBRegressor, XGBClassifier
 
 
