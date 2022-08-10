@@ -77,7 +77,8 @@ print(np.argmax(cumsum >= 0.99)+1) #331
 print(np.argmax(cumsum >= 0.999)+1) #486
 print(np.argmax(cumsum+1)) #712
 
-x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.8, shuffle=True, random_state=66, stratify=y)
+x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.8, shuffle=True, random_state=66, stratify=y) 
+
 
 from sklearn.ensemble import RandomForestRegressor,RandomForestClassifier
 from xgboost import XGBClassifier, XGBRegressor 

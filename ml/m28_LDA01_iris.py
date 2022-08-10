@@ -2,19 +2,16 @@ from tracemalloc import start
 from unittest import result
 import numpy as np
 import pandas as pd
-from sklearn.datasets import load_boston,fetch_california_housing
-from sklearn.datasets import load_breast_cancer
-from sklearn.datasets import fetch_covtype
+from sklearn.datasets import load_iris,fetch_covtype,load_digits
+from sklearn.datasets import load_breast_cancer,load_wine
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+import xgboost as xg
+print('xgboost:', xg.__version__)
 
-
-         
-
-
-datasets = fetch_covtype()
+datasets = load_iris()
 x = datasets.data
 y = datasets.target
 print(x.shape)  #(581012, 54)
@@ -27,7 +24,7 @@ y = le.fit_transform(y)
 # pca = PCA(n_components=20)   #54 >10
 # x = pca.fit_transform(x)
 
-lda = LinearDiscriminantAnalysis(n_components=6)
+lda = LinearDiscriminantAnalysis(n_components=1)
 lda.fit(x,y)
 x = lda.transform(x)
 print(x)
@@ -47,10 +44,9 @@ print(np.unique(y_train, return_counts= True))
 #       dtype=int64))
 
 
-
 #2. 모델
 from xgboost import XGBClassifier,XGBRegressor
-model = XGBRegressor(tree_method ='gpu_hist', predictor = 'gpu_predictor',gpu_id = 0,)
+model = XGBClassifier(tree_method ='gpu_hist', predictor = 'gpu_predictor', gpu_id = 0,)
 
 
 #3.훈련
@@ -65,7 +61,6 @@ print('결과:',results)
 print('걸린시간:',end - start)
 
 
-
-
-
-
+# LDA
+# 결과: 0.9666666666666667
+# 걸린시간: 0.5678057670593262

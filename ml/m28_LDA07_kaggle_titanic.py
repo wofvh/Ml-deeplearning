@@ -16,6 +16,8 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.experimental import enable_halving_search_cv
 from sklearn.model_selection import HalvingRandomSearchCV
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
 
 #1.데이터
 
@@ -166,76 +168,50 @@ y = train_set['Survived']
 from sklearn.model_selection import train_test_split,StratifiedKFold
 from sklearn.model_selection import KFold,cross_val_score,cross_val_predict
 
-x_train, x_test ,y_train, y_test = train_test_split(
-          x, y, train_size=0.8,shuffle=True,random_state=1234)
+x = np.array(x)
+le = LabelEncoder()
+y = le.fit_transform(y)
 
-kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=100)
+x_train , x_test, y_train, y_test = train_test_split(
+    x,y, train_size= 0.8, random_state=123 ,shuffle=True
+)
 
-Parameters= [
-    {"RF__n_estimators":[100,200], "RF__max_depth":[6,10,12],'RF__min_samples_leaf':[3, 10]},
-    {"RF__max_depth": [6, 18, 10 ,12],"RF__min_samples_leaf" :[13, 15, 7 ,10],},
-    {'RF__min_samples_leaf':[13,5,7,10],"RF__n_jobs":[14,20,15,12],"RF__max_depth":[6, 8, 10 ,12]},
-    {"RF__min_samples_split":[2,13,5,10],"RF__min_samples_split":[15,20,15,12],'RF__min_samples_leaf':[12,25,7,10],},
-    {'RF__n_jobs':[-1,2,4],"RF__max_depth":[6,10,12]}
-] 
+lda = LinearDiscriminantAnalysis(n_components=1)
+lda.fit(x,y)
+x = lda.transform(x)
+print(x)
 
-from sklearn.ensemble import RandomForestClassifier,RandomForestRegressor
-from sklearn.pipeline import make_pipeline ,Pipeline
-   
+# pca_EVR = pca.explained_variance_ratio_
 
-pipe = Pipeline([("minmax", MinMaxScaler()),("RF",RandomForestClassifier())],verbose=1)
+# cumsum = np.cumsum(pca_EVR)
+# print(cumsum)
+
+x_train , x_test, y_train, y_test = train_test_split(
+    x,y, train_size= 0.8, random_state=123 ,shuffle=True
+)
+
+print(np.unique(y_train, return_counts= True))
+
+# (array([1, 2, 3, 4, 5, 6, 7]), array([169507, 226569,  28696,   2152,   7618,  13864,  16403],
+#       dtype=int64))
 
 
-# 각 횟수를 병렬로 진행해 총 42번을  1회에 한다.
-#rbf= Gaussian basis function RBF 뉴럴네트워크의 경우 각 데이터에 맞는 
-# Kernel function을 이용하기에 비선형적이고, MLP보다 학습이 빠르다.
+#2. 모델
+from xgboost import XGBClassifier,XGBRegressor
+model = XGBClassifier(tree_method ='gpu_hist', predictor = 'gpu_predictor', gpu_id = 0,)
 
-#2. 모델 구성
 
-from sklearn.model_selection import GridSearchCV,RandomizedSearchCV 
-from sklearn.experimental import enable_halving_search_cv
-from sklearn.model_selection import HalvingGridSearchCV,HalvingRandomSearchCV
-GridSearchCV
-model = GridSearchCV(pipe ,(),Parameters,cv=kfold,verbose=1)
-
-# Fitting 5 folds(kfold의 인수) for each of 42 candidates, totalling 210 fits(42*5)
-# n_jobs=-1 사용할 CPU 갯수를 지정하는 옵션 '-1'은 최대 갯수를 쓰겠다는 뜻
-#3. 컴파일,훈련
+#3.훈련
 import time
 start = time.time()
-model.fit(x_train,y_train) 
-end = time.time()- start
+model.fit(x_train, y_train)
+end = time.time()
 
+#4.결과
+results = model.score(x_test, y_test)
+print('결과:',results)
+print('걸린시간:',end - start)
 
-#평가예측
-result = model.score(x_test,y_test)
-
-print("model.score:", result)
-
-
-# model.score: 1.0
-# 최적의 매개변수 : RandomForestClassifier(max_depth=6, min_samples_leaf=3, n_jobs=-1)
-# 최적의 파라미터 : {'max_depth': 6, 'min_samples_leaf': 3, 'min_samples_split': 2, 'n_estimators': 100, 'n_jobs': -1}  
-# best_score : 0.813158672313602
-# model_score : 0.8268156424581006
-# accuracy_score : 0.8268156424581006
-# 최적 튠  ACC : 0.8268156424581006
-# 걸린 시간 : 18.97 초
-#==================randomsearch
-# 최적의 매개변수 : RandomForestClassifier(max_depth=6, min_samples_leaf=3, n_estimators=200,
-#                        n_jobs=-1)
-# 최적의 파라미터 : {'n_jobs': -1, 'n_estimators': 200, 'min_samples_split': 2, 'min_samples_leaf': 3, 'max_depth': 6}  
-# best_score : 0.8061164187924751
-# model_score : 0.8212290502793296
-# accuracy_score : 0.8212290502793296
-# 최적 튠  ACC : 0.8212290502793296
-# 걸린 시간 : 5.31 초
-#==================halvinggridsearch
-# 최적의 매개변수 : RandomForestClassifier(max_depth=8, min_samples_leaf=3, n_jobs=2)
-# 최적의 파라미터 : {'max_depth': 8, 'min_samples_leaf': 3, 'min_samples_split': 2, 'n_estimators': 100, 'n_jobs': 2}   
-# best_score : 0.8085714285714285
-# model_score : 0.8100558659217877
-# accuracy_score : 0.8100558659217877
-# 최적 튠  ACC : 0.8100558659217877
-# 걸린 시간 : 26.7 초
-#==================halvingrandomsearch
+# LDA
+# 결과: 0.8268156424581006
+# 걸린시간: 0.42199182510375977
