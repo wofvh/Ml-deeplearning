@@ -1,4 +1,5 @@
 from tracemalloc import start
+from turtle import shape
 from unittest import result
 import numpy as np
 import pandas as pd
@@ -14,20 +15,26 @@ print('xgboost:', xg.__version__)
 datasets = load_iris()
 x = datasets.data
 y = datasets.target
-print(x.shape)  #(581012, 54)
-
+print(x.shape)  #(150, 4)  
+print(y.shape)
 
 le = LabelEncoder()
 y = le.fit_transform(y)
-
-
+print(y.shape)
+print(np.unique(y,return_counts= True))
+#(array([0, 1, 2], dtype=int64), array([37, 44, 39], dtype=int64))
 # pca = PCA(n_components=20)   #54 >10
 # x = pca.fit_transform(x)
 
-lda = LinearDiscriminantAnalysis(n_components=1)
+
+
+lda = LinearDiscriminantAnalysis()
 lda.fit(x,y)
 x = lda.transform(x)
-print(x)
+print(x.shape)
+print(y.shape)
+
+print(np.unique(y, return_counts= True))
 
 # pca_EVR = pca.explained_variance_ratio_
 
@@ -39,8 +46,9 @@ x_train , x_test, y_train, y_test = train_test_split(
 )
 
 print(np.unique(y_train, return_counts= True))
-
-# (array([1, 2, 3, 4, 5, 6, 7]), array([169507, 226569,  28696,   2152,   7618,  13864,  16403],
+print(x_train.shape)
+'''
+#(array([0, 1, 2], dtype=int64), array([37, 44, 39], dtype=int64))
 #       dtype=int64))
 
 
@@ -64,3 +72,4 @@ print('걸린시간:',end - start)
 # LDA
 # 결과: 0.9666666666666667
 # 걸린시간: 0.5678057670593262
+'''
