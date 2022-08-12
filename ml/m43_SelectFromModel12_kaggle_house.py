@@ -1,30 +1,12 @@
-import numpy as np
+import matplotlib
 import pandas as pd
-from collections import Counter
-from sklearn.datasets import load_iris
-from sklearn.model_selection import KFold,cross_val_score,GridSearchCV,StratifiedKFold, RandomizedSearchCV
-from sklearn.experimental import enable_halving_search_cv
-from sklearn.model_selection import HalvingGridSearchCV, HalvingRandomSearchCV
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn.metrics import accuracy_score, r2_score
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.experimental import enable_iterative_imputer # 이터러블 입력시 사용하는 모듈 추가
-from sklearn.impute import SimpleImputer, KNNImputer, IterativeImputer 
-
-parameters = [
-    {'XGB__n_estimators' : [100,200,300,400,500],
-    'XGB__learning_rate' : [0.01,0.05,0.1,0.15],
-    'XGB__max_depth' : [3,5,7,10,15],
-    'XGB__gamma' : [0,1,2,3],
-    'XGB__colsample_bytree' : [0.8,0.9]}]
-
-parameters_rfr = [{
-    'RFR__bootstrap': [True], 'RFR__max_depth': [5, 10, None], 
-    'RFR__max_features': ['auto', 'log2'], 'RFR__n_estimators': [5, 6, 7, 8, 9, 10, 11, 12, 13, 15]}]
-
-kfold = StratifiedKFold(n_splits=5,shuffle=True,random_state=100)
-
-
+matplotlib.rcParams['font.family']='Malgun Gothic'
+matplotlib.rcParams['axes.unicode_minus']=False
+from sklearn.metrics import r2_score
+from xgboost import XGBClassifier,XGBRegressor
+from sklearn.feature_selection import SelectFromModel
 #1. 데이터
 path = './_data/kaggle_house/'
 train_set = pd.read_csv(path + 'train.csv') # + 명령어는 문자를 앞문자와 더해줌  index_col=n n번째 컬럼을 인덱스로 인식
@@ -162,73 +144,58 @@ test_set.drop(['MSZoning', 'Neighborhood' , 'Condition2', 'MasVnrType', 'ExterQu
 x = train_set.drop(['SalePrice'], axis=1)
 y = train_set['SalePrice']
 
-x_train, x_test, y_train, y_test = train_test_split(x,y,
-                                                    train_size=0.75,
-                                                    random_state=984
-                                                    )
+from sklearn.model_selection import KFold,cross_val_score,GridSearchCV,StratifiedKFold
+from sklearn.ensemble import RandomForestRegressor #공부하자 
 
+x_train, x_test ,y_train, y_test = train_test_split(
+          x, y, train_size=0.8,shuffle=True,random_state=1234)
 
+# scaler = MinMaxScaler()
+# x_train = scaler.fit_transform(x_train)
+# x_test = scaler.transform(x_test)
 
-#2. 모델구성
+kflod = KFold(n_splits=5 , shuffle=True, random_state=123)
 
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-from xgboost import XGBRegressor # xgboost 사용
-from sklearn.svm import LinearSVC, SVC
-from sklearn.pipeline import make_pipeline, Pipeline # pipeline을 사용하기 위한 함수
+#2모델
+model = XGBRegressor(random_state=123,
+                      n_estimators=100,
+                      learning_rate=0.1,
+                      max_depth=3,
+                      gamma=1,
+                    )
 
-pipe = Pipeline([('standard', StandardScaler()), ('XGB', XGBRegressor())], verbose=1)
-# pipe = Pipeline([('minmax', MinMaxScaler()), ('RFR', RandomForestRegressor())], verbose=1)
-# pipe = make_pipeline(MinMaxScaler(), XGBRegressor())
-model = GridSearchCV(pipe, parameters,verbose=1,cv=kfold,
-                     refit=True,n_jobs=-1,)
+model.fit(x_train,y_train,
+          early_stopping_rounds = 200, eval_set=[(x_train,y_train),(x_test,y_test)],
+           #eval_set=[(x_test,y_test)],
+           eval_metric ='error')
 
-
-#3. 컴파일,훈련
-import time
-start = time.time()
-model.fit(x_train,y_train) 
-end = time.time()- start
-#4. 평가, 예측
-result = model.score(x_test, y_test)
-
-print('model.score : ', result) # model.score :  1.0
-
-
-print("최적의 매개변수 :",model.best_estimator_)
-
-
-print("최적의 파라미터 :",model.best_params_)
-
- 
-print("best_score :",model.best_score_)
-
-print("model_score :",model.score(x_test,y_test))
+results =model.score(x_test, y_test)
+print('최종 점수:',results )
 
 y_predict = model.predict(x_test)
-print('accuracy_score :',r2_score(y_test,y_predict))
+acc= r2_score(y_test, y_predict)
+print("진짜 최종TEST점수:", acc)
 
-y_pred_best = model.best_estimator_.predict(x_test)
-print('최적 튠  ACC :',r2_score(y_test,y_predict))
+print(model.feature_importances_)
 
-print("걸린 시간 :",round(end,2),"초")
-
-# DNN
-# loss :  [607278016.0, 17240.154296875]
-# RMSE :  24643.01084320446
-# r2스코어 :  0.870881799880869
-
-# grid search
-# 최적의 파라미터 : {'XGB__colsample_bytree': 0.9, 'XGB__gamma': 0, 'XGB__learning_rate': 0.1, 'XGB__max_depth': 3, 'XGB__n_estimators': 100}
-# best_score : 0.8893789391853039
-# model_score : 0.8612456737633324
-# accuracy_score : 0.8612456737633324
-# 최적 튠  ACC : 0.8612456737633324
-# 걸린 시간 : 264.96 초
-
-# RandomSearchCV
-# 최적의 파라미터 : {'XGB__n_estimators': 200, 'XGB__max_depth': 5, 'XGB__learning_rate': 0.05, 'XGB__gamma': 0, 'XGB__colsample_bytree': 0.8}
-# best_score : 0.8836954993482221
-# model_score : 0.8556263361994998
-# accuracy_score : 0.8556263361994998
-# 최적 튠  ACC : 0.8556263361994998
-# 걸린 시간 : 5.65 초
+thresholds = model.feature_importances_
+print("===============================")
+for thresh in thresholds:
+    selection = SelectFromModel(model, threshold=thresh, prefit=True)
+    
+    select_x_train = selection.transform(x_train)
+    select_x_test = selection.transform(x_test)
+    print(select_x_train.shape,select_x_test.shape)
+    
+    selection_model= XGBRegressor(random_state=123,
+                      n_estimators=100,
+                      learning_rate=0.1,
+                      max_depth=3,
+                      gamma=1,)
+    selection_model.fit(select_x_train,y_train)
+    
+    y_predict = selection_model.predict(select_x_test)
+    score = r2_score(y_test, y_predict)
+    
+    print("thresh=%.3F, N=%d, R2:%.2f%%"
+          %(thresh, select_x_train.shape[1],score*100))

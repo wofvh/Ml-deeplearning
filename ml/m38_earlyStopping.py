@@ -23,8 +23,9 @@ x_train , x_test , y_train , y_test = train_test_split( x,y,
 )
 
 scaler = MinMaxScaler()
-scaler.fit_transform(x_train)
+x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
+
 
 kflod = StratifiedKFold(n_splits=5 , shuffle=True, random_state=123)
 
