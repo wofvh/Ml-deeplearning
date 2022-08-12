@@ -7,6 +7,10 @@ from sklearn.preprocessing import StandardScaler,MinMaxScaler
 from xgboost import XGBClassifier,XGBRFRegressor
 import time 
 from sklearn.metrics import accuracy_score,r2_score
+import warnings
+warnings.filterwarnings(action="ignore")
+
+
 #1.데이터 
 datasets = load_breast_cancer()
 
@@ -61,9 +65,9 @@ model = XGBClassifier(random_state=123,
 # model = GridSearchCV(xgb, parameters, cv = kflod , n_jobs=8)
 
 model.fit(x_train,y_train,
-          early_stopping_rounds = 10, eval_set=[(x_train,y_train),(x_test,y_test)],
+          early_stopping_rounds = 50, eval_set=[(x_train,y_train),(x_test,y_test)],
            #eval_set=[(x_test,y_test)],
-           #eval_metric ='error'
+           eval_metric ='error'
            #회기 : rmse,mae,rmsle...
            #이진 : error , auc... logloss..
            #다중 : merror, mlogloss...

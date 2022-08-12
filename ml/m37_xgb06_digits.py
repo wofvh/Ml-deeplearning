@@ -8,6 +8,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler,MinMaxScaler
 from sklearn.model_selection import KFold, StratifiedKFold
+import warnings
+warnings.filterwarnings(action="ignore")
 
 datasets = load_digits()
 x = datasets.data
@@ -63,14 +65,28 @@ parameters = {"n_estimators" : [100,200,300,400,500,1000],
 #2. 모델
 from sklearn.model_selection import GridSearchCV
 from xgboost import XGBClassifier,XGBRegressor
-xgb = XGBClassifier(tree_method ='gpu_hist', predictor = 'gpu_predictor', gpu_id = 0,)
+xgb = XGBClassifier(tree_method ='gpu_hist', predictor = 'gpu_predictor', gpu_id = 0,
+                    random_state=123,
+                      n_setimators=500,
+                      n_estimators=100,
+                      learning_rate=0.1,
+                      max_depth=3,
+                      gamma=1,)
 
 model = GridSearchCV(xgb, parameters, cv = kflod , n_jobs=8, verbose=2)
 
 #3.훈련
 import time
 start = time.time()
-model.fit(x_train, y_train)
+
+model.fit(x_train,y_train,
+          early_stopping_rounds =10, eval_set=[(x_train,y_train),(x_test,y_test)],
+           #eval_set=[(x_test,y_test)],
+           eval_metric ='error'
+           #회기 : rmse,mae,rmsle...
+           #이진 : error , auc... logloss..
+           #다중 : merror, mlogloss...
+          )
 end = time.time()
 
 #4.결과
@@ -81,3 +97,4 @@ print('걸린시간:',end - start)
 # LDA
 # 결과: 0.4666666666666667
 # 걸린시간: 1.2872471809387207
+
