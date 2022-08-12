@@ -165,7 +165,7 @@ model = XGBRegressor(random_state=123,
                     )
 
 model.fit(x_train,y_train,
-          early_stopping_rounds = 200, eval_set=[(x_train,y_train),(x_test,y_test)],
+          early_stopping_rounds = 10, eval_set=[(x_train,y_train),(x_test,y_test)],
            #eval_set=[(x_test,y_test)],
            eval_metric ='error')
 

@@ -12,7 +12,7 @@ warnings.filterwarnings(action="ignore")
 from sklearn.feature_selection import SelectFromModel
 import pandas as pd
 import numpy as np
-from sklearn.impute import SimpleImputer, KNNImputer, IterativeImputer 
+from sklearn.impute import SimpleImputer, KNNImputer
 
 
 
