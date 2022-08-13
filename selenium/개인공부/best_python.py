@@ -37,5 +37,23 @@
 # print(n_age)
 # print(type(n_age))
 
-def say_hello():
-    print("hello")
+
+# def p_plus(a ,b):
+#     print(a + b)
+    
+# def r_plus(a, b):
+#     return a + b
+
+# p_result  = p_plus(2,3)
+# r_result  = r_plus(2,3)
+
+# print(p_result,r_result)
+
+def sum_all(start, end):
+    변수 = 0
+    for i in range(start, end + 1):
+        변수 += i
+    return 변수
+    
+sum_all(1,100)
+sum_all(50,100)

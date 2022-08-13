@@ -187,7 +187,8 @@ for thresh in thresholds:
     select_x_test = selection.transform(x_test)
     print(select_x_train.shape,select_x_test.shape)
     
-    selection_model= XGBRegressor(random_state=123,
+    selection_model= XGBRegressor(
+                      random_state=123,
                       n_estimators=100,
                       learning_rate=0.1,
                       max_depth=3,
