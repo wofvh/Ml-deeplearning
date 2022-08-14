@@ -42,18 +42,31 @@
 #     print(a + b)
     
 # def r_plus(a, b):
-#     return a + b
+#     return a + b 
 
 # p_result  = p_plus(2,3)
 # r_result  = r_plus(2,3)
 
 # print(p_result,r_result)
 
-def sum_all(start, end):
-    변수 = 0
-    for i in range(start, end + 1):
-        변수 += i
-    return 변수
+# def plus(a,b):
+#     return a + b
+
+# result = plus(b = 30, a = 1 )
+# print(result)
+ 
+
+# def say_hello(name,age, are_from, fav_food):
+#     return f"hello{name} you are {age} you are from{are_from}\
+#     you like {fav_food}"    
     
-sum_all(1,100)
-sum_all(50,100)
+# hello = say_hello(name="nico", age= "12",are_from="colombia",fav_food ="kimchi")
+# print(hello)
+
+def plus(a,b):
+    if True:
+        return None
+    eles:
+        return a + b
+    
+    plus(12,"10")

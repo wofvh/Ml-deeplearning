@@ -68,7 +68,7 @@ class DataGenerator(keras.utils.Sequence):
 ################################# PATH 보완 #####################################
 #################################################################################
 
-data = pd.read_csv('c:/help_temp/cls_data.csv', index_col=0)
+data = pd.read_csv('./_data/project/cls_data.csv', index_col=0)
 # data['image_path'] = data['image_path'].apply(cp)
 # Fold
 skf = StratifiedKFold(n_splits=8, shuffle = True, random_state=42)
