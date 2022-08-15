@@ -1,10 +1,10 @@
 #mlp = 멀티 레이어 퍼셉트론
 import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
 
 #. 데이터
-x = np.array([range(10)])
+x = np.array([range(1,11)])
 print(x.shape)
 # print((range10)) #range 범위, 거리 8-10까지의 정수형 숫자
 # for 1 in range(10): for :반복
@@ -12,6 +12,7 @@ print(x.shape)
 
 x = np.transpose(x)
 print(x.shape) # (10, 1)
+
 
 y = np.array([[1,2,3,4,5,6,7,8,9,10],
              [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9],
