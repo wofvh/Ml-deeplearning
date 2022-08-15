@@ -75,3 +75,11 @@ for idx, col in enumerate(submit.columns):
 print('Done.')
 
 submit.to_csv(path + 'submmit.csv', index=False)
+
+
+# [39607 rows x 56 columns]
+# Done.
+# (39608, 14)
+# 0.28798862985210744
+# Done.
+# Done.
