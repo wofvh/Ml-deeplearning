@@ -98,7 +98,7 @@ print(test)
 from xgboost import XGBClassifier, XGBRegressor
 from catboost import CatBoostClassifier, CatBoostRegressor
 # model = XGBClassifier()
-model = CatBoostClassifier()
+model = XGBClassifier()
 
 # # 분석할 의미가 없는 칼럼을 제거합니다.
 # train = train_enc.drop(columns=['TypeofContact','Occupation'])
