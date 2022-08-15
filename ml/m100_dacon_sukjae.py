@@ -2,49 +2,37 @@ import pandas as pd
 import random
 import os
 import numpy as np
-from sklearn.experimental import enable_iterative_imputer
-from sklearn.impute import IterativeImputer
+from sklearn.metrics import mean_squared_error
+
 from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.multioutput import MultiOutputRegressor
-from xgboost import XGBClassifier,XGBRegressor  
-path = './_data/prodacon/'
+from xgboost import XGBRegressor
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer, KNNImputer
 
 
 def seed_everything(seed):
     random.seed(seed)
     os.environ['PYTHONHASHSEED'] = str(seed)
     np.random.seed(seed)
-seed_everything(42) # Seed 고정
+seed_everything(704) # Seed 고정
 
-train_df = pd.read_csv(path + 'train.csv')
-test_x = pd.read_csv(path + 'test.csv').drop(columns=['ID'])
-train = np.array(train_df)
+filepath = './_data/prodacon/'
 
-print("=============================상관계수 히트 맵==============")
-print(train_df.corr())                    # 상관관계를 확인.  
-import matplotlib.pyplot as plt 
-import seaborn as sns
-sns.set(font_scale=0.3)
-sns.heatmap(data=train_df.corr(),square=True, annot=True, cbar=True) 
-plt.show()
-
-precent = [0.20,0.40,0.60,0.80]
+train = pd.read_csv(filepath + 'train.csv',index_col=0)
+test = pd.read_csv(filepath + 'test.csv').drop(columns=['ID'])
 
 
-print(train_df.describe(percentiles=precent))
-# print(train_df.info())  
-# print(train_df.columns.values)
-# print(train_df.isnull().sum())
-
-#  X_07, X_08, X_09
- 
-train_x = train_df.filter(regex='X') # Input : X Featrue
-train_y = train_df.filter(regex='Y') # Output : Y Feature
+train_x = train.filter(regex='X') # Input : X Featrue
+train_y = train.filter(regex='Y') # Output : Y Feature
 
 cols = ["X_10","X_11"]
-train_x[cols] = train_x[cols].replace(0, np.nan)
+train[cols] = train[cols].replace(0, np.nan)
 
-# MICE 결측치 보간
+# train[cols].fillna(train[cols].mean(), inplace=True)
+
+# imp = KNNImputer()
 
 imp = IterativeImputer(estimator = LinearRegression(), 
                        tol= 1e-10, 
@@ -52,34 +40,22 @@ imp = IterativeImputer(estimator = LinearRegression(),
                        verbose=2, 
                        imputation_order='roman')
 
-train_x = pd.DataFrame(imp.fit_transform(train_x))
-
-print(train_x)
-
-model = MultiOutputRegressor(XGBRegressor(n_estimators=100, learning_rate=0.08, gamma = 0, subsample=0.75, colsample_bytree = 1, max_depth=7) ).fit(train_x, train_y)
-# model = XGBRFRegressor().fit(train_x, train_y)
-print('Done.')
+train = imp.fit_transform(train)
 
 
-preds = model.predict(test_x)
-print(preds.shape)
+# model = MultiOutputRegressor(XGBRegressor(n_estimators=150, learning_rate=0.08, gamma = 1, subsample=0.75, colsample_bytree = 1, max_depth=7) )
+model = MultiOutputRegressor(LinearRegression())
+# model = RandomForestRegressor()
+
+model.fit(train_x, train_y)
+preds = model.predict(test)
 print(model.score(train_x, train_y))
-print('Done.')
 
-submit = pd.read_csv(path + 'sample_submission.csv')
-
+submit = pd.read_csv(filepath +'sample_submission.csv')
 for idx, col in enumerate(submit.columns):
     if col=='ID':
         continue
     submit[col] = preds[:,idx-1]
-print('Done.')
 
-submit.to_csv(path + 'submmit.csv', index=False)
+submit.to_csv(filepath + 'submission.csv', index=False)
 
-
-# [39607 rows x 56 columns]
-# Done.
-# (39608, 14)
-# 0.28798862985210744
-# Done.
-# Done.
