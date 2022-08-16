@@ -17,6 +17,8 @@ def split_x(dataset, size):
         aaa.append(subset)       
     return np.array(aaa)
 
+
+'''
 bbb = split_x(a, size1)
 print(bbb.shape)  #(96, 5)
 
@@ -62,3 +64,4 @@ print(x_predict.shape) #(10,)
 result = model.predict(z)  #평가예측에서 똑같이 맟춰서
 print('loss:',loss)
 print('1~100 의 결과:',result)  #RNN input_shape 에서 들어간 차원을 야함
+'''

@@ -6,9 +6,12 @@ from tensorflow.python.keras.layers import Dense
 #. 데이터
 x = np.array([range(1,11)])
 print(x.shape)
-# print((range10)) #range 범위, 거리 8-10까지의 정수형 숫자
-# for 1 in range(10): for :반복
-#      print(i) 
+
+
+
+
+for i in range(10): 
+     print(i) 
 
 x = np.transpose(x)
 print(x.shape) # (10, 1)
