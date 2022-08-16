@@ -9,8 +9,8 @@
 
 # days =  ("mon","tue","wed","thur","fri","sat" )
  
-# # print(days)
-# # days.append("sat")
+# print(days)
+# days.append("sat")
 # # days.reverse()          #reverse 리스안에 문자를 역방향으로 바꿔줄때사용 
 # print(type(days))
 
@@ -21,6 +21,7 @@
 #     "fav_food": ["kimchi",
 #     "sashimi"]
 # }
+
 # print(nico)
 # nico["handsome"] =True
 # print(nico)
@@ -49,6 +50,10 @@
 
 # print(p_result,r_result)
 
+
+
+
+
 # def plus(a,b):
 #     return a + b
 
@@ -63,6 +68,9 @@
 # hello = say_hello(name="nico", age= "12",are_from="colombia",fav_food ="kimchi")
 # print(hello)
 
+
+
+
 # def plus(a,b):
 #     if True:
 #         return None
@@ -75,7 +83,7 @@
 #     print("파이썬 최고")
 #     name += 3
 
-########### if 문##############
+# ########## if 문##############
 # score = 70
 # if score >= 60:
 #     message = "success"
@@ -94,7 +102,7 @@
 # else:
 #     print("황도영")
 
-######## while 문###############
+####### while 문###############
 # treeHit = 0
 # while treeHit < 10:
 #     treeHit = treeHit +1
@@ -103,55 +111,61 @@
 #         print("나무를 넘어갑니다.")
 
 
-# coffee = 10
-# money = 300
-# while money:
-#     print("돈을 받았으니 커피를 줍니다.")
-#     coffee = coffee -1
-#     print("남은 커피의 양은 %d개입니다." % coffee)
-#     if not coffee:
-#         print("커피가 다 떨어졌습니다. 판매를 중지합니다")
-#         break
+coffee = 10
+money = 300
+while money:
+    print("돈을 받았으니 커피를 줍니다.")
+    coffee = coffee -1
+    print("남은 커피의 양은 %d개입니다." % coffee)
+    if not coffee:
+        print("커피가 다 떨어졌습니다. 판매를 중지합니다")
+        break
 
-# a = 0
-# while a <10:
-#     a = a+1
-#     if a % 2 ==0:
-#         continue
-#     print(a)
 
-# while True:
-#     print("안녕하세요")
+'''
+a = 0
+while a <10:
+    a = a+1
+    if a % 2 ==0:
+        continue
+    print(a)
+
+while True:
+    print("안녕하세요")
 
 ################for문###############################
 
-# test_list = ['one','two','three']
-# for i in test_list:
-#     print(i)
+test_list = ['one','two','three']
+for i in test_list:
+    print(i)
     
 
-# a = [(1,2),(3,4),(5,6)]
-# for (first, last) in a:
-#     print(first + last)
+a = [(1,2),(3,4),(5,6)]
+for (first, last) in a:
+    print(first + last)
 
-# marks = [90,25,67,45,80]
-# number = 0
-# for mark in marks:
-#     number = number +1
-#     if mark <= 60: continue
-#     print("%d번 학생은 합격입니다." % number)
+marks = [90,25,67,45,80]
+number = 0
+for mark in marks:
+    number = number +1
+    if mark <= 60: continue
+    print("%d번 학생은 합격입니다." % number)
 
 
-##############2중 for 문########################
-# for i in range(2,10):
-#     for j in range(1,10):
-#         print(i*j, end=" ")
-#     print(' ')
+#############2중 for 문########################
+for i in range(2,10):
+    for j in range(1,10):
+        print(i*j, end=" ")
+    print(' ')
 
-a = [1,2,3,4,5,6,7,8]
 
-result = [num * 3 for num in a if num % 2 == 0 ]
-result = []
-for num in a:
-    if num%2 == 0:
-        result.append(num*3)
+
+
+# a = [1,2,3,4,5,6,7,8]
+
+# result = [num * 3 for num in a if num % 2 == 0 ]
+# result = []
+# for num in a:
+#     if num%2 == 0:
+#         result.append(num*3)
+'''
