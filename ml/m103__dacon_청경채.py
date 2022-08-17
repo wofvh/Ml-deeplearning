@@ -4,6 +4,7 @@ import numpy as np
 import glob
 from xgboost import XGBClassifier,XGBRFRegressor
 from sklearn.metrics import accuracy_score,r2_score
+import os
 
 path = 'D:/study_data/dacon/'
 all_input_list = sorted(glob.glob(path + 'train_input/*.csv'))
@@ -56,6 +57,42 @@ print(len(train_data[0]))   # 1440
 print(label_data)   # 1440
 print(train_data.shape, label_data.shape)   # (1607, 1440, 37) (1607,)
 
-d
+#2.모델
+
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense, Input, Conv1D, Flatten
+
+model = Sequential()
+model.add(Conv1D(64,2 ,input_shape=(1440,37)))
+model.add(Flatten())
+model.add(Dense(256))
+model.add(Dense(128))
+model.add(Dense(64))
+model.add(Dense(32))
+model.add(Dense(1))
 
 
+#3.컴파일,훈련
+model.compile(loss='mse', optimizer='adam', metrics=['mse'])
+model.fit(train_data, label_data, epochs=100)
+
+
+#4.평가,예측
+results= model.evaluate(train_data, val_input_list)
+
+loss = model.evaluate(label_data,train_data)
+result = model.predict((val_target_list))  #평가예측에서 똑같이 맟춰서
+print('loss:',loss)
+print('predict결과:',result)  #RNN input_shape 에서 들어간 차원을 야함
+
+print('accuracy : ', results)
+
+#5. 파일저장
+
+import zipfile
+filelist = ['TEST_01.csv','TEST_02.csv','TEST_03.csv','TEST_04.csv','TEST_05.csv', 'TEST_06.csv']
+os.chdir("D:\study_data\_data\dacon_vegi/test_target")
+with zipfile.ZipFile("submission.zip", 'w') as my_zip:
+    for i in filelist:
+        my_zip.write(i)
+    my_zip.close()
