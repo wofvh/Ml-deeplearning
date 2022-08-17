@@ -38,7 +38,7 @@ print(train_set.isnull().sum())
 print(train_set.shape)
 test_set = test_set.fillna(test_set.median())
 
-x = train_set.drop(['count'],axis=1) #axis는 컬럼 
+x = train_set.drop(['count'],axis=1) 
 print(x.columns)
 print(x.shape) #(1459, 9)
 

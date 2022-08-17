@@ -16,4 +16,3 @@
 # data.to_csv('D:/')
 
 
-data = cv2.imread('D:/test/choiminsik/img116.jpg')

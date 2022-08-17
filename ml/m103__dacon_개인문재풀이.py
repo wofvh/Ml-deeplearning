@@ -18,13 +18,4 @@ print(data.info())
 
 print(data.isna().sum())
 
-for (x,y) in data:
     
-
-
-
-
-print(x.shape,y.shape)
-# plt.scatter(data)
-# plt.label(data1)
-# plt.show()

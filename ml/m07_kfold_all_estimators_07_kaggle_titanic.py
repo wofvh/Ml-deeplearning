@@ -73,7 +73,7 @@ for dataset in combine:
 
 train_set.head()
 grid = sns.FacetGrid(train_set, row='Pclass', col='Sex', height=2.2, aspect=1.6)
-grid.map(plt.hist, 'Age', alpha=.5, bins=20)
+grid.map(.hist, 'Age', alpha=.5, bins=20)
 grid.add_legend()
 
 guess_ages = np.zeros((2,3))
