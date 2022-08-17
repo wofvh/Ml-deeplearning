@@ -22,7 +22,6 @@ x = datasets.data
 y = datasets.target
 print(x.shape, y.shape)  #(178, 13) (178,)
 
-
 print(type(x))
 
 
@@ -37,6 +36,7 @@ x_train, y_train = smote.fit_resample(x_train, y_train)
 
 print(np.unique(y_train, return_counts = True))
 
+print(pd.Series(y_train).value_counts())
 
 scaler = MinMaxScaler()
 x_train = scaler.fit_transform(x_train)
