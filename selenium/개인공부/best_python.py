@@ -168,3 +168,14 @@
 # for num in a:
 #     if num%2 == 0:
 #         result.append(num*3)
+
+
+
+
+team = ["초원","지수","형권"]
+
+number = 0
+for mark in team:
+    number = number +1
+    if mark <= 60: continue
+    print("초록 형권 지수 한팀" )

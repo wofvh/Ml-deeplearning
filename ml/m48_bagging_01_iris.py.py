@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler,MinMaxScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score,r2_score,f1_score
 
-datasets = load_breast_cancer()
+datasets = load_iris()
 x, y =datasets.data, datasets.target
 
 print(x.shape, y.shape)   #(569, 30) (569,)

@@ -13,7 +13,7 @@ feil_name = ["01_iris","02_cancer","03__diabets","04_wine","05_fetch_covtype",\
 
 
 for feil_name in feil_name:
-    with open(f"./ml/m48_bagging_{feil_name}.py","w") as file:
+    with open(f"./ml/m53_Voting3_삼대장{feil_name}.py","w") as file:
         file.write("")
         
 

@@ -1,15 +1,17 @@
 import numpy as np
 import pandas as pd
-from collections import Counter
-from sklearn.datasets import load_iris
 from sklearn.model_selection import KFold,cross_val_score,GridSearchCV,StratifiedKFold, RandomizedSearchCV
-from sklearn.experimental import enable_halving_search_cv
-from sklearn.model_selection import HalvingGridSearchCV, HalvingRandomSearchCV
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import accuracy_score, r2_score
 from sklearn.model_selection import train_test_split
-from sklearn.experimental import enable_iterative_imputer # 이터러블 입력시 사용하는 모듈 추가
-from sklearn.impute import SimpleImputer, KNNImputer, IterativeImputer 
+from sklearn.ensemble import VotingClassifier,VotingRegressor
+from sklearn.linear_model import LogisticRegression, LinearRegression
+from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
+from xgboost import XGBClassifier,XGBRFRegressor
+from lightgbm import LGBMClassifier, LGBMRegressor
+from catboost import CatBoostClassifier, CatBoostRegressor
+import warnings
+warnings.filterwarnings(action="ignore")
 
 parameters = [
     {'XGB__n_estimators' : [100,200,300,400,500],
@@ -171,96 +173,35 @@ Scaler = StandardScaler() #Bagging 할때 스케일러 필수
 x_train = Scaler.fit_transform(x_train)
 x_test = Scaler. transform(x_test)
 
-#2. 모델구성
-from sklearn.ensemble import BaggingClassifier,BaggingRegressor #Bagging 앙상블 모델엣 가장많이 사용함 
-from sklearn.linear_model import LogisticRegression
+#.2 모델
+xg = XGBClassifier()
+lg = LGBMClassifier()
+cat = CatBoostClassifier() #(verbose=False)#catboost vervose가 많음 ! 그래서 다른모델이랑 성능비교 시에는 주석처리
 
-from sklearn.linear_model import LogisticRegression, LinearRegression     # LogisticRegression 분류모델 LinearRegression 회귀
-from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor 
-from xgboost import XGBRegressor, XGBClassifier
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, RandomForestRegressor,GradientBoostingRegressor
-model1 = BaggingClassifier(DecisionTreeClassifier(),
-                          n_estimators=100, 
-                          n_jobs=1,
-                          random_state=123
-                          )
+#voting 은 hard &soft가있음 #estimators= 두개이상은 리스트로 넣어줘야함
+model = VotingClassifier(estimators=[('xg', xg), ('cat', cat),("lg", lg)], voting='soft') 
 
-model2 = BaggingClassifier(RandomForestClassifier(),
-                          n_estimators=100, 
-                          n_jobs=1,
-                          random_state=123
-                          )
+#3. 평가예측
+model.fit(x_train,y_train)
 
-model3 = BaggingClassifier(GradientBoostingClassifier(),
-                          n_estimators=100, 
-                          n_jobs=1,
-                          random_state=123
-                          )
+#4. 평가,예측
+y_predict = model.predict(x_test)
+print(model.score(x_test,y_test))
 
-model4 = BaggingClassifier(XGBClassifier(),
-                          n_estimators=100, 
-                          n_jobs=1,
-                          random_state=123
-                          )
+score = accuracy_score(y_test,y_predict)
+print("보팅결과 : ", round(score,4 ))
 
+# 보팅결과 :  0.9912
 
-# model1 = DecisionTreeClassifier()
-# model2 = RandomForestClassifier()
-# model3 = GradientBoostingClassifier()
-# model4 = XGBClassifier()
+classifier = [cat,xg, lg,]
 
-#3. 훈련
-model1.fit(x_train,y_train)
-model2.fit(x_train,y_train)
-model3.fit(x_train,y_train)
-model4.fit(x_train,y_train)
-
-#4. 예측
-result1 = model1.score(x_test,y_test)
-print("model1.score:",result1)
-
-from sklearn.metrics import accuracy_score, r2_score
-
-y_predict = model1.predict(x_test)
-acc1 = accuracy_score(y_test,y_predict)
-
-print( 'score1 :',acc1)
-print(model1) 
-print("===================================")
-
-result2 = model2.score(x_test,y_test)
-print("model2.score:",result2)
-
-
-y_predict2 = model2.predict(x_test)
-acc2 = accuracy_score(y_test,y_predict2)
-
-print( 'score2 :',acc2)
-print(model2) 
-print("===================================")
-
-result3 = model3.score(x_test,y_test)
-print("model3.score3:",result3)
-
-
-y_predict3 = model3.predict(x_test)
-acc3 = accuracy_score(y_test,y_predict3)
-
-print( 'score3 :',acc3)
-print(model3)
-print("===================================")
-
-result4 = model4.score(x_test,y_test)
-print("model4.score:",result4)
-
-
-y_predict4 = model4.predict(x_test)
-acc4 = accuracy_score(y_test,y_predict4)
-
-print( 'acc :',acc4)
-print(model4) 
-print("===================================")
-
-
-
+for model in classifier:  #model2는 모델이름 # 
+    model.fit(x_train,y_train)
+    y_predict = model.predict(x_test)
+    score2 = accuracy_score(y_test,y_predict)
+    class_name = model.__class__.__name__  #<모델이름 반환해줌 
+    print("{0}정확도 : {1:.4f}".format(class_name, score2)) # f = format
+    
+print("보팅결과 : ", round(score,4 ))
+    
+# XGBClassifier정확도 : 0.9912

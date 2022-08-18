@@ -4,11 +4,15 @@ from sklearn.datasets import load_breast_cancer,load_iris,load_wine,fetch_covtyp
 from sklearn.preprocessing import StandardScaler,MinMaxScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score,r2_score,f1_score
+from sklearn.preprocessing import LabelEncoder
 
 datasets = fetch_covtype()
 x, y =datasets.data, datasets.target
 
 print(x.shape, y.shape)   #(178, 13) (178,)
+
+le = LabelEncoder()
+y = le.fit_transform(y)
 
 x_train , x_test, y_train, y_test = train_test_split(
     x,y, random_state=123, train_size=0.8, shuffle=True,stratify=y)
@@ -35,4 +39,4 @@ model.fit(x_train,y_train)
 print(model.score(x_test,y_test))
 
 #Bagging
-# 0.9575720812182741
+# 0.9679440289837612
