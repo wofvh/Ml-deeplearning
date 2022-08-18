@@ -1,16 +1,19 @@
 
 
 
-feil_name = ["01_iris.py","02_cancer.py","03__diabets.py","04_wine.py","05_california.py",\
-    "06_breast.py","07_smote.py","08_fetch_covtype.py","09_california.py","10_ddarung.py"\
-        "11_kaggle_bike.py","12_house.py"]
+feil_name = ["01_iris","02_cancer","03__diabets","04_wine","05_fetch_covtype",\
+    "06_digits","07_kaggle_titanic","08_boston.py","09_california","10_ddarung",\
+        "11_kaggle_bike","12_kaggle_house"]
 
 
-# feil_name = ["02_homework"]
+
+
+
+# feil_name = ["01_iris.py"]
 
 
 for feil_name in feil_name:
-    with open(f"./ml/m50_smote_{feil_name}.py","w") as file:
+    with open(f"./ml/m48_bagging_{feil_name}.py","w") as file:
         file.write("")
         
 

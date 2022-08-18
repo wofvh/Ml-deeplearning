@@ -225,10 +225,11 @@ print('model.socre : ',results)
 print('걸린 시간 : ',end_time)
 y_summit = model.predict(test_set)
 y_summit = np.round(y_summit,0)
-submission = pd.read_csv(path + 'v,#예측에서 쓸거야!!
+submission = pd.read_csv(path + 'submission.csv'
                       )
 #
 submission['ProdTaken'] = y_summit
 # submission = submission.fillna(submission.mean())
 # submission = submission.astype(int)
 submission.to_csv('test22.csv',index=False)
+

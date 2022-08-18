@@ -63,3 +63,7 @@ for thresh in thresholds:
     
     print("thresh=%.3F, N=%d, accuracy:%.2f%%"
           %(thresh, select_x_train.shape[1],score*100))
+
+
+최종 점수: 0.9333333333333333
+진짜 최종TEST점수: 0.9333333333333333

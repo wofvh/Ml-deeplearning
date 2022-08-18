@@ -20,6 +20,10 @@ train_df = pd.read_csv(path + 'train.csv')
 test_x = pd.read_csv(path + 'test.csv').drop(columns=['ID'])
 train = np.array(train_df)
 
+
+
+
+
 # print("=============================상관계수 히트 맵==============")
 # print(train_df.corr())                    # 상관관계를 확인.  
 # import matplotlib.pyplot as plt 

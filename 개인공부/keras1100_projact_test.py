@@ -14,12 +14,12 @@ from keras.applications.vgg16 import preprocess_input
 from sklearn.model_selection import StratifiedKFold
 import matplotlib.pyplot as plt
 
-class DataGenerator(keras.utils.Sequence):
+class DataGenerator(keras.utils.Sequence):      #시퀀스를 상속받아서 정의한다.
     def __init__(self, batch_size, df, image_size, mode='train', shuffle=True): # 생성자 : 배치사이즈, 데이터프레임, 모드(학습,검증) , 셔플(섞어서들어가기)
         self.batch_size = batch_size 
-        self.mode = mode
-        self.image_size = image_size
-        self.shuffle = shuffle
+        self.mode = mode        # train, test
+        self.image_size = image_size  # 이미지 사이즈
+        self.shuffle = shuffle  # 셔플 여부
         self.df = df
  
         if self.mode == 'train': # mode가 train일때 검증용 데이터 (지금은 fold == 1 ) 빼고 학습을 진행
@@ -27,11 +27,11 @@ class DataGenerator(keras.utils.Sequence):
         elif self.mode =='valid': # mode 가 validation(검증) 일때는 얘만 따로 학습검증을함
             self.df = self.df[self.df['fold'] == 1]
 
-        self.on_epoch_end()
+        self.on_epoch_end()     # 에포크 끝날때마다 셔플 실행
 
 
     def __len__(self): # 길이정의 (전체 dataset 길이에서 batch사이즈만큼 나눠줌)
-        return math.ceil(len(self.df) / self.batch_size)
+        return math.ceil(len(self.df) / self.batch_size) # 전체 데이터 길이에서 batch사이즈를 나눠줌
 
 
     def __getitem__(self, idx): # 실질적으로 빠지는 부분 
@@ -43,7 +43,7 @@ class DataGenerator(keras.utils.Sequence):
         return np.array(batch_x), np.array(batch_y).reshape(-1,1) 
 
 
-    def get_data(self, data):
+    def get_data(self, data):      # 이미지 불러오기
         batch_x = []
         batch_y = []
 
@@ -63,7 +63,7 @@ class DataGenerator(keras.utils.Sequence):
 
         return batch_x, batch_y # return => __getitem__
 
-    def on_epoch_end(self):
+    def on_epoch_end(self): # 에포크 끝날때마다 셔플 실행
 
         if self.shuffle:
             self.df = self.df.sample(frac=1).reset_index(drop=True)

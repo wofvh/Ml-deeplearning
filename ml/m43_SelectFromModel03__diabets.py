@@ -1,6 +1,6 @@
 import select
 from selectors import SelectSelector
-from sklearn.datasets import load_breast_cancer , load_diabetes , load_iris ,fetch_california_housing,load_breast_cancer
+from sklearn.datasets import load_breast_cancer , load_diabetes , load_iris ,fetch_california_housing
 from sklearn.model_selection import KFold, StratifiedKFold
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler,MinMaxScaler
