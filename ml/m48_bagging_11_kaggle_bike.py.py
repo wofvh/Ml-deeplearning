@@ -5,7 +5,6 @@ from sklearn.model_selection import KFold,cross_val_score,GridSearchCV,Stratifie
 from sklearn.experimental import enable_halving_search_cv
 from sklearn.model_selection import HalvingGridSearchCV, HalvingRandomSearchCV
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn.metrics import accuracy_score, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.experimental import enable_iterative_imputer # 이터러블 입력시 사용하는 모듈 추가
 from sklearn.impute import SimpleImputer, KNNImputer, IterativeImputer 
@@ -98,31 +97,30 @@ x_test = Scaler. transform(x_test)
 #Bagging 한가지 모델을 여러번 돌려서 사용 
 from sklearn.ensemble import BaggingClassifier,BaggingRegressor #Bagging 앙상블 모델엣 가장많이 사용함 
 from sklearn.linear_model import LogisticRegression
-
 from sklearn.linear_model import LogisticRegression, LinearRegression     # LogisticRegression 분류모델 LinearRegression 회귀
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor 
 from xgboost import XGBRegressor, XGBClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, RandomForestRegressor,GradientBoostingRegressor
-model1 = BaggingClassifier(DecisionTreeClassifier(),
+model1 = BaggingRegressor(DecisionTreeRegressor(),
                           n_estimators=100, 
                           n_jobs=1,
                           random_state=123
                           )
 
-model2 = BaggingClassifier(RandomForestClassifier(),
+model2 = BaggingRegressor(RandomForestRegressor(),
                           n_estimators=100, 
                           n_jobs=1,
                           random_state=123
                           )
 
-model3 = BaggingClassifier(GradientBoostingClassifier(),
+model3 = BaggingRegressor(GradientBoostingRegressor(),
                           n_estimators=100, 
                           n_jobs=1,
                           random_state=123
                           )
 
-model4 = BaggingClassifier(XGBClassifier(),
+model4 = BaggingRegressor(XGBRegressor(),
                           n_estimators=100, 
                           n_jobs=1,
                           random_state=123
@@ -147,7 +145,7 @@ print("model1.score:",result1)
 from sklearn.metrics import accuracy_score, r2_score
 
 y_predict = model1.predict(x_test)
-acc1 = accuracy_score(y_test,y_predict)
+acc1 = r2_score(y_test,y_predict)
 
 print( 'score1 :',acc1)
 print(model1) 
@@ -158,7 +156,7 @@ print("model2.score:",result2)
 
 
 y_predict2 = model2.predict(x_test)
-acc2 = accuracy_score(y_test,y_predict2)
+acc2 = r2_score(y_test,y_predict2)
 
 print( 'score2 :',acc2)
 print(model2) 
@@ -169,7 +167,7 @@ print("model3.score3:",result3)
 
 
 y_predict3 = model3.predict(x_test)
-acc3 = accuracy_score(y_test,y_predict3)
+acc3 = r2_score(y_test,y_predict3)
 
 print( 'score3 :',acc3)
 print(model3)
@@ -180,11 +178,27 @@ print("model4.score:",result4)
 
 
 y_predict4 = model4.predict(x_test)
-acc4 = accuracy_score(y_test,y_predict4)
+acc4 = r2_score(y_test,y_predict4)
 
 print( 'acc :',acc4)
 print(model4) 
 print("===================================")
 
-
-
+# model1.score: 0.9474715134272442
+# score1 : 0.9474715134272442
+# BaggingRegressor(base_estimator=DecisionTreeRegressor(), n_estimators=100,
+#                  n_jobs=1, random_state=123)
+# ===================================
+# model2.score: 0.9456054341233231
+# score2 : 0.9456054341233231
+# BaggingRegressor(base_estimator=RandomForestRegressor(), n_estimators=100,
+#                  n_jobs=1, random_state=123)
+# ===================================
+# model3.score3: 0.86488797709733
+# score3 : 0.86488797709733
+# BaggingRegressor(base_estimator=GradientBoostingRegressor(), n_estimators=100,
+#                  n_jobs=1, random_state=123)
+# ===================================
+# model4.score: 0.9544649126063806
+# acc : 0.9544649126063806
+# BaggingRegressor(base_estimator=XGBRegressor(base_score=None, booster=None,

@@ -22,7 +22,7 @@ x_test = Scaler. transform(x_test)
 from sklearn.ensemble import BaggingClassifier,BaggingRegressor #Bagging 앙상블 모델엣 가장많이 사용함 
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier,DecisionTreeRegressor
-model = BaggingRegressor(DecisionTreeClassifier(),
+model = BaggingClassifier(DecisionTreeClassifier(),
                           n_estimators=100,
                           n_jobs=-1,
                           random_state=123,
@@ -35,4 +35,4 @@ model.fit(x_train,y_train)
 print(model.score(x_test,y_test))
 
 #Bagging
-# 0.9575720812182741
+# 0.9444444444444444
