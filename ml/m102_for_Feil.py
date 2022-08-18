@@ -10,7 +10,7 @@ feil_name = ["01_iris.py","02_cancer.py","03__diabets.py","04_wine.py","05_calif
 
 
 for feil_name in feil_name:
-    with open(f"./ml/m46_smote_{feil_name}.py","w") as file:
+    with open(f"./ml/m50_smote_{feil_name}.py","w") as file:
         file.write("")
         
 
