@@ -19,10 +19,12 @@ warnings.filterwarnings(action="ignore")
 datasets = load_diabetes()
 
 df = pd.DataFrame(datasets.data, columns=datasets.feature_names)
-print(df.head(5))  #head는 기본 5개 출력
+print(df.head(7))  #head는 기본 5개 출력
+
+print(df.shape) #(442, 10)
 
 x_train ,x_test, y_train, y_test = train_test_split(
-    datasets.data, datasets.target, random_state=123, train_size=0.8, shuffle=True, )
+    datasets.data, datasets.target, random_state=123, train_size=0.8, shuffle=True,)
 
 
 
@@ -49,7 +51,7 @@ model.fit(x_train,y_train)
 #4. 평가,예측
 y_predict = model.predict(x_test)
 print(model.score(x_test,y_test))
-score = accuracy_score(y_test,y_predict)
+score = r2_score(y_test,y_predict)
 
 # 보팅결과 :  0.9912
 classifier = [cat,xg, lg,]
@@ -57,10 +59,15 @@ classifier = [cat,xg, lg,]
 for model in classifier:  #model2는 모델이름 # 
     model.fit(x_train,y_train)
     y_predict = model.predict(x_test)
-    score= accuracy_score(y_test,y_predict)
+    score= r2_score(y_test,y_predict)
     class_name = model.__class__.__name__  #<모델이름 반환해줌 
     print("{0}정확도 : {1:.4f}".format(class_name, score)) # f = format
     
 print("보팅결과 : ", round(score,4 ))
     
 # XGBClassifier정확도 : 0.9912
+# CatBoostRegressor정확도 : 0.5380
+# XGBRFRegressor정확도 : -2.8197
+# LGBMRegressor정확도 : 0.5229
+# 보팅결과 :  0.5229
+

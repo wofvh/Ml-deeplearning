@@ -1,18 +1,17 @@
-from dataclasses import dataclass
 import numpy as np
 import pandas as pd
-from sklearn.datasets import load_iris,load_breast_cancer,load_digits
 from sklearn.model_selection import KFold,cross_val_score,GridSearchCV,StratifiedKFold, RandomizedSearchCV
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import accuracy_score, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import VotingClassifier,VotingRegressor
-from sklearn.linear_model import LogisticRegression, LinearRegression
-from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 from xgboost import XGBClassifier,XGBRFRegressor
 from lightgbm import LGBMClassifier, LGBMRegressor
 from catboost import CatBoostClassifier, CatBoostRegressor
+from sklearn.experimental import enable_iterative_imputer # 이터러블 입력시 사용하는 모듈 추가
 from sklearn.impute import SimpleImputer, KNNImputer, IterativeImputer 
+
+import seaborn as sns
 import warnings
 warnings.filterwarnings(action="ignore")
 
@@ -161,4 +160,7 @@ for model in classifier:  #model2는 모델이름 #
     
 print("보팅결과 : ", round(score,4 ))
     
-# XGBClassifier정확도 : 0.9912
+# CatBoostClassifier정확도 : 0.8492
+# XGBClassifier정확도 : 0.8603
+# LGBMClassifier정확도 : 0.8603
+# 보팅결과 :  0.8659
