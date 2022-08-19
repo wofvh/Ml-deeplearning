@@ -36,7 +36,7 @@ for scaler in scalers :
     x_train = scaler.fit_transform(x_train)
     x_test = scaler.transform(x_test)
     #2. 모델
-    model = RandomForestRegressor()
+    model = RandomForestClassifier()
     #3. 훈련
     model.fit(x_train, y_train)
     #4. 평가, 예측

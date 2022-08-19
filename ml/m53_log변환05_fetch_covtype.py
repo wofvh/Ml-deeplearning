@@ -1,5 +1,5 @@
 from sklearn.metrics import r2_score,accuracy_score
-from sklearn.datasets import load_boston
+from sklearn.datasets import fetch_covtype
 from sklearn.model_selection import train_test_split, KFold
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 from sklearn.preprocessing import MinMaxScaler, MaxAbsScaler, RobustScaler
@@ -15,7 +15,7 @@ from sklearn.pipeline import make_pipeline
 import matplotlib.pyplot as plt
 
 #1.데이터
-datasets = load_boston()
+datasets =  fetch_covtype()
 x,y = datasets.data, datasets.target
 print(x.shape,y.shape)  #(506, 13) (506,)
 

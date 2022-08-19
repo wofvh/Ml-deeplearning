@@ -72,7 +72,6 @@ lgb_bo.maximize(init_points=5, n_iter=100)
 print(lgb_bo.max)
 
 
-# {'target': 0.6213997653299669, 'params': {'colsample_bytree': 0.5875493964947438, 'max_bin': 147.0269960297086, 
-# 'max_depth': 14.759415192212911, 'min_child_samples': 32.033875714919915, 'min_child_weight': 15.209850292243916, 
-# 'num_leaves': 45.57513689706032, 'reg_alpha': 27.624495286092777, 'reg_lambda': 5.989493688096531, 'subsample': 
-# 0.6122818424641512}}
+# {'target': 0.9241285771962268, 'params': {'colsample_bytree': 1.0, 'max_bin': 110.44476552296565,
+# 'max_depth': 16.0, 'min_child_samples': 10.0, 'min_child_weight': 1.0, 'num_leaves': 64.0, 'reg_alpha': 0.01,
+# 'reg_lambda': 10.0, 'subsample': 1.0}}

@@ -1,13 +1,14 @@
 from bayes_opt import BayesianOptimization
 from lightgbm import LGBMRegressor
-from sklearn.datasets import load_boston, load_diabetes
+from sklearn.datasets import load_iris
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures, MinMaxScaler, RobustScaler, MaxAbsScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, accuracy_score
 import warnings
+from xgboost import XGBClassifier,XGBRFRegressor
 warnings.filterwarnings('ignore')
 #1. 데이터
-datasets = load_diabetes()
+datasets = load_iris()
 x, y = datasets.data, datasets.target
 print(x.shape, y.shape) # (506, 13) (506,)
 
@@ -24,16 +25,26 @@ x_test = Scaler. transform(x_test)
 #.2 모델
 
 Bayesian_parameters = {
+    "n_estimators" : [100,],
     'max_depth' : (6, 16),
-    'num_leaves' : (24, 64),
-    'min_child_samples' : (10,200),
+    'gamma' :[1],
     'min_child_weight' : (1,50),
     'subsample' : (0.5,1),
     'colsample_bytree' : (0.5,1),
-    'max_bin' : (10,500),
     'reg_lambda' : (0.001,10),
     'reg_alpha' : (0.01,50),
 }
+
+parameters = {"n_estimators" : [100,],
+              "learning_rate" : [0.1],
+              'max_depth' : [3],
+              'gamma' :[1],
+              'min_child_weight':[1],
+              'subsample': [1],
+              'colsample_bytree':[0.5],
+              'reg_alpha':[0,],
+              'reg_lambda':[1],
+              } 
 
 
 def lgb_hamus(max_depth, num_leaves, min_child_samples, min_child_weight, subsample, colsample_bytree, max_bin, reg_lambda, reg_alpha):
@@ -70,14 +81,3 @@ lgb_bo = BayesianOptimization(f=lgb_hamus,
 
 lgb_bo.maximize(init_points=5, n_iter=100)
 print(lgb_bo.max)
-
-# {'target': 0.6213997653299669, 'params': {'colsample_bytree': 0.5875493964947438, 'max_bin': 147.0269960297086,
-#                                           'max_depth': 14.759415192212911, 'min_child_samples': 32.033875714919915,
-#                                           'min_child_weight': 15.209850292243916, 'num_leaves': 45.57513689706032,
-#                                           'reg_alpha': 27.624495286092777, 'reg_lambda': 5.989493688096531,
-#                                           'subsample': 0.6122818424641512}}  
-
-
-####################[실습]###############################
-#1. 수정한 파라미터로 모델 만들어서 비교!!!
-#2. 수정한 파라미터를 이용해서 

@@ -1,5 +1,5 @@
 from operator import methodcaller
-from sklearn.datasets import load_boston
+from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split, KFold
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures, MinMaxScaler, RobustScaler, MaxAbsScaler
 from sklearn.preprocessing import QuantileTransformer, PowerTransformer #scaling 
@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 
 #1. 데이터
-datasets = load_boston()
+datasets = load_digits()
 x, y = datasets.data, datasets.target
 print(x.shape, y.shape) # (506, 13) (506,)
 
@@ -36,7 +36,7 @@ for scaler in scalers :
     x_train = scaler.fit_transform(x_train)
     x_test = scaler.transform(x_test)
     #2. 모델
-    model = RandomForestRegressor()
+    model = RandomForestClassifier()
     #3. 훈련
     model.fit(x_train, y_train)
     #4. 평가, 예측
