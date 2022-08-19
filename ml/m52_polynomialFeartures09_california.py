@@ -52,8 +52,8 @@ print("폴리 스코어 : ", model.score(x_test, y_test))
 
 scores = cross_val_score(model, x_train, y_train, cv=kfold, scoring='r2')
 # np.delete(scores[0],[3])
-# x = np.delete(x, 1, axis=1)
 
+scores = np.delete(scores, [0],[2], axis=0)
 print("폴리 CV : ", scores)
 print("폴리 CV 나눈 값 : ", np.mean(scores))
 
