@@ -12,7 +12,7 @@ print(df)  #[150 rows x 4 columns]
 
 
 #2. 모델
-kMeans = KMeans(n_clusters=3,random_state=123) # 얼만큼 무리를 주느냐 x를 얼만큼 잘라주느냐 
+kMeans = KMeans(n_clusters=3,random_state=123) # 얼만큼 무리를 주느냐 x를 얼만큼 잘라주느냐 # 얼만큼 (n_clusters)에 무리를 주느냐 
  
 #PCA하고 클리스팅해주기도함
 #n_clusters=3 값 기준 데이터를 3개의 클러스터로 나누어줌

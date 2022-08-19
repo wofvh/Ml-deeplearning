@@ -72,8 +72,6 @@ for model in classifier:  #model2는 모델이름 #
 print("보팅결과 : ", round(score,4 ))
     
 # XGBClassifier정확도 : 0.9912
-
-
 # CatBoostClassifier정확도 : 0.9000
 # XGBClassifier정확도 : 0.9333
 # LGBMClassifier정확도 : 0.9333

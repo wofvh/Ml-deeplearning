@@ -218,3 +218,22 @@ print("===================================")
 
 
 
+
+# model1.score: 0.8547486033519553
+# score1 : 0.8547486033519553
+# BaggingClassifier(base_estimator=DecisionTreeClassifier(), n_estimators=100,
+#                   n_jobs=1, random_state=123)
+# ===================================
+# model2.score: 0.8603351955307262
+# score2 : 0.8603351955307262
+# BaggingClassifier(base_estimator=RandomForestClassifier(), n_estimators=100,
+#                   n_jobs=1, random_state=123)
+# ===================================
+# model3.score3: 0.8547486033519553
+# score3 : 0.8547486033519553
+# BaggingClassifier(base_estimator=GradientBoostingClassifier(), n_estimators=100,
+#                   n_jobs=1, random_state=123)
+# ===================================
+# model4.score: 0.8659217877094972
+# acc : 0.8659217877094972
+

@@ -34,7 +34,7 @@ lr = LogisticRegression()
 knn = KNeighborsClassifier(n_neighbors=8)
 
 #voting 은 hard &soft가있음 #estimators= 두개이상은 리스트로 넣어줘야함
-model = VotingClassifier(estimators=[('LR', lr), ('KNN', knn)], voting='soft') 
+model = VotingClassifier(estimators=[('LR', lr), ('KNN', knn)], voting='soft') #함수 voting은 회기모델에서는 안 넣어줌 
 
 #3. 평가예측
 model.fit(x_train,y_train)

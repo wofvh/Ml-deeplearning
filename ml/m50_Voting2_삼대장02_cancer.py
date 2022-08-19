@@ -22,7 +22,7 @@ df = pd.DataFrame(datasets.data, columns=datasets.feature_names)
 print(df.head(7))  #head는 기본 5개 출력
 
 x_train ,x_test, y_train, y_test = train_test_split(
-    datasets.data, datasets.target, random_state=123, train_size=0.8, shuffle=True,stratify=datasets.target)
+    datasets.data, datasets.target, random_state=123, train_size=0.8, shuffle=True,)
 
 
 
@@ -31,9 +31,16 @@ x_train = Scaler.fit_transform(x_train)
 x_test = Scaler. transform(x_test)
 
 #.2 모델
-xg = XGBClassifier()
+xg = XGBClassifier(max_depth=3,
+                   learning_rate=0.1, n_estimators=100, n_jobs=-1,
+                   objective='multi:softproba', 
+                   num_class=3, reg_alpha=0.1, reg_lambda=0.1,
+                   subsample=0.8, objective = 'binary: logistic' )
 
-lg = LGBMClassifier()
+lg = LGBMClassifier(max_depth=3,
+                   learning_rate=0.1, n_estimators=100, n_jobs=-1,
+                   num_class=3, reg_alpha=0.1, reg_lambda=0.1,
+                   subsample=0.8, )
 
 cat = CatBoostClassifier(max_depth=3 ,verbose=False
     )#(verbose=False)#catboost vervose가 많음 ! 그래서 다른모델이랑 성능비교 시에는 주석처리
@@ -65,10 +72,3 @@ for model in classifier:  #model2는 모델이름 #
 print("보팅결과 : ", round(score,4 ))
     
 # XGBClassifier정확도 : 0.9912
-
-
-# 보팅결과 :  0.9825
-# CatBoostClassifier정확도 : 0.9825
-# XGBClassifier정확도 : 0.9912
-# LGBMClassifier정확도 : 0.9825
-# 보팅결과 :  0.9825

@@ -12,7 +12,7 @@ print(df)  #[150 rows x 4 columns]
 
 
 #2. 모델
-kMeans = KMeans(n_clusters=2,random_state=1234) # 얼만큼 무리를 주느냐 
+kMeans = KMeans(n_clusters=2,random_state=1234) # 얼만큼 (n_clusters)에 무리를 주느냐 
 
 #.3 평가예측
 kMeans.fit(df)

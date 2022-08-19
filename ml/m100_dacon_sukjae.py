@@ -7,8 +7,8 @@ from sklearn.impute import IterativeImputer,KNNImputer
 from sklearn.linear_model import LinearRegression
 from sklearn.multioutput import MultiOutputRegressor
 from xgboost import XGBClassifier,XGBRegressor  
-path = './_data/prodacon/'
 
+path = './_data/prodacon/'
 
 def seed_everything(seed):
     random.seed(seed)
@@ -20,10 +20,6 @@ train_df = pd.read_csv(path + 'train.csv')
 test_x = pd.read_csv(path + 'test.csv').drop(columns=['ID'])
 train = np.array(train_df)
 
-
-
-
-
 # print("=============================상관계수 히트 맵==============")
 # print(train_df.corr())                    # 상관관계를 확인.  
 # import matplotlib.pyplot as plt 
@@ -33,7 +29,6 @@ train = np.array(train_df)
 # plt.show()
 
 precent = [0.20,0.40,0.60,0.80]
-
 
 print(train_df.describe(percentiles=precent))
 # print(train_df.info())  
