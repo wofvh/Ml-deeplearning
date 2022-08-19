@@ -1,12 +1,13 @@
 from bayes_opt import BayesianOptimization
 from lightgbm import LGBMRegressor
-from sklearn.datasets import load_iris
+from sklearn.datasets import load_breast_cancer ,load_iris
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures, MinMaxScaler, RobustScaler, MaxAbsScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, accuracy_score
-import warnings
 from xgboost import XGBClassifier,XGBRFRegressor
+import warnings
 warnings.filterwarnings('ignore')
+
 #1. 데이터
 datasets = load_iris()
 x, y = datasets.data, datasets.target
@@ -25,35 +26,39 @@ x_test = Scaler. transform(x_test)
 #.2 모델
 
 Bayesian_parameters = {
-    "n_estimators" : [100,],
     'max_depth' : (6, 16),
-    'gamma' :[1],
-    'min_child_weight' : (1,50),
+    #'num_leaves' : (24, 64),
+    #'min_child_samples' : (10,200),
+    'gamma' :(1, 2),
+    #'min_child_weight' : (1,50),
     'subsample' : (0.5,1),
     'colsample_bytree' : (0.5,1),
+    'max_bin' : (10,500),
     'reg_lambda' : (0.001,10),
     'reg_alpha' : (0.01,50),
+    "learning_rate" : (0.1,1.5),
 }
 
-parameters = {"n_estimators" : [100,],
-              "learning_rate" : [0.1],
-              'max_depth' : [3],
-              'gamma' :[1],
-              'min_child_weight':[1],
-              'subsample': [1],
-              'colsample_bytree':[0.5],
-              'reg_alpha':[0,],
-              'reg_lambda':[1],
-              } 
+# {'target': 0.9241285771962268, 
+# 'params': {'colsample_bytree': 1.0, 
+#            'max_bin': 110.44476552296565, 
+#            'max_depth': 16.0, 
+#            'min_child_samples': 10.0, 
+#             'min_child_weight': 1.0, 
+#             'num_leaves': 64.0,     
+#             'reg_alpha': 0.01, 
+#             'reg_lambda': 10.0, 
+#             'subsample': 1.0}}
 
 
-def lgb_hamus(max_depth, num_leaves, min_child_samples, min_child_weight, subsample, colsample_bytree, max_bin, reg_lambda, reg_alpha):
+def lgb_hamus(max_depth,gamma, subsample, colsample_bytree, max_bin, reg_lambda, reg_alpha,learning_rate):
     params = {
-        'n_estimators': 500,"learning_rate": 0.02,
+        
+        'learning_rate': int(round(learning_rate)),
         'max_depth' : int(round(max_depth)),  #round 반올림 할때 사용  무조건 정수로 바꿔줘야함
-        'num_leaves': int(round(num_leaves)),
-        'min_child_samples': int(round(min_child_samples)),
-        'min_child_weight': int(round(min_child_weight)),  #round 반올림 할때 사용 무조건 정수로 바꿔줘야함
+        'gamma': int(round(gamma)),
+        #'min_child_samples': int(round(min_child_samples)),
+        #'min_child_weight': int(round(min_child_weight)),  #round 반올림 할때 사용 무조건 정수로 바꿔줘야함
         'subsample': max(min(subsample,1),0),   #subsample은 0~1 사이의 값만 받아드림
         'colsample_bytree': max(min(colsample_bytree,1),0),    #colsample_bytree는 0~1 사이의 값만 받아드림
         'max_bin': max(int(round(max_bin)),10), #max_bin은 10이상의 값만 받아드림 정수형으로 받아드림
@@ -62,7 +67,7 @@ def lgb_hamus(max_depth, num_leaves, min_child_samples, min_child_weight, subsam
     }
     #*여러개의 인자를 받겠다는 의미
     #**키워드를 {딕셔너리형태로 받겠다}
-    model = LGBMRegressor(**params)
+    model = XGBClassifier(**params)
     
     model.fit(x_train, y_train,
               eval_set=[(x_train, y_train), (x_test, y_test)],
@@ -79,5 +84,11 @@ lgb_bo = BayesianOptimization(f=lgb_hamus,
                                     pbounds = Bayesian_parameters,
                                     random_state=123)
 
-lgb_bo.maximize(init_points=5, n_iter=100)
+lgb_bo.maximize(init_points=2, n_iter=100)
 print(lgb_bo.max)
+
+
+# {'target': 0.9241285771962268, 'params': {'colsample_bytree': 1.0, 'max_bin': 110.44476552296565,
+# 'max_depth': 16.0, 'min_child_samples': 10.0, 'min_child_weight': 1.0, 'num_leaves': 64.0, 'reg_alpha': 0.01,
+# 'reg_lambda': 10.0, 'subsample': 1.0}}
+
