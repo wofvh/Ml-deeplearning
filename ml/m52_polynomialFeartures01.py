@@ -31,10 +31,3 @@ print(model.score(x_test,y_test))
 #결과 0.7665382927362877
 
 
-
-
-team = ["초원","형권","지수"]
-
-for i in team:
-    if "초원" in i:
-        print("초원","형권","지수")
