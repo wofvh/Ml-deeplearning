@@ -1,5 +1,4 @@
-
-from sklearn.datasets import load_boston, load_iris
+from sklearn.datasets import load_boston, fetch_california_housing
 from sklearn.model_selection import train_test_split, KFold
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 import numpy as np
@@ -7,11 +6,10 @@ import pandas as pd
 import warnings
 warnings.filterwarnings('ignore')
 from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import LogisticRegression 
-from collections import Counter
 from sklearn.pipeline import make_pipeline
+from collections import Counter
 
-#1.데이터
+
 encording_columns = ['MSZoning','Street','Alley','LotShape','LandContour','Utilities','LotConfig',
                     'LandSlope','Neighborhood','Condition1','Condition2','BldgType','HouseStyle',
                     'RoofStyle','RoofMatl','Exterior1st','Exterior2nd','MasVnrType','ExterQual',
@@ -198,40 +196,64 @@ test_set.drop(['MSZoning', 'Neighborhood' , 'Condition2', 'MasVnrType', 'ExterQu
 x = train_set.drop(['SalePrice'], axis=1)
 y = train_set['SalePrice']
 
-x_train,x_test,y_train,y_test = train_test_split(x,y,
-                                                 random_state=1234, train_size=0.8,)
 
-kfold = KFold(n_splits=5, shuffle=True, random_state=1234)
 
-model = make_pipeline(StandardScaler(),LinearRegression())
+x_train, x_test, y_train, y_test = train_test_split(
+    x, y, train_size=0.8, random_state=1234    
+)
 
-model.fit(x_train,y_train)
+Kfold = KFold(n_splits=5, shuffle=True, random_state=123)
+
+#2. 모델
+
+model = make_pipeline(StandardScaler(), 
+                      LinearRegression()
+                      )
+
+model.fit(x_train, y_train)
+
 print("기본 스코어 : ", model.score(x_test, y_test))
 
 from sklearn.model_selection import cross_val_score
-scores = cross_val_score(model,x_train,y_train,cv=kfold, scoring= 'r2')
-print("cv:",scores)
-print("기냥cv 엔빵:",np.mean(scores))
+scores = cross_val_score(model, x_train, y_train, cv=Kfold, scoring='r2')
+print("기본 CV : ", scores)
+print("기본 CV 나눈 값 : ", np.mean(scores))
 
-#2.모델구성
 
-############################PolynomialFeatures후 ########################################
-# pf = PolynomialFeatures(degree=2, include_bias = False) #차수는 2로 설정
-pf = PolynomialFeatures(degree=2,) #차수는 2로 설정
-xp = pf.fit_transform(x) 
-print(xp.shape)  #(506, 105)
+########################################### PolynomialFeature 후
 
-x_train,x_test,y_train,y_test = train_test_split(xp,
-                                                 y,random_state=1234, train_size=0.8,)
+pf = PolynomialFeatures(degree=2, include_bias=False)
+xp = pf.fit_transform(x)
+print(xp.shape) # (506, 105)
 
-# 2.모델구성
-model = make_pipeline(StandardScaler(),LinearRegression())
+x_train, x_test, y_train, y_test = train_test_split(
+    xp, y, train_size=0.8, random_state=1234    
+)
 
-model.fit(x_train,y_train)
+#2. 모델
+
+model = make_pipeline(StandardScaler(), 
+                      LinearRegression()
+                      )
+
+model.fit(x_train, y_train)
 
 print("폴리 스코어 : ", model.score(x_test, y_test))
 
-scores = cross_val_score(model, x_train, y_train, cv=kfold, scoring='r2')
+from sklearn.model_selection import cross_val_score
+scores = cross_val_score(model, x_train, y_train, cv=Kfold, scoring='r2')
 print("폴리 CV : ", scores)
 print("폴리 CV 나눈 값 : ", np.mean(scores))
 
+'''
+기본 스코어 :  0.8597088106146819
+기본 CV :  [0.8696663  0.8410449  0.89328258 0.8519696  0.83546133]
+기본 CV 나눈 값 :  0.8582849426490178
+
+(1338, 90)
+폴리 스코어 :  0.8758758905702322
+폴리 CV :  [0.89364566 0.86816553 0.91754475 0.87047542 0.86718927]
+폴리 CV 나눈 값 :  0.8834041271510019
+
+
+'''
