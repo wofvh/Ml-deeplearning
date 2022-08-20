@@ -140,25 +140,24 @@ from xgboost import XGBClassifier,XGBRFRegressor
 from lightgbm import LGBMClassifier, LGBMRegressor
 from catboost import CatBoostClassifier, CatBoostRegressor
 from sklearn.metrics import accuracy_score, r2_score
-
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 xg = XGBClassifier()
 lg = LGBMClassifier()
 cat = CatBoostClassifier() #(verbose=False)#catboost vervose가 많음 ! 그래서 다른모델이랑 성능비교 시에는 주석처리
 
 #voting 은 hard &soft가있음 #estimators= 두개이상은 리스트로 넣어줘야함
-model = VotingClassifier(estimators=[('xg', xg), ('cat', cat),("lg", lg)], voting='soft') 
+model = VotingClassifier(estimators=[('xg', xg), ('cat', cat),("lg", lg)], ) 
 
 
 model =model.fit(train_input, train_target)
 
-score = accuracy_score(test_input,test_target)
-
-predicr = model.predict(test_input)
-
 y_predict = model.predict(test_input)
+
 print(model.score(test_input,test_target))
 
+score = accuracy_score(test_input,test_target)
+print("보팅결과 : ", round(score,4 ))
 
 classifier = [cat,xg, lg,]
 
@@ -171,7 +170,3 @@ for model in classifier:  #model2는 모델이름 #
     
 print("보팅결과 : ", round(score,4 ))
 
-
-print(predicr)
-print(test_target)
-print(score)
