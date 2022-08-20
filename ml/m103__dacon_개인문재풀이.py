@@ -99,85 +99,18 @@ target_arr = np.array(fish_target)
 print(input_arr)
 print(input_arr.shape)  #(49, 2)
 
+np.random.seed(42)
+index = np.arange(49)
+np.random.shuffle(index)
 
-x_train , x_test, y_train, y_test  = train_test_split(input_arr, target_arr ,train_size=0.8,random_state=123 )
+print(index)
 
-# np.random.seed(42)
-# index = np.arange(49)
-# np.random.shuffle(index)
+print(input_arr[[1,3]])
 
-# print(index)
+train_input = input_arr[index[:35]]
+train_target = target_arr[index[:35]]
 
-# print(input_arr[[1,3]])
-
-# #[ 26.3 290. ]
-# #[ 29.  363. ]
-
-# trian_input = input_arr[index[:35]]
-# trian_target = target_arr[index[:35]]
-
-# print(input_arr[13],trian_input[0]) 
-
-# # [ 32. 340.] [ 32. 340.]
-# test_input = input_arr[index[35:]]
-# test_target = target_arr[index[35:]]
-
-import matplotlib.pyplot as plt
-plt.scatter(x_train,y_train)
-plt.xlabel("length")
-plt.ylabel("weight")
-plt.show()
-
-print(x_train.shape)   #(39, 2)
-print(x_test.shape)  #(10, 2)
-print(y_train.shape)  #(39,)
-print(y_test.shape)  #(10,)
+print(input_arr[13],train_input[0])
 
 
-# from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
-
-# model = KNeighborsClassifier()
-
-
-# model = model.fit(trian_input, trian_target)
-
-# score = model.score(test_input,test_target)
-
-# print('스코어:',score)
-
-# model.predict(test_input)
-
-
- 
-
-# #.2 모델구성
-# from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
-
-# model = KNeighborsClassifier()
-
-# print(fish_data[4])#[29.0, 430.0]  [] < 인덱스를 지정할때리스트로 사용 
-# print(fish_target[4]) #1
-
-# print(fish_data[0:5])
-# # [[25.4, 242.0], [26.3, 290.0], [26.5, 340.0], [29.0, 363.0], [29.0, 430.0]]
-
-# print(fish_data[44:])
-# # [[12.2, 12.2], [12.4, 13.4], [13.0, 12.2], [14.3, 19.7], [15.0, 19.9]]
-
-# train_input = fish_data[:35]
-# train_target = fish_target[:35]
-# test_input = fish_data[35:]
-# test_target = fish_target[35:]
-
-# print(train_input)
-# print(train_target) 
-# print(test_input)
-# print(test_input)
-
-
-# #.3 모델훈련 
-# model = model.fit(train_input, train_target)
-# model.score(test_input, test_target)
-
-# print(model.score(test_input, test_target))
 
