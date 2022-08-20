@@ -61,7 +61,7 @@
 #         break
 
 ######################## 두번째 문제 !!################################################
-
+from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -99,44 +99,53 @@ target_arr = np.array(fish_target)
 print(input_arr)
 print(input_arr.shape)  #(49, 2)
 
-np.random.seed(42)
-index = np.arange(49)
-np.random.shuffle(index)
 
-print(index)
+x_train , x_test, y_train, y_test  = train_test_split(input_arr, target_arr ,train_size=0.8,random_state=123 )
 
-print(input_arr[[1,3]])
+# np.random.seed(42)
+# index = np.arange(49)
+# np.random.shuffle(index)
 
-#[ 26.3 290. ]
-#[ 29.  363. ]
+# print(index)
 
-trian_input = input_arr[index[:35]]
-trian_target = target_arr[index[:35]]
+# print(input_arr[[1,3]])
 
-print(input_arr[13],trian_input[0]) 
+# #[ 26.3 290. ]
+# #[ 29.  363. ]
 
-# [ 32. 340.] [ 32. 340.]
-test_input = input_arr[index[35:]]
-test_target = target_arr[index[35:]]
+# trian_input = input_arr[index[:35]]
+# trian_target = target_arr[index[:35]]
+
+# print(input_arr[13],trian_input[0]) 
+
+# # [ 32. 340.] [ 32. 340.]
+# test_input = input_arr[index[35:]]
+# test_target = target_arr[index[35:]]
 
 import matplotlib.pyplot as plt
-plt.scatter(trian_input[:,0], trian_input[:,1])
-plt.scatter(test_input[:,0], test_input[:,1])
+plt.scatter(x_train,y_train)
 plt.xlabel("length")
 plt.ylabel("weight")
 plt.show()
-from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 
-model = KNeighborsClassifier()
+print(x_train.shape)   #(39, 2)
+print(x_test.shape)  #(10, 2)
+print(y_train.shape)  #(39,)
+print(y_test.shape)  #(10,)
 
 
-model = model.fit(trian_input, trian_target)
+# from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 
-score = model.score(test_input,test_target)
+# model = KNeighborsClassifier()
 
-print('스코어:',score)
 
-model.predict(test_input)
+# model = model.fit(trian_input, trian_target)
+
+# score = model.score(test_input,test_target)
+
+# print('스코어:',score)
+
+# model.predict(test_input)
 
 
  
