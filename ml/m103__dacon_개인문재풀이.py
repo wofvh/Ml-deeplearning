@@ -65,7 +65,7 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
+from tensorflow.python.keras.layers import concatenate, Concatenate
 #.1 데이터
 
 fish_length = [25.4, 26.3, 26.5, 29.0, 29.0, 29.7, 29.7, 30.0, 30.0, 30.7, 31.0, 31.0, 
@@ -88,4 +88,8 @@ print(np.ones(49))
 
 fish_target = np.concatenate((np.ones(35),np.zeros(14)))
 
+print(fish_target)
+
 train_input, test_input,train_target, test_target = train_test_split(fish_data,fish_target,random_state=42)
+
+print(train_input.shape, test_input.shape)
