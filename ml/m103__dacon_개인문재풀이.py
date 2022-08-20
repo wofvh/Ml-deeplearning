@@ -46,12 +46,12 @@
 # results = kn.score(fish_data, fish_target)
 # print('결과:', results)
 
-# # plt.scatter(bream_length,bream_weight)
-# # plt.scatter(smelt_length,smelt_weight)
-# # plt.scatter(30,600, marker='*', c='red') # matplotlib 색상코드
-# # plt.xlabel('length')
-# # plt.ylabel("weight")
-# # plt.show()
+# plt.scatter(bream_length,bream_weight)
+# plt.scatter(smelt_length,smelt_weight)
+# plt.scatter(30,600, marker='*', c='red') # matplotlib 색상코드
+# plt.xlabel('length')
+# plt.ylabel("weight")
+# plt.show()
 
 # for n in range(5,50):
 #     kn.n_neighbors = n 
@@ -103,9 +103,9 @@ np.random.seed(42)
 index = np.arange(49)
 np.random.shuffle(index)
 
-print(index)
 
 print(input_arr[[1,3]])
+
 
 train_input = input_arr[index[:35]]
 train_target = target_arr[index[:35]]
@@ -113,4 +113,65 @@ train_target = target_arr[index[:35]]
 print(input_arr[13],train_input[0])
 
 
+test_input = input_arr[index[35:]]
+test_target = target_arr[index[35:]]
 
+print(train_input.shape)    #(35, 2)
+print(train_target.shape)   #(35,)
+print(test_input.shape)     #(14, 2)
+print(test_target.shape)    #(14,)
+
+
+
+import matplotlib.pyplot as plt
+plt.scatter(train_input[:,0],train_input[:,1])
+plt.scatter(test_input[:,0],test_input[:,1])
+plt.xlabel('length')
+plt.ylabel('weigth')
+plt.show()
+
+#2. 모델 구성
+
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.ensemble import VotingClassifier,VotingRegressor
+from sklearn.linear_model import LogisticRegression, LinearRegression
+from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
+from xgboost import XGBClassifier,XGBRFRegressor
+from lightgbm import LGBMClassifier, LGBMRegressor
+from catboost import CatBoostClassifier, CatBoostRegressor
+from sklearn.metrics import accuracy_score, r2_score
+
+
+xg = XGBClassifier()
+lg = LGBMClassifier()
+cat = CatBoostClassifier() #(verbose=False)#catboost vervose가 많음 ! 그래서 다른모델이랑 성능비교 시에는 주석처리
+
+#voting 은 hard &soft가있음 #estimators= 두개이상은 리스트로 넣어줘야함
+model = VotingClassifier(estimators=[('xg', xg), ('cat', cat),("lg", lg)], voting='soft') 
+
+
+model =model.fit(train_input, train_target)
+
+score = accuracy_score(test_input,test_target)
+
+predicr = model.predict(test_input)
+
+y_predict = model.predict(test_input)
+print(model.score(test_input,test_target))
+
+
+classifier = [cat,xg, lg,]
+
+for model in classifier:  #model2는 모델이름 # 
+    model.fit(train_input,train_target)
+    y_predict = model.predict(test_input)
+    score2 = accuracy_score(test_target,y_predict)
+    class_name = model.__class__.__name__  #<모델이름 반환해줌 
+    print("{0}정확도 : {1:.4f}".format(class_name, score2)) # f = format
+    
+print("보팅결과 : ", round(score,4 ))
+
+
+print(predicr)
+print(test_target)
+print(score)
