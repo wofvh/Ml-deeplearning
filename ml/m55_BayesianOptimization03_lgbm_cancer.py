@@ -35,6 +35,17 @@ Bayesian_parameters = {
     'reg_alpha' : (0.01,50),
 }
 
+{'target': 0.9241285771962268, 
+'params': {'colsample_bytree': 1.0, 
+           'max_bin': 110.44476552296565, 
+           'max_depth': 16.0, 
+           'min_child_samples': 10.0, 
+            'min_child_weight': 1.0, 
+            'num_leaves': 64.0,     
+            'reg_alpha': 0.01, 
+            'reg_lambda': 10.0, 
+            'subsample': 1.0}}
+
 
 def lgb_hamus(max_depth, num_leaves, min_child_samples, min_child_weight, subsample, colsample_bytree, max_bin, reg_lambda, reg_alpha):
     params = {
@@ -75,3 +86,16 @@ print(lgb_bo.max)
 # {'target': 0.9241285771962268, 'params': {'colsample_bytree': 1.0, 'max_bin': 110.44476552296565,
 # 'max_depth': 16.0, 'min_child_samples': 10.0, 'min_child_weight': 1.0, 'num_leaves': 64.0, 'reg_alpha': 0.01,
 # 'reg_lambda': 10.0, 'subsample': 1.0}}
+
+
+
+{'target': 0.9241285771962268, 
+'params': {'colsample_bytree': 1.0, 
+           'max_bin': 110.44476552296565, 
+           'max_depth': 16.0, 
+           'min_child_samples': 10.0, 
+            'min_child_weight': 1.0, 
+            'num_leaves': 64.0,     
+            'reg_alpha': 0.01, 
+            'reg_lambda': 10.0, 
+            'subsample': 1.0}}
