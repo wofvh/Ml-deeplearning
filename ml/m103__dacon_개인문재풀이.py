@@ -104,6 +104,43 @@ index = np.arange(49)
 np.random.shuffle(index)
 
 print(index)
+
+print(input_arr[[1,3]])
+
+#[ 26.3 290. ]
+#[ 29.  363. ]
+
+trian_input = input_arr[index[:35]]
+trian_target = target_arr[index[:35]]
+
+print(input_arr[13],trian_input[0]) 
+
+# [ 32. 340.] [ 32. 340.]
+test_input = input_arr[index[35:]]
+test_target = target_arr[index[35:]]
+
+import matplotlib.pyplot as plt
+plt.scatter(trian_input[:,0], trian_input[:,1])
+plt.scatter(test_input[:,0], test_input[:,1])
+plt.xlabel("length")
+plt.ylabel("weight")
+plt.show()
+from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
+
+model = KNeighborsClassifier()
+
+
+model = model.fit(trian_input, trian_target)
+
+score = model.score(test_input,test_target)
+
+print('스코어:',score)
+
+model.predict(test_input)
+
+
+ 
+
 # #.2 모델구성
 # from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 

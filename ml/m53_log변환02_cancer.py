@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 #1.데이터
 datasets = load_breast_cancer()
 x,y = datasets.data, datasets.target
-print(x.shape,y.shape)  #(506, 13) (506,)
+print(x.shape,y.shape)    #(506, 13) (506,)
 
 x_train,x_test,y_train,y_test = train_test_split(x,y,
                                                  random_state=1234, train_size=0.8,)
@@ -37,6 +37,7 @@ model.fit(x_train,y_train)
 y_predict = model.predict(x_test)
 results = r2_score(y_test,y_predict)
 print("구냥결과 : ", round(results,4)) 
+
 # 기본 스코어 :  0.7665382927362877   #RF구냥결과 :  0.9196
 
 ##############################로그변환#########################################
