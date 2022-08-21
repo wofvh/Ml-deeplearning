@@ -112,6 +112,9 @@ print(train_input[indexes])
 
 print(distances)
 
+mean =np.mean(train_input,axis=0)
+std = np.std(train_input,axis=0)
+
 import matplotlib.pyplot as plt
 plt.scatter(train_input[:,0],train_input[:,1])
 plt.scatter(25, 150, marker='^')  #<<삼각형으로 나타낼때 씀'^' https://matplotlib.org/stable/api/markers_api.html <자세한 내용
