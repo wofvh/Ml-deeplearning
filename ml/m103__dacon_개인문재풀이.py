@@ -115,13 +115,27 @@ print(distances)
 mean =np.mean(train_input,axis=0)
 std = np.std(train_input,axis=0)
 
-import matplotlib.pyplot as plt
-plt.scatter(train_input[:,0],train_input[:,1])
-plt.scatter(25, 150, marker='^')  #<<삼각형으로 나타낼때 씀'^' https://matplotlib.org/stable/api/markers_api.html <자세한 내용
-plt.scatter(train_input[indexes,0], train_input[indexes,1], marker='D') 
-plt.xlim((0,1000))  #<<x축의 범위를 지정해주는 함수 (x 랑 y 의 범위축이 너무 다르다) 인치로 재는 거와 센치로 재는 느낌 
-plt.xlabel('length')
-plt.ylabel('weight')
-plt.show()
+print(mean, std)
+
+# [[ 92.00086956 130.48375378 130.73859415 138.32150953 138.39320793]]
+# [ 27.29722222 454.09722222] [  9.98244253 323.29893931]
+
+train_scaled = (train_input - mean) / std
+
+
+
+
+
+
+
+
+# import matplotlib.pyplot as plt
+# plt.scatter(train_input[:,0],train_input[:,1])
+# plt.scatter(25, 150, marker='^')  #<<삼각형으로 나타낼때 씀'^' https://matplotlib.org/stable/api/markers_api.html <자세한 내용
+# plt.scatter(train_input[indexes,0], train_input[indexes,1], marker='D') 
+# plt.xlim((0,1000))  #<<x축의 범위를 지정해주는 함수 (x 랑 y 의 범위축이 너무 다르다) 인치로 재는 거와 센치로 재는 느낌 
+# plt.xlabel('length')
+# plt.ylabel('weight')
+# plt.show()
 
     
