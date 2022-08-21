@@ -71,7 +71,7 @@ def lgb_hamus(max_depth, subsample, colsample_bytree, max_bin, reg_lambda, reg_a
     
     model.fit(x_train, y_train,
               eval_set=[(x_train, y_train), (x_test, y_test)],
-            #   eval_metric='rmse',
+              eval_metric='mlogloss',
               verbose=0,
               early_stopping_rounds=50)
     
@@ -88,3 +88,8 @@ lgb_bo.maximize(init_points=2, n_iter=100 ,)
 print(lgb_bo.max)
 
 
+# {'target': 1.0, 'params': {'colsample_bytree': 0.6100442923720125, 
+# 'learning_rate': 0.8277974403530027, 'max_bin': 499.760737484824,
+# 'max_depth': 12.05692051735069, 'reg_alpha': 4.442743305502682,
+# 'reg_lambda': 3.4925138427656823, 'subsample': 
+# 0.5342457557839424}}
