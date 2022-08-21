@@ -46,13 +46,6 @@
 # results = kn.score(fish_data, fish_target)
 # print('결과:', results)
 
-# plt.scatter(bream_length,bream_weight)
-# plt.scatter(smelt_length,smelt_weight)
-# plt.scatter(30,600, marker='*', c='red') # matplotlib 색상코드
-# plt.xlabel('length')
-# plt.ylabel("weight")
-# plt.show()
-
 # for n in range(5,50):
 #     kn.n_neighbors = n 
 #     score = kn.score(fish_data,fish_target)
@@ -61,6 +54,7 @@
 #         break
 
 ######################## 두번째 문제 !!################################################
+from operator import index
 from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
@@ -90,6 +84,41 @@ fish_target = np.concatenate((np.ones(35),np.zeros(14)))
 
 print(fish_target)
 
-train_input, test_input,train_target, test_target = train_test_split(fish_data,fish_target,random_state=42)
+train_input, test_input,train_target, test_target = train_test_split(fish_data,fish_target,random_state=42, stratify= fish_target)
 
-print(train_input.shape, test_input.shape)
+# print(train_input.shape, test_input.shape)
+# print(train_target.shape, test_target.shape)
+
+print(test_target)
+
+from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
+
+model = KNeighborsClassifier()
+
+model.fit(train_input,train_target)
+model.score(test_input, test_target)
+print(model.score(test_input, test_target))
+
+print(model.predict([[25,150]]))
+
+distances, indexes = model.kneighbors([[25,150]])
+
+print(train_input[indexes])
+# # [[[ 25.4 242. ]
+# #   [ 15.   19.9]
+# #   [ 14.3  19.7]
+# #   [ 13.   12.2]
+# #   [ 12.2  12.2]]]
+
+print(distances)
+
+import matplotlib.pyplot as plt
+plt.scatter(train_input[:,0],train_input[:,1])
+plt.scatter(25, 150, marker='^')  #<<삼각형으로 나타낼때 씀'^' https://matplotlib.org/stable/api/markers_api.html <자세한 내용
+plt.scatter(train_input[indexes,0], train_input[indexes,1], marker='D') 
+plt.xlim((0,1000))  #<<x축의 범위를 지정해주는 함수 (x 랑 y 의 범위축이 너무 다르다) 인치로 재는 거와 센치로 재는 느낌 
+plt.xlabel('length')
+plt.ylabel('weight')
+plt.show()
+
+    
