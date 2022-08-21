@@ -55,6 +55,7 @@
 
 ######################## 두번째 문제 !!################################################
 from operator import index
+from re import L
 from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
@@ -104,11 +105,12 @@ print(model.predict([[25,150]]))
 distances, indexes = model.kneighbors([[25,150]])
 
 print(train_input[indexes])
-# # [[[ 25.4 242. ]
-# #   [ 15.   19.9]
-# #   [ 14.3  19.7]
-# #   [ 13.   12.2]
-# #   [ 12.2  12.2]]]
+
+# [[[ 25.4 242. ]
+#   [ 15.   19.9]
+#   [ 14.3  19.7]
+#   [ 13.   12.2]
+#   [ 12.2  12.2]]]
 
 print(distances)
 
@@ -123,19 +125,51 @@ print(mean, std)
 train_scaled = (train_input - mean) / std
 
 
-
-
-
-
-
-
-# import matplotlib.pyplot as plt
-# plt.scatter(train_input[:,0],train_input[:,1])
-# plt.scatter(25, 150, marker='^')  #<<삼각형으로 나타낼때 씀'^' https://matplotlib.org/stable/api/markers_api.html <자세한 내용
+import matplotlib.pyplot as plt
+plt.scatter(train_scaled[:,0],train_scaled[:,1])
+plt.scatter(25, 150, marker='^')  #<<삼각형으로 나타낼때 씀'^' https://matplotlib.org/stable/api/markers_api.html <자세한 내용
 # plt.scatter(train_input[indexes,0], train_input[indexes,1], marker='D') 
 # plt.xlim((0,1000))  #<<x축의 범위를 지정해주는 함수 (x 랑 y 의 범위축이 너무 다르다) 인치로 재는 거와 센치로 재는 느낌 
-# plt.xlabel('length')
-# plt.ylabel('weight')
-# plt.show()
+plt.xlabel('length')
+plt.ylabel('weight')
+plt.show()
 
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
