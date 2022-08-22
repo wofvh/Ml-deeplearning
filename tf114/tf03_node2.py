@@ -26,13 +26,13 @@ node2 = tf.constant(2.0)
 #나누셈 node6
 
 #node3 = node1 + node2
-# node3 = tf.add(node1, node2)
+node3 = tf.add(node1, node2)
 # node4 = tf.subtract(node1, node2) #뺼셈 node4
-node5 = tf.multiply(node1, node2) #곱샘 node5
+# node5 = tf.multiply(node1, node2) #곱샘 node5
 # node6 = tf.divide(node1, node2)   #나누셈 node6
 
 
 sess = tf.compat.v1.Session()
-print(sess.run(node5))   
+print(sess.run(node3))   
 
 
