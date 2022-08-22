@@ -28,10 +28,10 @@ sess = tf.compat.v1.Session()
 sess.run(tf.compat.v1.global_variables_initializer()) #변수를 초기화해줌
 
 
-epochs = 3000   #에포(훈련) 수
+epochs = 20   #에포(훈련) 수
 for step in range(epochs):
     sess.run(train)
-    if step % 20 == 0:
+    if step %2 == 0:
         print(step,sess.run(loss) ,sess.run(w),sess.run(b))
 
 sess.close()
