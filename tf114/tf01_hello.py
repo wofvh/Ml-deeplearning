@@ -1,3 +1,11 @@
 import tensorflow as tf 
 print(tf.__version__)
 print("망했당")
+print("망했당")
+print("망했당")
+print("망했당")
+print("망했당")
+print("망했당")
+print("망했당")
+print("망했당")
+print("망했당")

@@ -30,7 +30,7 @@ Bayesian_parameters = {
     #'num_leaves' : (24, 64),
     #'min_child_samples' : (10,200),
     # 'gamma' :(1, 2),
-    #'min_child_weight' : (1,50),
+    'min_child_weight' : (1,50),
     'subsample' : (0.5,1),
     'colsample_bytree' : (0.5,1),
     'max_bin' : (10,500),
@@ -50,7 +50,7 @@ Bayesian_parameters = {
 #             'reg_lambda': 10.0, 
 #             'subsample': 1.0}}
 
-def lgb_hamus(max_depth, subsample, colsample_bytree, max_bin, reg_lambda, reg_alpha,learning_rate):
+def lgb_hamus(max_depth, subsample,min_child_weight, colsample_bytree, max_bin, reg_lambda, reg_alpha,learning_rate):
     params = {
         
         'learning_rate': int(round(learning_rate)),
@@ -58,6 +58,7 @@ def lgb_hamus(max_depth, subsample, colsample_bytree, max_bin, reg_lambda, reg_a
         # 'gamma': int(round(gamma)),
         #'min_child_samples': int(round(min_child_samples)),
         #'min_child_weight': int(round(min_child_weight)),  #round 반올림 할때 사용 무조건 정수로 바꿔줘야함
+        'min_child_weight': int(round(min_child_weight)),
         'subsample': max(min(subsample,1),0),   #subsample은 0~1 사이의 값만 받아드림
         'colsample_bytree': max(min(colsample_bytree,1),0),    #colsample_bytree는 0~1 사이의 값만 받아드림
         'max_bin': max(int(round(max_bin)),10), #max_bin은 10이상의 값만 받아드림 정수형으로 받아드림
