@@ -87,10 +87,10 @@ def lgb_hamus(max_depth, subsample, colsample_bytree, max_bin, reg_lambda, reg_a
 # lgb_bo.maximize(init_points=5, n_iter=50)
 # print(lgb_bo.max)
 
-# from xgboost import XGBClassifier,XGBRegressor
-# from sklearn.model_selection import GridSearchCV
+from xgboost import XGBClassifier,XGBRegressor
+from sklearn.model_selection import GridSearchCV
 
-model = XGBClassifier({'n_estimators': 500, "learning_rate": 0.02,
+model = XGBRegressor({'n_estimators': 500, "learning_rate": 0.02,
                       'learning_rate': int(round(0.5005950689305312)),
                       'max_depth' : int(round(11.513147690828912,)),  #round 반올림 할때 사용  무조건 정수로 바꿔줘야함
                       'subsample': max(min(0.9903820991923078,1),0),   #subsample은 0~1 사이의 값만 받아드림
@@ -110,9 +110,3 @@ end = time.time()
 results = model.score(x_test, y_test)
 print('결과:',results)
 print('걸린시간:',end - start)
-
-
-
-xgboost.core.XGBoostError: [10:10:34] C:\Users\Administrator\workspace\xgboost-win64_release_1.6.0\src\objective\objective.cc:26:
-Unknown objective function: `{'n_estimators': 500, 'learning_rate': 1, 'max_depth': 12, 'subsample': 0.9903820991923078, 'colsample_bytree'
-: 0.8482345927989308, 'max_bin': 121, 'reg_lambda': 4.231641494784486, 'reg_alpha': 35.9762537995803}`
