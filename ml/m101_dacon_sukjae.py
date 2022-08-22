@@ -190,7 +190,10 @@ print(sample_submission)
 
 sample_submission.to_csv(path+'sample_submission0820_3.csv',index = False)
 
-exit()
+
+
+
+# exit()
 
 
 drop_cols = [ 'Age', 'NumberOfTrips' ,'MonthlyIncome' ,'TypeofContact','Occupation','ProductPitched','MaritalStatus','Passport']
