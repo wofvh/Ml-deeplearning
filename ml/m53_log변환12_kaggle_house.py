@@ -229,11 +229,11 @@ results = r2_score(y_test,y_predict)
 print("구냥결과 : ", round(results,4)) 
 # 기본 스코어 :  0.7665382927362877   #RF구냥결과 :  0.9196
 
-# df.plot.box()
-# plt.title("boston")
-# plt.xlabel("Feature")
-# plt.ylabel("데이터값")
-# plt.show()
+df.plot.box()
+plt.title("boston")
+plt.xlabel("Feature")
+plt.ylabel("데이터값")
+plt.show()
 
 # print(df["B"].head())         #Linear 기본 스코어 :  0.7665382927362877 
 # df["B"] = np.log1p(df["B"])  # Linear log 변환후! 구냥결과 :  0.7711

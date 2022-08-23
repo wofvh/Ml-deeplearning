@@ -23,3 +23,6 @@ sess.run(tf.compat.v1.global_variables_initializer())
 ccc = 변수.eval() # << 변수 초기화하는 3번째 방법  InteractiveSessio는 eval 하고 변수를 안 넣어도됨 
 print("ccc:", ccc)
 sess.close()
+
+
+eval()

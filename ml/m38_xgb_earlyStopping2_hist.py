@@ -65,13 +65,13 @@ hist = model.evals_result()
 print(hist)
 
 import matplotlib.pyplot as plt
-# plt.figure(figsize=(8,8))
-# plt.plot(hist["validation_0"]["error"])
-# plt.plot(hist["validation_1"]["error"])
-# plt.xlabel('round')
-# plt.ylabel('error')
-# plt.title('XGBoost')
-# plt.show()
+plt.figure(figsize=(8,8))
+plt.plot(hist["validation_0"]["error"])
+plt.plot(hist["validation_1"]["error"])
+plt.xlabel('round')
+plt.ylabel('error')
+plt.title('XGBoost')
+plt.show()
 
 
 
