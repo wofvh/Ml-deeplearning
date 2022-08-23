@@ -3,13 +3,16 @@ import matplotlib.pyplot as plt
 tf.set_random_seed(123)
 
 
-x_train = 1
-y_train = 1
+x_train = [1,2,3]
+y_train = [1,2,3]
+x_test = [4,5,6]
+y_test = [4,5,6]
+
 x = tf.compat.v1.placeholder(tf.float32)
 y = tf.compat.v1.placeholder(tf.float32)
 
-# w = tf.compat.v1.Variable(tf.compat.v1.random_normal([10]), name="weight")
-w = tf.compat.v1.Variable([10], dtype=tf.float32, name="weight")
+w = tf.compat.v1.Variable(tf.compat.v1.random_normal([1]), name="weight")
+# w = tf.compat.v1.Variable([10], dtype=tf.float32, name="weight")
 
 hypothesis = x * w
 
@@ -34,19 +37,24 @@ for step in range(10):
     
     w_history.append(w_val)
     loss_history.append(loss_v)
+
+##################[실습] r2 맨들어봐##################
+
+y_predict = x_test * w_val
+
+print(y_predict)
+
+from sklearn.metrics import r2_score, mean_absolute_error
+r2 = r2_score(y_test, y_predict)
+print("r2 : ", r2)
+mae = mean_absolute_error(y_test, y_predict)
+print("mae:",mae)
+
     
 sess.close()
 
-print("=============================w history=============================")
-print(w_history)
-print("=============================loss history=============================")
-print(loss_history)
-
-# plt.plot(w_history, loss_history)
-# plt.xlabel("weight")
-# plt.ylabel("loss")
-# plt.show()
+# r2 :  0.9994738804240058
+# mae: 0.018483400344848633
 
 
-# 0        81.0    [9.1]
-# 1        65.61001        [8.29]
+
