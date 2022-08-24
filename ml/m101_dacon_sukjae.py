@@ -131,7 +131,7 @@ test = test.drop(columns=['TypeofContact','NumberOfChildrenVisiting','NumberOfPe
 x = train.drop(columns=['ProdTaken'])
 y = train[['ProdTaken']]
 
-x_train,x_test,y_train,y_test = train_test_split(x,y, random_state=72, train_size=0.88,shuffle=True,stratify=y)
+x_train,x_test,y_train,y_test = train_test_split(x,y, random_state=42, train_size=0.88,shuffle=True,stratify=y)
 
 # from sklearn.preprocessing import MinMaxScaler, StandardScaler
 # from sklearn.model_selection import train_test_split, KFold , StratifiedKFold
@@ -140,7 +140,7 @@ x_train,x_test,y_train,y_test = train_test_split(x,y, random_state=72, train_siz
 # x_test = scaler.transform(x_test)
 
 # 모델 학습
-xgb = XGBClassifier(n_estimators=100, learning_rate=0.1, gamma = 1, subsample=1, colsample_bytree = 1, max_depth=4,random_state=123)
+# xgb = XGBClassifier(n_estimators=100, learning_rate=0.1, gamma = 1, subsample=1, colsample_bytree = 1, max_depth=4,random_state=123)
 
 
 # ##########################GridSearchCV###############################
@@ -167,7 +167,7 @@ xgb = XGBClassifier(n_estimators=100, learning_rate=0.1, gamma = 1, subsample=1,
 ##########################GridSearchCV###############################
 
 
-model = RandomForestClassifier()
+model =  XGBClassifier(n_estimators=100, learning_rate=0.1, gamma = 1, subsample=1, colsample_bytree = 1, max_depth=3,random_state=42)
 
 model.fit(x_train,y_train)
 
@@ -193,7 +193,7 @@ sample_submission.to_csv(path+'sample_submission0820_3.csv',index = False)
 
 
 
-# exit()
+exit()
 
 
 drop_cols = [ 'Age', 'NumberOfTrips' ,'MonthlyIncome' ,'TypeofContact','Occupation','ProductPitched','MaritalStatus','Passport']
@@ -279,3 +279,4 @@ y_test = np.argmax(y_test, axis= 1)
 
 acc1 = accuracy_score(y_test, y_predict) 
 print('acc1 : ', acc1) 
+
