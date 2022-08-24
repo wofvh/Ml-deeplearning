@@ -5,6 +5,7 @@ from sklearn import datasets
 import numpy as np
 from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score,mean_squared_error
 tf.set_random_seed(123)
 
 datasets = load_breast_cancer()
@@ -26,7 +27,7 @@ print(x_train.dtype, y_train.dtype) # (455, 30) (455, 1)
 # y_train = np.array(y_train, dtype=np.int32)
 
 print(x_train.shape, x_test.shape , y_train.shape, y_test.shape)
-# (455, 30) (114, 30) (455, 1) (114, 1)
+#     (455, 30)     (114, 30)      (455, 1)       (114, 1)
 
 x = tf.compat.v1.placeholder(tf.float32, shape=[None, 30])
 y = tf.compat.v1.placeholder(tf.float32, shape=[None, 1])
@@ -38,41 +39,55 @@ b = tf.compat.v1.Variable(tf.compat.v1.zeros([1]), name='bias')
 hypothesis = tf.compat.v1.sigmoid (tf.matmul(x, w) + b) #예
 
 # hypothesis = tf.sigmoid(hypothesis)
-hypothesis = tf.sigmoid(tf.matmul(x, w) + b)
+# hypothesis = tf.sigmoid(tf.matmul(x, w) + b)
 
 #3-1. 컴파일
 # loss = tf.reduce_mean(tf.square(hypothesis - y))    # mse
 loss = -tf.reduce_mean(y*tf.log(hypothesis)+(1-y)*tf.log(1-hypothesis))   # binary_crossentropy
 
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=1e-7)
-# optimizer = tf.train.AdadeltaOptimizer(learning_rate=0.001)
+# optimizer = tf.train.GradientDescentOptimizer(learning_rate=1e-7)
+optimizer = tf.train.AdadeltaOptimizer(learning_rate=0.001)
 train = optimizer.minimize(loss)
 
 #3-2. 훈련
 sess = tf.compat.v1.Session()
 sess.run(tf.compat.v1.global_variables_initializer())
 
-epoch = 2001
-for step in range(epoch):
-    loss_val, hypothesis_val, _ = sess.run([loss, hypothesis, train], feed_dict={x:x_data, y:y_data})  
-    if step % 20== 0:
-        print(epoch, 'loss : ', loss_val, '\n', hypothesis_val)
-               
+epochs= 50        
+for step in range(epochs):
+     # sess.run(train)
+      train_, loss_val, w_val, b_val = sess.run([train,loss,w,b],
+                                       feed_dict={x_train:x_data, y_train:y_data}) #행렬을 받아서 실행하는 것이 아니라 피드데이터를 받아서 실행한다.
+            # if step %2 == 0:
+            #     print(step, loss_val, w_val, b_val)               
+
 #4. 평가, 예측
-y_predict = tf.cast(hypothesis > 0.5, dtype=tf.int32)  
-# print(y_predict)   # Tensor("Cast:0", shape=(?, 1), dtype=float32)
-# print(sess.run(hypothesis > 0.5, feed_dict={x:x_data, y:y_data}))
+y_predict = tf.cast(hypothesis >=0.5, dtype=tf.int32)  
+y_predict = sess.run([hypothesis], feed_dict={x:x_test, y:y_test})
 
-accuracy = tf.reduce_mean(tf.cast(tf.equal(y_data, y_predict), dtype=tf.float32))
+# acc = accuracy_score(y_train, np.round(y_predict))
+# print("acc:", acc)
+# mae = mean_squared_error(y_data, hy_val)
+# print("mae", mae)
 
-predict, acc = sess.run([y_predict, accuracy], feed_dict={x:x_data, y:y_data})
+# sess.close()
 
-print("===============================================================================")
-print("예측값 : \n", hypothesis_val)
-print("예측결과 : ", predict)
-print("accuracy : ", acc)
+# # 3-2. 훈련
+# epochs = 5001
+# for step in range(epochs):
+#     _, hy_val, cost_val, b_val = sess.run([train,hypothesis,loss,b], feed_dict={x:x_train, y:y_train})
+#     if step%20 == 0:
+#         print(step, cost_val, hy_val)
+        
+# print('최종: ', cost_val, hy_val)
 
-sess.close()
+# # 4. 평가, 예측
+# predict = tf.cast(hypothesis>=0.5, dtype=tf.float32)
+# y_predict= sess.run([hypothesis], feed_dict={x:x_test, y:y_test})
+# acc = accuracy_score(y_data, np.round(y_predict))
+# print('acc: ', acc)
 
+# mae = mean_squared_error(y_data, hy_val)
+# print('mae: ', mae)
 
-# accuracy :  0.8681898
+# sess.close()

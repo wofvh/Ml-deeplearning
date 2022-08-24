@@ -4,6 +4,7 @@ from sklearn import datasets
 import numpy as np
 from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
+import flake8 as flake8 
 tf.set_random_seed(123)
 
 datasets =  load_diabetes()
@@ -12,7 +13,7 @@ x_data = datasets.data
 y_data = datasets.target
 
 # sess = tf.compat.v1.InteractiveSession()
-print(x_data.shape,y_data.shape)# x(442, 10)  (442,)
+print(x_data.shape,y_data.shape)#   (442, 10)  (442,)
 
 
 y_data = y_data.reshape(442,1)
@@ -33,17 +34,13 @@ x = tf.compat.v1.placeholder(tf.float32, shape=[None, 10])
 y = tf.compat.v1.placeholder(tf.float32, shape=[None, 1])
 # w = tf.placeholder(tf.float32, shape=[30,1])
 # b = tf.placeholder(tf.float32, shape=[1])
-w = tf.compat.v1.Variable(tf.compat.v1.zeros([10,1]), name='weight')    # y = x * w  
-b = tf.compat.v1.Variable(tf.compat.v1.zeros([1]), name='bias')   
-
-hypothesis = tf.compat.v1.sigmoid (tf.matmul(x, w) + b) #예
-
-# hypothesis = tf.sigmoid(hypothesis)
-hypothesis = tf.sigmoid(tf.matmul(x, w) + b)
+w = tf.compat.v1.Variable(tf.random.normal([10,1]), name='weight')    # y = x * w  
+b = tf.compat.v1.Variable(tf.random.normal([1]), name='bias')   
+hypothesis = tf.matmul(x, w) + b
 
 #3-1. 컴파일
 # loss = tf.reduce_mean(tf.square(hypothesis - y))    # mse
-loss = -tf.reduce_mean(y*tf.log(hypothesis)+(1-y)*tf.log(1-hypothesis))   # binary_crossentropy
+loss = tf.reduce_mean(tf.square(hypothesis - y))  # binary_crossentropy
 
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=1e-7)
 # optimizer = tf.train.AdadeltaOptimizer(learning_rate=0.001)
@@ -53,15 +50,14 @@ train = optimizer.minimize(loss)
 sess = tf.compat.v1.Session()
 sess.run(tf.compat.v1.global_variables_initializer())
 
-epoch = 2001
-for step in range(epoch):
-    loss_val, hypothesis_val, _ = sess.run([loss, hypothesis, train], feed_dict={x:x_data, y:y_data})  
-    if step % 20== 0:
-        print(epoch, 'loss : ', loss_val, '\n', hypothesis_val)
+epoch = 100
+for epochs in range(epoch):
+    train ,loss_val, w_val, _ = sess.run([train, loss, w], feed_dict={x:x_data, y:y_data})  
+    if epochs % 20== 0:
+        print(epochs, 'loss : ', loss_val, '\n', w_val)
                
 #4. 평가, 예측
-y_predict = tf.cast(hypothesis > 0.5, dtype=tf.int32)  
-# print(y_predict)   # Tensor("Cast:0", shape=(?, 1), dtype=float32)
+predict = tf.matmul(x, w_val) + b   # predict = model.predict
 # print(sess.run(hypothesis > 0.5, feed_dict={x:x_data, y:y_data}))
 
 accuracy = tf.reduce_mean(tf.cast(tf.equal(y_data, y_predict), dtype=tf.float32))
@@ -77,4 +73,3 @@ sess.close()
 
 
 # accuracy :  0.8681898
-'''

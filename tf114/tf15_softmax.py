@@ -37,3 +37,9 @@ hypothesis = tf.nn.softmax(tf.matmul(x, w) + b)
 
 #3-1 컴파일
 loss = tf.reduce_mean(-tf.reduce_sum(y * tf.log(hypothesis), axis=1))## loss <<< categorical_crossentropy
+
+
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.04).minimize(loss)
+train = optimizer.minimize(loss)
+
+train = tf.train.GradientDescentOptimizer(learning_rate=0.01).minimize(loss)
