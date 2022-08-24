@@ -16,17 +16,18 @@ print(x_data.shape,y_data.shape)# x(442, 10)  (442,)
 
 
 y_data = y_data.reshape(442,1)
-print(y_data.shape) #(569, 1)
+print(y_data.shape) #(442, 1)
 
 x_train , x_test , y_train , y_test = train_test_split(x_data, y_data, train_size=0.8, shuffle=True, random_state=66,)
 
 # print(type(x_train), type(y_train)) # <class 'numpy.ndarray'> <class 'numpy.ndarray'>
-print(x_train.dtype, y_train.dtype) # (455, 30) (455, 1)
+print(type(x_train), type(y_train)) #<class 'numpy.ndarray'> <class 'numpy.ndarray'>
+print(x_train.dtype, y_train.dtype) # float64 float64
 
 # y_train = np.array(y_train, dtype=np.int32)
 
 print(x_train.shape, x_test.shape , y_train.shape, y_test.shape)
-#(353, 10) (89, 10) (353, 1) (89, 1)
+#(353, 10)         (89, 10)        (353, 1)        (89, 1)
 
 x = tf.compat.v1.placeholder(tf.float32, shape=[None, 10])
 y = tf.compat.v1.placeholder(tf.float32, shape=[None, 1])
@@ -76,3 +77,4 @@ sess.close()
 
 
 # accuracy :  0.8681898
+'''
