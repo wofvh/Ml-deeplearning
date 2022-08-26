@@ -16,7 +16,7 @@ from keras.applications.vgg16 import preprocess_input
 ## 데이터 제네레이터##
 ## 쓰는 이유 : 이미지를 한 덩어리 안에 집어넣으면 램이 터지기때문에 학습할때 쪼개서 들어갈 수 있도록 class형식으로 만들어서 넣어줌
 
-class DataGenerator(keras.utils.Sequence):
+class tensorflow(keras.utils.Sequence):
     def __init__(self, batch_size, df, image_size, mode='train', shuffle=True): # 생성자 : 배치사이즈, 데이터프레임, 모드(학습,검증) , 셔플(섞어서들어가기)
         self.batch_size = batch_size 
         self.mode = mode

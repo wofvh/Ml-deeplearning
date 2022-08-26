@@ -55,7 +55,7 @@ xy_test = test_datagen.flow_from_directory(
 )
 
 # print(xy_train)
-#<keras.preprocessing.image.DirectoryIterator object at 0x000001F0E08D7A90>
+#<keras.preprocessing.image.Directory object at 0x000001F0E08D7A90>
 
 # from sklearn.datasets import load_boston
 # datasets = load_boston()
