@@ -9,16 +9,16 @@ from sklearn.experimental import enable_iterative_imputer # IterativeImputer  ìž
 from sklearn.impute import SimpleImputer, KNNImputer, IterativeImputer 
 warnings.filterwarnings(action="ignore")
 
-parameters_xgb = [
-    {'XGB__n_estimators' : [100,200,300,400,500],
-    'XGB__learning_rate' : [0.01,0.05,0.1,0.15],
-    'XGB__max_depth' : [3,5,7,10,15],
-    'XGB__gamma' : [0,1,2,3],
-    'XGB__colsample_bytree' : [0.8,0.9]}]
+# parameters_xgb = [
+#     {'XGB__n_estimators' : [100,200,300,400,500],
+#     'XGB__learning_rate' : [0.01,0.05,0.1,0.15],
+#     'XGB__max_depth' : [3,5,7,10,15],
+#     'XGB__gamma' : [0,1,2,3],
+#     'XGB__colsample_bytree' : [0.8,0.9]}]
 
-parameters_rfr = [{
-    'RFR__bootstrap': [True], 'RFR__max_depth': [5, 10, None], 
-    'RFR__max_features': ['auto', 'log2'], 'RFR__n_estimators': [5, 6, 7, 8, 9, 10, 11, 12, 13, 15]}]
+# parameters_rfr = [{
+#     'RFR__bootstrap': [True], 'RFR__max_depth': [5, 10, None], 
+#     'RFR__max_features': ['auto', 'log2'], 'RFR__n_estimators': [5, 6, 7, 8, 9, 10, 11, 12, 13, 15]}]
 
 kfold = StratifiedKFold(n_splits=5,shuffle=True,random_state=100)
 
