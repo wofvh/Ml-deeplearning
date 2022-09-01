@@ -26,4 +26,4 @@ y = tf.placeholder(tf.float32, shape=[None,y.shape[1]])
 
 w1 = tf.Variable(tf.random_normal([x.shape[1],10]))
 b1 = tf.Variable(tf.random_normal([10]))
-h1
+h1 =
