@@ -11,3 +11,6 @@ hello = (tf.constant("Hello, world!")) #헬로우라는 그래프를 정의 #con
 
 sess = tf.compat.v1.Session()
 print(sess.run(hello)) #b'Hello, world!'바이너리 형태 출력
+
+
+
