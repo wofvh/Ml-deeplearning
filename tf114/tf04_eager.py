@@ -14,3 +14,16 @@ print(sess.run(hello)) #b'Hello, world!'바이너리 형태 출력
 
 
 
+
+import tensorflow as tf
+
+class Tensor():
+    def helloo(self):
+        self.compat = tf.compat.v1.disable_eager_execution()
+        self.hello = (tf.constant('hello, world!'))
+        self.sess  = tf.compat.v1.Session()
+        print(self.sess.run(self.hello))
+        
+        
+hi= Tensor()
+hi.helloo()        

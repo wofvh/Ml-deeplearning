@@ -32,5 +32,8 @@ print(sess.run(add_and_triple, feed_dict={a:3 , b:4.5})) #22.5
 # print(sess.run(add_node, feed_dict={a: 3, b: 4.5})) #7.5 # placeholder 사용하면 여기서 입력해줘야함
 # print(sess.run(add_node, feed_dict={a: [1, 3], b:[ 2,4]})) #[3,7]행렬로 연산됨 
 
-class Add():
-    def
+class Mymodel():
+    def __init__(self):
+        
+        
+        
