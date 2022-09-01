@@ -1,12 +1,13 @@
 import autokeras as ak
+from keras.datasets import mnist, fashion_mnist , cifar10
 print(ak.__version__) #1,0 20
 import keras
 import time
 #데이터
 (x_train , y_train), (x_test , y_test) =\
-    keras.datasets.mnist.load_data()
+    keras.datasets.cifar10.load_data()
     
-print(x_train.shape ,y_train.shape,x_test.shape,y_test.shape) #(60000, 28, 28) (60000,) (10000, 28, 28) (10000,)
+print(x_train.shape ,y_train.shape,x_test.shape,y_test.shape) #(50000, 32, 32, 3) (50000, 1) (10000, 32, 32, 3) (10000, 1)
 
 
 model = ak.ImageClassifier(
@@ -31,7 +32,7 @@ y_pred = model.predict(x_test)
 
 results = model.evaluate(x_test, y_test)
 print('결과:',results)
-# print('걸린시간:',round(end-start,4))
+print('걸린시간:',round(end-start,4))
 
-# 결과: [0.03779282420873642, 0.9873999953269958]
-# 걸린시간: 3376.88
+
+

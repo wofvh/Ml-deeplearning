@@ -57,7 +57,6 @@ for step in range(epochs):
     if step %20 ==0:
         print(epochs, '\t', 'loss:',loss_val, '\t', hy_val)       
 
-#4. 평가, 예측
 # 4. 평가, 예측
 y_pred = sess.run(hypothesis, feed_dict={x: x_test})
 y_pred = np.where(y_pred > 0.5, 1, 0)
@@ -66,3 +65,6 @@ acc = accuracy_score(y_test, y_pred)
 print('acc : ', acc)
 
 sess.close()
+
+
+# acc :  0.9385964912280702

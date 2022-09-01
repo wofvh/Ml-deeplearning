@@ -27,22 +27,22 @@
 # travers.join()
 # from tensorflow.python.keras.models import Sequential
 # from tensorflow.python.keras.layers import Dense
-# import numpy as np
-# import pandas as pd
-# import tensorflow as tf
+import numpy as np
+import pandas as pd
+import tensorflow as tf
 
-# class Mymodel(object):
+class Mymodel(object):
         
-#     def data(self):
-#         x = (np.array([1,2,3]))
-#         # y = (np.array([1,2,3]))
-#         # self.y = (np.array([1,2,3]))
-#         print(f'데이터{x}')
+    def data(self):
+        x = (np.array([1,2,3]))
+        # y = (np.array([1,2,3]))
+        # self.y = (np.array([1,2,3]))
+        print(f'데이터{x}')
         
         
         
-# result = Mymodel()
-# result.data()
+result = Mymodel()
+result.data()
 
 
 

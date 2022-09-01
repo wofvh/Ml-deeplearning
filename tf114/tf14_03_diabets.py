@@ -41,7 +41,6 @@ hypothesis = tf.matmul(x, w) + b
 #3-1. 컴파일
 # loss = tf.reduce_mean(tf.square(hypothesis - y))    # mse
 loss = tf.reduce_mean(tf.square(hypothesis - y))  # binary_crossentropy
-
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=1e-7)
 # optimizer = tf.train.AdadeltaOptimizer(learning_rate=0.001)
 train = optimizer.minimize(loss)
@@ -60,12 +59,12 @@ for epochs in range(epoch):
 predict = tf.matmul(x, w_val) + b   # predict = model.predict
 # print(sess.run(hypothesis > 0.5, feed_dict={x:x_data, y:y_data}))
 
-accuracy = tf.reduce_mean(tf.cast(tf.equal(y_data, y_predict), dtype=tf.float32))
+accuracy = tf.reduce_mean(tf.cast(tf.equal(y_data, hypothesis), dtype=tf.float32))
 
-predict, acc = sess.run([y_predict, accuracy], feed_dict={x:x_data, y:y_data})
+predict, acc = sess.run([hypothesis, accuracy], feed_dict={x:x_data, y:y_data})
 
 print("===============================================================================")
-print("예측값 : \n", hypothesis_val)
+print("예측값 : \n", hypothesis)
 print("예측결과 : ", predict)
 print("accuracy : ", acc)
 

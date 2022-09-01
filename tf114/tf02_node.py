@@ -13,3 +13,12 @@ node3 = tf.add(node1, node2)
 sess = tf.compat.v1.Session()
 print(sess.run(node3))           #7.0
 
+
+import tensorflow as tf
+
+class model:
+    def node(self):
+        self.node1 = tf.constant(3.0)
+        self.node2 = tf.constant(3.0)
+        
+        
