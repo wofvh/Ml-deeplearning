@@ -58,17 +58,6 @@
 
 # car4 = Car("구형아반떄","녹색","조금낮다","4인용") 
 # car4.show_info()
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
 #         def show_info(self):
@@ -89,3 +78,33 @@
 # print(input_me(name='panda', age=20))
 # print(input_me(name='lee', age=20, food = 'pizza'))
 
+from sklearn.model_selection import train_test_split
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_boston
+import time
+
+class Exam_Model_cls(): # Class 정의하기
+    def __init__(self, output_nums, output_actfunc): # 생성자 => class 가 시작할떄 인자로 받으며 class 안에서의 변수로 지정됨 (self.output 같이)
+        self.output = output_nums # 기억해두기 1
+        self.output_func = output_actfunc # 기억해두기 2
+        
+    def make_model(self): # class 만들때 생성자에서 정의한 변수들로 모델 구성
+        model = Sequential()  
+        model.add(Dense(9, input_dim=13))
+        model.add(Dense(19, activation='sigmoid'))
+        model.add(Dense(11, activation='relu'))
+        model.add(Dense(12, activation='relu'))
+        model.add(Dense(8, activation='relu'))
+        model.add(Dense(self.output, activation = self.output_func)) # <<= 위에서 생성자로 정의한 self.output, self.output_func 두개 써서 모델 만들어줌
+        return model # 그리고 꺼내주기
+    
+    
+if __name__ == '__main__': # 파이썬을 바로 시작했을때 ( python exam.py <= 이렇게 실행하면 __name__ 이 __main__임 print(__name__) 으로 실험해보는게 좋음)
+    ## import 하면 __name__은 __main__ 이 아님
+    exam_class = Exam_Model_cls(output_nums= 1, output_actfunc= 'softmax') 
+    # ㄴ위에 만들어준 클래스 안에 생성자로 받는 파라미터 두개 넣어줌 output_nums랑 actfunc가 여기서 받아서 self.xx로 변환되는건 위에서 확인
+    # 파라미터 받아서 만들어진 클래스가 변수로 지정됨
+    model = exam_class.make_model() # 위에 생성자로 self.xx 로 변수가 지정됐으니까 지정된 클래스 안에 변수 (make_model)로 모델 꺼내서 지정해줌
+    model.summary()
