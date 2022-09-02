@@ -166,26 +166,28 @@ y = train_set_clean['ProdTaken']
 print(x.shape)
 
 from sklearn.model_selection import RandomizedSearchCV
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold,KFold
 
-x_train,x_test,y_train,y_test = train_test_split(x,y,train_size=0.93,shuffle=True,random_state=1234,stratify=y)
+
+x_train,x_test,y_train,y_test = train_test_split(x,y,train_size=0.92,shuffle=True,random_state=1234, stratify=y)
 
 from sklearn.metrics import accuracy_score
 from catboost import CatBoostClassifier
+
 # 2. 모델
 
 n_splits = 6
 # 최상의 점수 :  0.9044520547945205
 # acc : 0.954248366013072
 # 걸린 시간 : 5.827547073364258 
-kfold = StratifiedKFold(n_splits=n_splits,shuffle=True,random_state=123)
+kfold = KFold(n_splits=n_splits,shuffle=True,random_state=123)
 
-cat_paramets = {"learning_rate" : [0.20909079092170735],
+cat_paramets = {"learning_rate" : [0.1209090790920735],
                 'depth' : [8],
-                'od_pval' : [0.236844398775451],
-                'model_size_reg': [0.30614059763442997],
-                'l2_leaf_reg' :[5.535171839105427]}
-cat = CatBoostClassifier(random_state=123,verbose=False,n_estimators=500)
+                'od_pval' : [0.2326844395451],
+                'model_size_reg': [0.3250614063442997],
+                'l2_leaf_reg' :[6.53517551183905427]}
+cat = CatBoostClassifier(random_state=123456,verbose=False,n_estimators=701)
 model = RandomizedSearchCV(cat,cat_paramets,cv=kfold,n_jobs=-1)
 
 import time 
@@ -206,16 +208,10 @@ submission = pd.read_csv(path + 'sample_submission.csv',#예측에서 쓸거야!
                       )
 submission['ProdTaken'] = y_summit
 
-submission.to_csv('test100.csv',index=False)
+submission.to_csv('dacon.csv',index=False)
 
-
-##########
-# 최상의 점수 :  0.8930338463986
-# acc : 0.9418604651162791
-# 걸린 시간 : 11.291642665863037
-
-############ RandomState = 100
-# 최상의 점수 :  0.8813139873889755
-# acc : 0.921875
-
-
+# 최적의 매개변수 :  {'od_pval': 0.236844398775451, 'model_size_reg': 0.30614059763442997, 'learning_rate': 0.20909079092170735, 'l2_leaf_reg': 5.535171839105427, 'depth': 8}
+# 최상의 점수 :  0.9044368600682594
+# acc : 0.9673202614379085
+# acc : 0.9607843137254902
+# acc : 0.9644970414201184

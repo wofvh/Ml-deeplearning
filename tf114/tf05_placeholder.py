@@ -36,7 +36,7 @@ print(sess.run(add_and_triple, feed_dict={a:3 , b:4.5})) #22.5
 
 class Mymodel():
     
-    def da(self):
+    def data(self):
         self.a = tf.compat.v1.placeholder(tf.float32)
         self.b = tf.compat.v1.placeholder(tf.float32)
         self.triple = add_node * 3
@@ -51,4 +51,4 @@ class Mymodel():
          
         
 amodel = Mymodel()
-amodel.data()
+amodel.placeholder()
