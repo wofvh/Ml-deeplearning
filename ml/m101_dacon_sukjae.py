@@ -169,7 +169,7 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import StratifiedKFold,KFold
 
 
-x_train,x_test,y_train,y_test = train_test_split(x,y,train_size=0.92,shuffle=True,random_state=1234, stratify=y)
+x_train,x_test,y_train,y_test = train_test_split(x,y,train_size=0.91,shuffle=True,random_state=123, stratify=y)
 
 from sklearn.metrics import accuracy_score
 from catboost import CatBoostClassifier
@@ -180,14 +180,15 @@ n_splits = 6
 # 최상의 점수 :  0.9044520547945205
 # acc : 0.954248366013072
 # 걸린 시간 : 5.827547073364258 
-kfold = KFold(n_splits=n_splits,shuffle=True,random_state=123)
+kfold = KFold(n_splits=n_splits,shuffle=True,random_state=77)
 
 cat_paramets = {"learning_rate" : [0.1209090790920735],
                 'depth' : [8],
                 'od_pval' : [0.2326844395451],
                 'model_size_reg': [0.3250614063442997],
+                'fold_permutation_block': [142],
                 'l2_leaf_reg' :[6.53517551183905427]}
-cat = CatBoostClassifier(random_state=123456,verbose=False,n_estimators=701)
+cat = CatBoostClassifier(random_state=1234,verbose=False,n_estimators=1324)
 model = RandomizedSearchCV(cat,cat_paramets,cv=kfold,n_jobs=-1)
 
 import time 
