@@ -1,5 +1,5 @@
 from operator import methodcaller
-from sklearn.datasets import load_boston
+from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split, KFold
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures, MinMaxScaler, RobustScaler, MaxAbsScaler
 from sklearn.preprocessing import QuantileTransformer, PowerTransformer #scaling 
@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 
 #1. 데이터
-datasets = load_boston()
+datasets = fetch_california_housing()
 x, y = datasets.data, datasets.target
 print(x.shape, y.shape) # (506, 13) (506,)
 
