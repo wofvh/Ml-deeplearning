@@ -117,3 +117,5 @@ print('걸린시간:',end - start)
 
 
 # for gpu tree_method ='gpu_hist', predictor = 'gpu_predictor', gpu_id = 0,
+# 결과: 0.9666666666666667
+# 걸린시간: 0.06985950469970703

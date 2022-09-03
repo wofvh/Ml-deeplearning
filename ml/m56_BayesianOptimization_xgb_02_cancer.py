@@ -11,7 +11,7 @@ from xgboost import XGBClassifier,XGBRFRegressor
 #1. 데이터
 datasets = load_breast_cancer()
 x, y = datasets.data, datasets.target
-print(x.shape, y.shape) # (506, 13) (506,)
+print(x.shape, y.shape) # (569, 30) (569,)
 
 
 x_train, x_test, y_train, y_test = train_test_split(
@@ -68,6 +68,7 @@ def lgb_hamus(max_depth, subsample,min_child_weight, colsample_bytree, max_bin, 
     
     #*여러개의 인자를 받겠다는 의미
     #**키워드를 {딕셔너리형태로 받겠다}
+    
     model = XGBClassifier(**params)
     
     model.fit(x_train, y_train,
@@ -88,26 +89,26 @@ def lgb_hamus(max_depth, subsample,min_child_weight, colsample_bytree, max_bin, 
 # lgb_bo.maximize(init_points=5, n_iter=50)
 # print(lgb_bo.max)
 
-from xgboost import XGBClassifier,XGBRegressor
-from sklearn.model_selection import GridSearchCV
+# from xgboost import XGBClassifier,XGBRegressor
+# from sklearn.model_selection import GridSearchCV
 
-model = XGBRegressor({'n_estimators': 500, "learning_rate": 0.02,
-                      'learning_rate': int(round(0.5005950689305312)),
-                      'max_depth' : int(round(11.513147690828912,)),  #round 반올림 할때 사용  무조건 정수로 바꿔줘야함
-                      'subsample': max(min(0.9903820991923078,1),0),   #subsample은 0~1 사이의 값만 받아드림
-                      'colsample_bytree': max(min(0.8482345927989308, 1),0),    #colsample_bytree는 0~1 사이의 값만 받아드림
-                      'max_bin': max(int(round(121.15721224645952,)),10), #max_bin은 10이상의 값만 받아드림 정수형으로 받아드림
-                      'reg_lambda': max(4.231641494784486,0),    #reg_lambda는 0이상의 값만 받아드림 양수형으로 받아드림
-                      'reg_alpha': max(35.9762537995803,0), #reg_alpha는 0이상의 값만 받아드림 양수형으로 받아드림
-                      })
+# model = XGBRegressor({'n_estimators': 500, "learning_rate": 0.02,
+#                       'learning_rate': int(round(0.5005950689305312)),
+#                       'max_depth' : int(round(11.513147690828912,)),  #round 반올림 할때 사용  무조건 정수로 바꿔줘야함
+#                       'subsample': max(min(0.9903820991923078,1),0),   #subsample은 0~1 사이의 값만 받아드림
+#                       'colsample_bytree': max(min(0.8482345927989308, 1),0),    #colsample_bytree는 0~1 사이의 값만 받아드림
+#                       'max_bin': max(int(round(121.15721224645952,)),10), #max_bin은 10이상의 값만 받아드림 정수형으로 받아드림
+#                       'reg_lambda': max(4.231641494784486,0),    #reg_lambda는 0이상의 값만 받아드림 양수형으로 받아드림
+#                       'reg_alpha': max(35.9762537995803,0), #reg_alpha는 0이상의 값만 받아드림 양수형으로 받아드림
+#                       })
 
-#3.훈련
-import time
-start = time.time()
-model.fit(x_train, y_train)
-end = time.time()
+# #3.훈련
+# import time
+# start = time.time()
+# model.fit(x_train, y_train)
+# end = time.time()
 
-#4.결과
-results = model.score(x_test, y_test)
-print('결과:',results)
-print('걸린시간:',end - start)
+# #4.결과
+# results = model.score(x_test, y_test)
+# print('결과:',results)
+# print('걸린시간:',end - start)
