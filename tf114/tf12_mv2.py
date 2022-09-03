@@ -49,5 +49,5 @@ print('r2스코어 : ', r2)
 mae = mean_absolute_error(y_data, y_predict)
 print('mae : ', mae)
 
-r2스코어 :  0.41260982355293097
-mae :  15.532891845703125
+# r2스코어 :  0.41260982355293097
+# mae :  15.532891845703125
