@@ -1,5 +1,5 @@
 
-from sklearn.datasets import load_boston, load_iris
+from sklearn.datasets import load_boston, load_digits
 from sklearn.model_selection import train_test_split, KFold
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 import numpy as np
@@ -12,12 +12,24 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
 
 #1.데이터
-datasets = load_iris()
+datasets = load_digits()
 x,y = datasets.data, datasets.target
-print(x.shape,y.shape)  #(150, 4) (150,)
+print(x.shape,y.shape)  #(1797, 64) (1797,1)
+
 
 x_train,x_test,y_train,y_test = train_test_split(x,y,
                                                  random_state=1234, train_size=0.8,)
+
+
+print(x_train.shape)
+print(x_test.shape)
+print(y_train.shape)
+print(y_test.shape)
+# (1437, 64)
+# (360, 64)
+# (1437,)
+# (360,)
+
 
 kfold = KFold(n_splits=5, shuffle=True, random_state=1234)
 
@@ -56,10 +68,10 @@ print("폴리 CV 나눈 값 : ", np.mean(scores))
 
 
 
-# 기본 스코어 :  1.0
-# cv: [1.         0.71343284 1.         0.9375     0.93478261]
-# 기냥cv 엔빵: 0.9171430889033095
-# (150, 15)
-# 폴리 스코어 :  1.0
-# 폴리 CV :  [1.         0.78507463 1.         0.9375     0.93478261]
-# 폴리 CV 나눈 값 :  0.9314714471122647
+# 기본 스코어 :  0.9638888888888889
+# cv: [0.88669065 0.91747034 0.9538632  0.94396481 0.8975242 ]
+# 기냥cv 엔빵: 0.9199026392965267
+# (1797, 2145)
+# 폴리 스코어 :  0.9861111111111112
+# 폴리 CV :  [0.96964928 1.         0.95885096 0.97417128 0.93671813]
+# 폴리 CV 나눈 값 :  0.9678779308190816
