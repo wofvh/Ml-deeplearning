@@ -51,12 +51,12 @@ sess.run(tf.compat.v1.global_variables_initializer())
 
 epoch = 100
 for epochs in range(epoch):
-    train ,loss_val, w_val, _ = sess.run([train, loss, w], feed_dict={x:x_data, y:y_data})  
+    _ , hy_val,loss_val, b_val = sess.run([train,hypothesis, loss, b], feed_dict={x:x_train, y:y_train})  
     if epochs % 20== 0:
-        print(epochs, 'loss : ', loss_val, '\n', w_val)
+        print(epochs, loss_val, hy_val)
                
 #4. 평가, 예측
-predict = tf.matmul(x, w_val) + b   # predict = model.predict
+y_pred = sess.run(hypothesis, feed_dict={x:x_test, y:y_test})  # predict = model.predict
 # print(sess.run(hypothesis > 0.5, feed_dict={x:x_data, y:y_data}))
 
 accuracy = tf.reduce_mean(tf.cast(tf.equal(y_data, hypothesis), dtype=tf.float32))

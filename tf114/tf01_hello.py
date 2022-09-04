@@ -1,5 +1,6 @@
 import tensorflow as tf 
 print(tf.__version__)
+print(python.__version__)
 
 # print("Hello, world!")
 #텐서 플로우에는 함수 변수 constan라는 놈이있음
