@@ -19,22 +19,14 @@ import tensorflow as tf
 from tensorflow.python.keras.optimizer_v2 import adam , adadelta , adagrad , adamax 
 from tensorflow.python.keras.optimizer_v2 import rmsprop ,nadam
 
-learning_rate = 0.1
+learning_rate = 0.0010
 
-optimizerlist = [adam, adadelta, adagrad, adamax, rmsprop, nadam]
-
-optimizer = adam.Adam(learning_rate = learning_rate),
-optimizer = adadelta.Adadelta(learning_rate = learning_rate),
-optimizer = adagrad.Adagrad(learning_rate = learning_rate),
-optimizer = adamax.Adamax(learning_rate = learning_rate),
-optimizer = rmsprop.RMSprop(learning_rate = learning_rate),
-optimizer = nadam.Nadam(learning_rate = learning_rate,)
-
-for i in optimizerlist:
-    model.compile(loss='mse', optimizer=i, metrics=['mse'])
-    model.fit(x, y, epochs=100, batch_size=1, verbose=0)
-    loss, mse = model.evaluate(x, y, batch_size=1)
-
+# optimizer = adam.Adam(learning_rate = learning_rate)
+# optimizer = adadelta.Adadelta(learning_rate = learning_rate)
+# optimizer = adagrad.Adagrad(learning_rate = learning_rate)
+# optimizer = adamax.Adamax(learning_rate = learning_rate)
+# optimizer = rmsprop.RMSprop(learning_rate = learning_rate)
+optimizer = nadam.Nadam(learning_rate = learning_rate)
 
 model.compile(loss='mse', optimizer=optimizer)
 
@@ -44,3 +36,12 @@ model.fit(x,y, epochs=50, batch_size=1)
 loss = model.evaluate(x,y)
 y_predict = model.predict([11])
 print('loss:',round(loss,4), 'lr : ', learning_rate,'결과물:',y_predict)
+
+
+#                   loss: 6163.0708 lr :  0.1 결과물: [[179.78178]]
+# adam.Adam         loss: 1.9133 lr :  0.001 결과물: [[9.889087]]
+# adadelta.Adadelta loss: 2.7296 lr :  0.001 결과물: [[9.078296]]
+# adagrad.Adagrad   loss: 1.9729 lr :  0.001 결과물: [[9.934455]]
+#adamax.Adamax      loss: 2.6313 lr :  0.001 결과물: [[9.046783]]
+#rmsprop.RMSprop    loss: 8.671 lr :  0.001 결과물: [[6.063696]]
+#nadam.Nadam        loss: 1.7611 lr :  0.001 결과물: [[10.458817]]
