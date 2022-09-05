@@ -53,17 +53,15 @@ L3 = tf.nn.elu(L3)
 print(L3) #Tensor("Elu:0", shape=(?, 4, 4, 32), dtype=float32)
 
 #flatten
-L_flat = tf.reshape(L3, [-1, 4*4*32])
+L_flat = tf.reshape(L3, [-1, 4* 4* 32])
 print('플래튼:',L_flat)
 
-
-w4 = tf.compat.v1.get_variable('w4', shape=[4*4*32, 100],initializer=tf.contrib.
+w4 = tf.compat.v1.get_variable('w4', shape=[4* 4* 32, 100],initializer=tf.contrib.
                      layers.xavier_initializer())
 
 b4 = tf.compat.v1.Variable(tf.compat.v1.random_normal([100]), name='b4')
 L4 = tf.nn.selu(tf.matmul(L_flat, w4) + b4)
-L4 = tf.nn.dropout(L4, keep_prob=0.7)  #rate=0.3 #0.7은 30%를 끈다. #0.3은 70%를 끈다.
-
+L4 = tf.nn.dropout(L4, keep_prob=0.7) #rate=0.3 #0.7은 30%를 끈다. #0.3은 70%를 끈다.
 
 w5 = tf.compat.v1.get_variable('w5', shape=[100, 10], initializer=tf.contrib.
                      layers.xavier_initializer())
@@ -100,7 +98,7 @@ for epoch in range(training_epochs):
         avg_loss = batch_loss/total_batch #평균 loss = batch_loss/600 #1에폭당 loss #600번 돌면서 loss를 구한다.
         
         
-    print("에포:," , "%04d" % (epoch + 1), "loss=", "{:.9f}".format(avg_loss)) #4자리로 표현하겠다. #.9f는 소수점 9자리까지 표현하겠다.#
+    print("에포:,","%04d" % (epoch + 1), "loss=", "{:.9f}".format(avg_loss)) #4자리로 표현하겠다. #.9f는 소수점 9자리까지 표현하겠다.#
 print("훈련 끝")
 
 predicthion = tf.equal(tf.argmax(hyporthesis, 1), tf.argmax(y, 1)) #argmax는 가장 큰 값을 찾는다. #1은 행을 의미한다. #0은 열을 의미한다.
