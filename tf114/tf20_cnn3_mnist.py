@@ -1,5 +1,3 @@
-from pickletools import optimize
-from sys import float_repr_style
 import tensorflow as tf
 import keras
 import numpy as np
@@ -58,7 +56,7 @@ L_flat = tf.reshape(L3, [-1, 4*4*32])
 print('플래튼:',L_flat)
 
 
-w4 = tf.get_variable('w4', shape=[4*4*32, 100], initializer=tf.contrib.
+w4 = tf.get_variable('w4', shape=[4**32, 100], initializer=tf.contrib.
                      layers.xavier_initializer())
 b4 = tf.Variable(tf.random_normal([100]), name='b5')
 L4 = tf.nn.selu(tf.matmul(L_flat, w4) + b4)
@@ -74,31 +72,49 @@ hyporthesis = tf.nn.softmax(L5)
 print(hyporthesis) #Tensor("Softmax:0", shape=(?, 10), dtype=float32)
 
 #3. 컴파일, 훈련
-loss = tf.reduce_mean(-tf.reduce_sum(y*tf.log(hyporthesis), axis=1))
+# loss = tf.reduce_mean(-tf.reduce_sum(y*tf.log(hyporthesis), axis=1))
+loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=L5, labels=y))
 optimizer = tf.train.AdamOptimizer(learning_rate=0.001).minimize(loss)
-train  = optimizer.minimize(loss)
+sess = tf.compat.v1.Session()
+sess.run(tf.global_variables_initializer())
 
 # 3-2.훈련 
-sess = tf.compat.v1.Session()
-sess.run(tf.compat.v1.global_variables_initializer())
 
-epoch = 1000
-for epochs in range(epoch):
-    cost_val, hy_val, _  = sess.run([loss, hyporthesis, train], feed_dict = {x:x_train, y:y_train})
-    if epochs %20 == 0:
+training_epochs = 30
+batch_size = 100
+total_batch = int(len(x_train)/batch_size)  #60000/100 = 600 #1에폭당 600번 돈다.#int는 소수점을 버린다.
+print(total_batch)
 
-        print(epochs, 'loss : ', cost_val, 'hy_val : ', hy_val)
+for epoch in range(training_epochs):
+    
+    for i in range(total_batch):  #600번 돈다.
+        start = i* batch_size   #0
+        end = start + batch_size #100
+        batch_x, batch_y = x_train[start:end], y_train[start:end] #x_train[0:100], y_train[0:100] #0~99번째 까지
+        
+        feed_dict = {x:batch_x, y:batch_y} #x_train, y_train
+        batch_loss, _, = sess.run([loss, optimizer], feed_dict=feed_dict)   #loss, optimizer를 실행시키겠다. #_는 필요없는 값을 의미한다.
+        
+        avg_loss = batch_loss/total_batch #평균 loss = batch_loss/600 #1에폭당 loss #600번 돌면서 loss를 구한다.
+        
+        
+    print("에포:,")
+# for epochs in range(epoch):
+#     cost_val, hy_val, _  = sess.run([loss, hyporthesis, train], feed_dict = {x:x_train, y:y_train})
+#     if epochs %20 == 0:
+
+#         print(epochs, 'loss : ', cost_val, 'hy_val : ', hy_val)
 
 
-# #4.평가, 예측
-y_predict = sess.run(h,feed_dict={x:x_test})
-y_predict = sess.run(tf.argmax(y_predict,axis=1))           #텐서를 새로운 형태로 캐스팅하는데 사용한다.부동소수점형에서 정수형으로 바꾼 경우 소수점 버림.
-y_test = sess.run(tf.argmax(y_test,axis=1))             #텐서를 새로운 형태로 캐스팅하는데 사용한다.부동소수점형에서 정수형으로 바꾼 경우 소수점 버림.
-                                                                       #Boolean형태인 경우 True이면 1, False이면 0을 출력한다.
+# # #4.평가, 예측
+# y_predict = sess.run(h,feed_dict={x:x_test})
+# y_predict = sess.run(tf.argmax(y_predict,axis=1))           #텐서를 새로운 형태로 캐스팅하는데 사용한다.부동소수점형에서 정수형으로 바꾼 경우 소수점 버림.
+# y_test = sess.run(tf.argmax(y_test,axis=1))             #텐서를 새로운 형태로 캐스팅하는데 사용한다.부동소수점형에서 정수형으로 바꾼 경우 소수점 버림.
+#                                                                        #Boolean형태인 경우 True이면 1, False이면 0을 출력한다.
 
-from sklearn.metrics import r2_score,mean_absolute_error,accuracy_score
+# from sklearn.metrics import r2_score,mean_absolute_error,accuracy_score
 
-acc = accuracy_score(y_test,y_predict)
-print('acc : ', acc)
+# acc = accuracy_score(y_test,y_predict)
+# print('acc : ', acc)
 
-sess.close()
+# sess.close()
