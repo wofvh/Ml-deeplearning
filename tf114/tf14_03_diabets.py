@@ -55,20 +55,19 @@ for epochs in range(epoch):
     if epochs % 20== 0:
         print(epochs, loss_val, hy_val)
                
-#4. 평가, 예측
-y_pred = sess.run(hypothesis, feed_dict={x:x_test, y:y_test})  # predict = model.predict
-# print(sess.run(hypothesis > 0.5, feed_dict={x:x_data, y:y_data}))
+# 4.평가, 예측
+from sklearn.metrics import r2_score,mean_absolute_error
 
-accuracy = tf.reduce_mean(tf.cast(tf.equal(y_data, hypothesis), dtype=tf.float32))
+y_predict = sess.run(hypothesis, feed_dict={x:x_test})
 
-predict, acc = sess.run([hypothesis, accuracy], feed_dict={x:x_data, y:y_data})
+r2 = r2_score(y_test,y_predict)
+print('r2 : ', r2)
 
-print("===============================================================================")
-print("예측값 : \n", hypothesis)
-print("예측결과 : ", predict)
-print("accuracy : ", acc)
+mae = mean_absolute_error(y_train,hy_val)
+print('mae : ', mae)
 
 sess.close()
+
 
 
 # accuracy :  0.8681898
