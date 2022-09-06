@@ -7,8 +7,13 @@ import numpy as np
 path = './_data/travel/' # ".은 현재 폴더"
 train_set = pd.read_csv(path + 'train.csv',
                         index_col=0)
-test_set = pd.read_csv(path + 'test.csv', #예측에서 쓸거야!!
+test_set = pd.read_csv(path + 'test.csv', 
                        index_col=0)
+
+
+
+train_set.info()
+
 
 
 train_set['TypeofContact'].fillna('Self Enquiry', inplace=True)
@@ -17,7 +22,6 @@ train_set['Age'].fillna(train_set.groupby('Designation')['Age'].transform('mean'
 test_set['Age'].fillna(test_set.groupby('Designation')['Age'].transform('mean'), inplace=True)
 train_set['Age']=np.round(train_set['Age'],0).astype(int)
 test_set['Age']=np.round(test_set['Age'],0).astype(int)
-
 
 
 train_set['MonthlyIncome'].fillna(train_set.groupby('Designation')['MonthlyIncome'].transform('mean'), inplace=True)
@@ -38,9 +42,6 @@ test_set['NumberOfFollowups'].fillna(test_set.groupby('NumberOfChildrenVisiting'
 
 train_set['DurationOfPitch']=train_set['DurationOfPitch'].fillna(0)
 test_set['DurationOfPitch']=test_set['DurationOfPitch'].fillna(0)
-# train_set['DurationOfPitch'].fillna(train_set.groupby('NumberOfChildrenVisiting')['DurationOfPitch'].transform('mean'), inplace=True)
-# test_set['DurationOfPitch'].fillna(test_set.groupby('NumberOfChildrenVisiting')['DurationOfPitch'].transform('mean'), inplace=True)
-# print(train_set.isnull().sum()) 
 
 
 print(train_set[train_set['DurationOfPitch'].notnull()].groupby(['NumberOfChildrenVisiting'])['DurationOfPitch'].mean())
@@ -51,11 +52,6 @@ test_set['PreferredPropertyStar'].fillna(test_set.groupby('Occupation')['Preferr
 print(train_set[train_set['PreferredPropertyStar'].notnull()].groupby(['ProdTaken'])['PreferredPropertyStar'].mean())
 
 
-# train_set['AgeBand'] = pd.cut(train_set['Age'], 5)
-# 임의로 5개 그룹을 지정
-# print(train_set['AgeBand'])
-# [(17.957, 26.6] < (26.6, 35.2] < (35.2, 43.8] <
-# (43.8, 52.4] < (52.4, 61.0]]
 combine = [train_set,test_set]
 for dataset in combine:    
     dataset.loc[ dataset['Age'] <= 26.6, 'Age'] = 0
@@ -99,11 +95,6 @@ def outliers(data_out):
                     (data_out<lower_bound))
                      
                            
-# print(train_set['Designation'].unique())
-
-# Age_out_index= outliers(train_set['Age'])[0]
-# TypeofContact_out_index= outliers(train_set['TypeofContact'])[0] # 0
-# CityTier_out_index= outliers(train_set['CityTier'])[0] # 0
 DurationOfPitch_out_index= outliers(train_set['DurationOfPitch'])[0] #44
 Gender_out_index= outliers(train_set['Gender'])[0] # 0
 NumberOfPersonVisiting_out_index= outliers(train_set['NumberOfPersonVisiting'])[0] # 1
@@ -119,23 +110,9 @@ NumberOfChildrenVisiting_out_index= outliers(train_set['NumberOfChildrenVisiting
 Designation_out_index= outliers(train_set['Designation'])[0] # 89
 MonthlyIncome_out_index= outliers(train_set['MonthlyIncome'])[0] # 138
 
-lead_outlier_index = np.concatenate((#Age_out_index,                            # acc : 0.8650306748466258
-                                    #  TypeofContact_out_index,                 # acc : 0.8920454545454546
-                                    #  CityTier_out_index,                      # acc : 0.8920454545454546
-                                     DurationOfPitch_out_index,               # acc : 0.9156976744186046
-                                    #  Gender_out_index,                        # acc : 0.8920454545454546
-                                    #  NumberOfPersonVisiting_out_index,        # acc : 0.8835227272727273
-                                    #  NumberOfFollowups_out_index,             # acc : 0.8942598187311178
-                                    #  ProductPitched_index,                    # acc : 0.8920454545454546
-                                    #  PreferredPropertyStar_out_index,         # acc : 0.8920454545454546
-                                    #  MaritalStatus_out_index,                 # acc : 0.8920454545454546
-                                    #  NumberOfTrips_out_index,                 # acc : 0.8670520231213873
-                                    #  Passport_out_index,                      # acc : 0.8920454545454546
-                                    #  PitchSatisfactionScore_out_index,        # acc : 0.8920454545454546
-                                    #  OwnCar_out_index,                        # acc : 0.8920454545454546
-                                    #  NumberOfChildrenVisiting_out_index,      # acc : 0.8920454545454546
-                                    #  Designation_out_index,                   # acc : 0.8869047619047619
-                                    #  MonthlyIncome_out_index                  # acc : 0.8932926829268293
+lead_outlier_index = np.concatenate((#Age_out_index,                     
+                                      DurationOfPitch_out_index,               
+                              
                                      ),axis=None)
 print(len(lead_outlier_index)) #577
 
@@ -177,9 +154,7 @@ from catboost import CatBoostClassifier
 # 2. 모델
 
 n_splits = 6
-# 최상의 점수 :  0.9044520547945205
-# acc : 0.954248366013072
-# 걸린 시간 : 5.827547073364258 
+
 kfold = KFold(n_splits=n_splits,shuffle=True,random_state=77)
 
 cat_paramets = {"learning_rate" : [0.1209090790920735],
@@ -197,22 +172,20 @@ model.fit(x_train,y_train)
 end_time = time.time()-start_time 
 y_predict = model.predict(x_test)
 results = accuracy_score(y_test,y_predict)
-print('최적의 매개변수 : ',model.best_params_)
-print('최상의 점수 : ',model.best_score_)
-print('acc :',results)
-print('걸린 시간 :',end_time)
+print('파라미터 : ',model.best_params_)
+print('점수 : ',model.best_score_)
+print('에큐러시 :',results)
+print('시간 :',end_time)
 
 model.fit(x,y)
 y_summit = model.predict(test_set)
 y_summit = np.round(y_summit,0)
-submission = pd.read_csv(path + 'sample_submission.csv',#예측에서 쓸거야!!
+submission = pd.read_csv(path + 'sample_submission.csv',#
                       )
 submission['ProdTaken'] = y_summit
 
 submission.to_csv('dacon.csv',index=False)
 
-# 최적의 매개변수 :  {'od_pval': 0.236844398775451, 'model_size_reg': 0.30614059763442997, 'learning_rate': 0.20909079092170735, 'l2_leaf_reg': 5.535171839105427, 'depth': 8}
-# 최상의 점수 :  0.9044368600682594
 # acc : 0.9673202614379085
 # acc : 0.9607843137254902
 # acc : 0.9644970414201184

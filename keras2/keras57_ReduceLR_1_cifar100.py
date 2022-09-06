@@ -36,22 +36,19 @@ optimizer='adam'
 activation='relu'
 
 inputs = Input(shape=(32,32,3), name='input')
-x = Conv2D(128,(2,2),padding='valid', 
-           activation=activation, name='hidden1')(inputs) #27.27.128
+x = Conv2D(128,(2,2), activation=activation, padding='valid',  name='hidden1')(inputs) #27.27.128
 x = Dropout(drop)(x)
 x = MaxPooling2D()(x)
-x = Conv2D(32,(3,3),padding='valid',
-           activation=activation, name='hidden3')(x)      #27.27.128
+x = Conv2D(32,(3,3),activation=activation, padding='valid', name='hidden3')(x)      #27.27.128
 x = Dropout(drop)(x)
 
 # x = Flatten()(x) # (25*25*32) / Flatten의 문제점: 연산량이 너무 많아짐
 x = GlobalAveragePooling2D()(x)     #25*25*32 =20000
 
-x = Dense(128, activation=activation,name ="hidden4" )(x)      #27.27.128
+x = Dense(256, activation=activation,name ="hidden4" )(x)      #27.27.128
 x = Dropout(drop)(x)
-x = Dense(64, activation=activation,name ="hidden5" )(x)      #27.27.128
+x = Dense(128, activation=activation,name ="hidden5" )(x)      #27.27.128
 x = Dropout(drop)(x)
-
 outputs = Dense(100, activation='softmax', name='outputs')(x)
 
 model = Model(inputs=inputs, outputs=outputs)
