@@ -31,13 +31,16 @@ y_test = to_categorical(y_test)
 
 
 # 2. model
-drop=0.2,
+
+drop=0.2 #여기다가 ,를 찍어서 에러가 났었다. 개빡침
+
 optimizer='adam'
 activation='relu'
 
 inputs = Input(shape=(32,32,3), name='input')
 x = Conv2D(128,(2,2), activation=activation, padding='valid',  name='hidden1')(inputs) #27.27.128
 x = Dropout(drop)(x)
+
 x = MaxPooling2D()(x)
 x = Conv2D(32,(3,3),activation=activation, padding='valid', name='hidden3')(x)      #27.27.128
 x = Dropout(drop)(x)
@@ -47,8 +50,10 @@ x = GlobalAveragePooling2D()(x)     #25*25*32 =20000
 
 x = Dense(256, activation=activation,name ="hidden4" )(x)      #27.27.128
 x = Dropout(drop)(x)
+
 x = Dense(128, activation=activation,name ="hidden5" )(x)      #27.27.128
 x = Dropout(drop)(x)
+
 outputs = Dense(100, activation='softmax', name='outputs')(x)
 
 model = Model(inputs=inputs, outputs=outputs)
@@ -56,24 +61,20 @@ model = Model(inputs=inputs, outputs=outputs)
 model.summary()
 
 model.compile(optimizer=optimizer, metrics = ['acc'],
-              loss='categorical_crossentropy')
+                loss='categorical_crossentropy')
 
 import time
 from tensorflow.python.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
-es = EarlyStopping(monitor='val_loss', patience=20, mode ='min',verbose=1)
+es = EarlyStopping(monitor='val_loss', patience=20, mode ='min', verbose=1)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss',patience=10,  mode = 'auto',verbose=1,factor=0.5)
 start = time.time()
-model.fit(x_train,y_train, epochs=10 , validation_split=0.4, callbacks=[es,reduce_lr],#2개이상은 리스트[]로 묶어줘야함
-          batch_size=128)
-end = time.time() -start
+model.fit(x_train,y_train, epochs=10 , validation_split=0.4, callbacks=[es,reduce_lr],batch_size=128)#2개이상은 리스트[]로 묶어줘야함
+end = time.time()
 
-loss, acc = model.evaluate(x_test, y_test)
+loss, acc = model.evaluate(x_test,y_test)
 
-from sklearn.metrics import accuracy_score
-y_predict = model.predict(x_test)
-
-print('걸린시간 : ', end - start)
+print('걸린시간 : ', end )
 print("loss : ", loss)
 print('acc : ', acc)
 

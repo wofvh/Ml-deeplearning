@@ -37,6 +37,7 @@ drop = 0.2
 inputs = Input(shape=(32,32,3), name='input')
 x = Conv2D(128, (2, 2), activation=activation, padding='valid', name='hidden1')(inputs)
 x = Dropout(drop)(x)
+
 x = MaxPooling2D()(x)
 x = Conv2D(32, (3, 3), activation=activation, padding='valid', name='hidden3')(x)
 x = Dropout(drop)(x) 
@@ -64,7 +65,7 @@ es = EarlyStopping(monitor='val_loss', patience=20, mode='min', verbose=1)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', patience=10, mode='auto', verbose=1, factor=0.5) # learning rate를 0.5만큼 감축시키겠다
 
 start = time.time()
-model.fit(x_train, y_train, epochs=50, validation_split=0.2, batch_size=128, callbacks=[es,reduce_lr])
+model.fit(x_train, y_train, epochs=10, validation_split=0.2, batch_size=128, callbacks=[es,reduce_lr])
 end = time.time()
 
 loss, acc = model.evaluate(x_test,y_test)
