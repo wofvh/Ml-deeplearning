@@ -9,8 +9,8 @@ def f(x):
 
 gradient = lambda x: 2*x - 4
 
-x = 50.0
-epochs = 20
+x = 500
+epochs = 200
 learning_rate = 0.25
 
 print('step\t x\tf(x)')
