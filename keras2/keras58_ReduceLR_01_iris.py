@@ -4,22 +4,27 @@ from torch import dropout
 from tensorflow.keras.datasets import cifar100
 from sklearn.datasets import load_iris
 from tensorflow.keras.models import Sequential, Model
-from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Input, Dropout, GlobalAveragePooling2D
+from tensorflow.keras.layers import Dense, Conv2D,Conv1D, Flatten, MaxPooling2D, Input, Dropout, GlobalAveragePooling2D
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import MaxAbsScaler, RobustScaler
 from tensorflow.python.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 import keras
 import time
 from tensorflow.keras.optimizers import Adam
+from sklearn.model_selection import train_test_split
 
 # 1. data
-(x_train, y_train), (x_test, y_test) = load_iris()
+#1. 데이터
+datasets = load_iris()
+x = datasets['data']
+y = datasets['target']
 
-
-scaler = MaxAbsScaler()
-scaler.fit(x_train)
-x_train = scaler.fit_transform(x_train)
-x_test = scaler.transform(x_test)
+x_train, x_test, y_train, y_test = train_test_split(x,y,
+                                                    train_size=0.8,
+                                                    random_state=66
+                                                    )
+print(x_train.shape)#(120, 4)
+print(x_test.shape) #(30, 4)
 
 # x_train = x_train.reshape(50000, 32, 32, 3)
 # x_test = x_test.reshape(10000, 32, 32, 3)
@@ -28,23 +33,24 @@ x_test = scaler.transform(x_test)
 # y_train = to_categorical(y_train)
 # y_test = to_categorical(y_test)
 
-print(x_train.shape,x_test.shape)
 x_train = x_train.reshape(120, 4, 1)
 x_test = x_test.reshape(30, 4, 1)
 
 
-'''
+print(x_train.shape)#(120, 4, 1)
+print(x_test.shape) #(30, 4, 1)
+
 # 2. model
 
 activation = 'relu'
 drop = 0.2
 
-inputs = Input(shape=(32,32,3), name='input')
-x = Conv2D(128, (2, 2), activation=activation, padding='valid', name='hidden1')(inputs)
+inputs = Input(shape=(4,1), name='input')
+x = Conv1D(128, kernel_size=(2,2), activation=activation, padding='valid', name='hidden1')(inputs)
 x = Dropout(drop)(x)
 
 x = MaxPooling2D()(x)
-x = Conv2D(32, (3, 3), activation=activation, padding='valid', name='hidden3')(x)
+x = Conv1D(32, kernel_size=(3, 3), activation=activation, padding='valid', name='hidden3')(x)
 x = Dropout(drop)(x) 
 
 # x = Flatten()(x) # (25*25*32) / Flatten의 문제점: 연산량이 너무 많아짐
@@ -78,4 +84,3 @@ loss, acc = model.evaluate(x_test,y_test)
 print('걸린 시간: ', end)
 print('loss: ', loss)
 print('acc: ', acc)
-'''
