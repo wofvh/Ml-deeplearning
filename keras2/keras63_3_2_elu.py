@@ -6,7 +6,7 @@ def elu(x):  # elu함수는 0~1사이의 값으로 변환 # 0보다 작으면 0,
 
 elu2 = lambda x: np.maximum(0,x) + np.minimum(0,0.1*(np.exp(x)-1))
 
-x = np.arange(-2, 5, 0.8)
+x = np.arange(-7, 5, 0.10)
 y = elu2(x)
 
 plt.plot(x,y,'k-')

@@ -6,7 +6,7 @@ def leaky_relu(x):
 
 leaky_relu2 = lambda x: np.maximum(0.1*x,x)
 
-x = np.arange(-5, 5, 0.1)
+x = np.arange(-7, 5, 0.10)
 y = leaky_relu2(x)
 
 plt.plot(x,y,'k-')
