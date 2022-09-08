@@ -17,24 +17,17 @@ x = Dense(256, activation='relu')(x)
 output1 = Dense(100, activation='softmax')(x)
 
 model = Model(inputs=base_model.input, outputs=output1)
-#1.
+
+# #1.
 # for layer in base_model.layers: #레이어별로 한단씩 동결
-#     # layer.trainable = False
-
-
+#     layer.trainable = False
 # Total params: 22,353,028
 # Trainable params: 550,244
 # Non-trainable params: 21,802,784
-
-
 #2.
 base_model.trainable = False
-
-    
 # Total params: 22,353,028
 # Trainable params: 550,244
 # Non-trainable params: 21,802,784
-
-
 model.summary()
-print(base_model) 
+

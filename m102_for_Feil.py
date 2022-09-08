@@ -1,19 +1,20 @@
 
 
 
-feil_name = ["01_iris","02_cancer","03_diabets","04_wine","05_fetch_covtype",\
-    "06_digits","07_kaggle_titanic","08_boston.py","09_california","10_ddarung",\
-        "11_kaggle_bike","12_kaggle_house","13_mnist","14_cifar10",]
+# feil_name = ["01_iris","02_cancer","03_diabets","04_wine","05_fetch_covtype",\
+#     "06_digits","07_kaggle_titanic","08_boston.py","09_california","10_ddarung",\
+#         "11_kaggle_bike","12_kaggle_house","13_mnist","14_cifar10",]
 
+# keras69_01_cifar100_VGG19.py
 
-
-
+feil_name = ["01_cifar100","02_Xception","03_ResNet50","04_ResNet101","05_InceptionV3","06_InceptionResNetV2",\
+    "07_DenseNet121","08_MobileNetV2","09_NASNetMobile","10_EfficientNetB0"]
 
 # feil_name = ["01_iris.py"]
 
 
 for feil_name in feil_name:
-    with open(f"./keras2/keras58_ReduceLR_{feil_name}.py","w") as file:
+    with open(f"./keras2/keras69_{feil_name}_VGG19.py","w") as file:
         file.write("")
 
 
