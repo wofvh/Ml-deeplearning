@@ -19,6 +19,9 @@ print(x_test.shape,x_train.shape)
 print(y_test.shape,y_train.shape)
 
 
+x_train = x_train / 255
+x_test = x_test / 255
+
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
 
@@ -28,12 +31,13 @@ x_train, x_test, y_train, y_test = train_test_split(x_train, y_train,
 
 xception = Xception(weights='imagenet', include_top=False, input_shape=(32,32,3))
 
+xception.trainable = False 
 
-scaler = MaxAbsScaler()
-n = x_train.shape[0]
-x_train_reshape = x_train.reshape(n,-1) 
-x_train_transform = scaler.fit_transform(x_train_reshape)
-x_train = x_train_transform.reshape(x_train.shape) 
+# scaler = MaxAbsScaler()
+# n = x_train.shape[0]
+# x_train_reshape = x_train.reshape(n,-1) 
+# x_train_transform = scaler.fit_transform(x_train_reshape)
+# x_train = x_train_transform.reshape(x_train.shape) 
 
 
 
