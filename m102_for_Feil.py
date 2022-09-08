@@ -10,13 +10,14 @@
 feil_name = ["01_cifar100","02_Xception","03_ResNet50","04_ResNet101","05_InceptionV3","06_InceptionResNetV2",\
     "07_DenseNet121","08_MobileNetV2","09_NASNetMobile","10_EfficientNetB0"]
 
-# feil_name = ["01_iris.py"]
 
+# for feil_name in feil_name:
+#     with open(f"./keras2/keras69_{feil_name}_VGG19.py","w") as file:
+#         file.write("")
 
 for feil_name in feil_name:
-    with open(f"./keras2/keras69_{feil_name}_VGG19.py","w") as file:
+    with open(f"./keras2/keras69_cifar100_{feil_name}_.py","w") as file:
         file.write("")
-
 
 
 # feil_name = ["01_iris.py","02_cancer.py","03__diabets.py","04_wine.py","05_california.py",\
