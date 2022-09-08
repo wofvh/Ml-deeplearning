@@ -14,7 +14,7 @@ model_list = [VGG16(), VGG19(), ResNet50(), ResNet50V2(), ResNet101(), ResNet101
               NASNetLarge(), NASNetMobile(), EfficientNetB0(), EfficientNetB1(), EfficientNetB7(), Xception()]
 
 
-model.trainable = True
+# model.trainable = True
 # model_list.summary()
 
 
