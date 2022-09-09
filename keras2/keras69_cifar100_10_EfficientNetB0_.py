@@ -67,11 +67,13 @@ learning_rate = 0.001
 optimizer = Adam(lr=learning_rate)
 model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy']) 
 
-es = EarlyStopping(monitor='val_loss', patience=15, mode='min', verbose=1)
+# es = EarlyStopping(monitor='val_loss', patience=15, mode='min', verbose=1)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', patience=5, mode='auto', verbose=1, factor=0.5)  #-> 5번 만에 갱신이 안된다면 (factor=0.5) LR을 50%로 줄이겠다
 
 start = time.time()
-model.fit(x_train, y_train, epochs=1000, batch_size=100, verbose=1, validation_split=0.2, callbacks=[es, reduce_lr]) 
+model.fit(x_train, y_train, epochs=1000
+          
+          , batch_size=100, verbose=1, validation_split=0.2, callbacks= [reduce_lr]) 
 end = time.time() - start
 
 
