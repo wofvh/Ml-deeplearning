@@ -44,7 +44,7 @@ pre_train.trainable = True
 model = Sequential()
 model.add(pre_train)
 model.add(GlobalAvgPool2D())
-model.add(Dense(256, activation='relu'))
+model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.2))
 model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.2))
