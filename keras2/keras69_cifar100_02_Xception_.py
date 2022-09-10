@@ -18,7 +18,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, Ma
 print(x_test.shape,x_train.shape)
 print(y_test.shape,y_train.shape)
 
-
+x = boo = np.append(x_train,x_test,axis=0)
 x_train = x_train / 255
 x_test = x_test / 255
 
