@@ -66,9 +66,6 @@ print("진짜 최종TEST점수:", acc)
 
 print(model.feature_importances_)
 
-
-
-
 thresholds = model.feature_importances_
 print("===============================")
 for thresh in thresholds:
