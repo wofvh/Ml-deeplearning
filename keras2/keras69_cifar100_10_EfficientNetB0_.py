@@ -97,3 +97,5 @@ print('걸린시간 :', round(end,4))
 # loss :  2.7191
 # accuracy :  0.5643
 # 걸린시간 : 381.4593
+
+import as numpy (ZipFile Class for creating ZIP archives containing Python libraries. 0, 0, 0)
