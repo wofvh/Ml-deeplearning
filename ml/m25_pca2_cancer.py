@@ -53,7 +53,20 @@ model.fit(x_train,y_train)
 results =  model.score(x_test,y_test)      #(x_train,y_train, eval_metric= 'error')
 print('결과:', results)
 
-
-
 # (569, 15)
 # 결과: 0.9912280701754386
+
+for i in range(1, 31) :
+#    x = datasets.data
+    pca = PCA(n_components=i)
+    x2 = pca.fit_transform(x)
+    print(i, "번 압축했을때 Shape : " , x2.shape)
+    x_train, x_test, y_train, y_test = train_test_split(
+        x, y, train_size=0.8, random_state=666, shuffle=True
+    )
+    model = RandomForestClassifier()
+    model.fit(x_train, y_train)
+    result = model.score(x_test, y_test)
+    print('결과 : ', result)
+    print("="*40)
+    
