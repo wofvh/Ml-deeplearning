@@ -22,3 +22,8 @@ for i in range(epochs):
     #     learning_rate *= 0.5
     # x = x_new
     print('{:02d} \t{:6.5f} \t{:6.5f}'.format(i+1,x,f(x)))
+    
+    
+    
+#     loss:  [2.959928035736084, 0.5519999861717224]
+# acc:  0.552
