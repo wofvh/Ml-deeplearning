@@ -48,10 +48,15 @@ acc= accuracy_score(y_test, y_predict)
 print("진짜 최종TEST점수:", acc)
 
 
+# import pickle
+# path = "d:/study_data/_save/_xg/"
+# pickle.dump(model, open(path + "m39_picklel_save.dat", "wb"))
+
 import pickle
-path = "d:/study_data/_save/_xg/"
-pickle.dump(model, open(path + "m39_picklel_save.dat", "wb"))
+path = "D:\study_data\_data\image\men_women\me"
+pickle.dump(model, open(path + "m40_me_save.dat", "wb"))
 
 
-import joblib
-joblib.dump(model,path + "m40_joblib1_save.dat",)
+
+# import joblib
+# joblib.dump(model,path + "m40_joblib1_save.dat",)

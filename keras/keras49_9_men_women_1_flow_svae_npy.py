@@ -68,9 +68,9 @@ print(y)
 print(test_set) 
 print(x.shape,y.shape) #(840, 100, 100, 3) (840, 3)
 
-# x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7,
-#                                                     shuffle=True
-#                                                     )
+x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7,
+                                                    shuffle=True
+                                                    )
 
 
 
