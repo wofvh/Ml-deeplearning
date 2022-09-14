@@ -36,11 +36,11 @@ a_test_noised = np.clip(a_test_noised , a_min=0, a_max=1) #0이하는 1로 바�
 def autoencoder(hidden_layer_size):
     model = Sequential()
     model.add(Conv2D(hidden_layer_size, (3, 3), activation='relu', padding='same',strides=2, input_shape=(150,150,3)))
+    model.add(Conv2D(128, (3, 3), activation='relu', padding='same'))
     model.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
-    model.add(Conv2D(32, (3, 3), activation='relu', padding='same'))
-    model.add(Conv2D(16, (3, 3), activation='relu', padding='same' ))
+    model.add(Conv2D(32, (3, 3), activation='relu', padding='same' ))
     model.add(UpSampling2D((2, 2)))
-    model.add(Conv2D(8, (3, 3), activation='relu', padding='same',strides=2, input_shape=(150,150,3)))
+    model.add(Conv2D(16, (3, 3), activation='relu', padding='same',strides=2, input_shape=(150,150,3)))
     model.add(UpSampling2D((2, 2)))
     model.add(Conv2D(3, (3, 3), activation='sigmoid', padding='same'))
     # model.compile(optimizer='rmsprop', loss='mse')
@@ -56,10 +56,10 @@ model = autoencoder(hidden_layer_size=320)
 # 1.0   # 713
 model.compile(optimizer='adam', loss='binary_crossentropy')
 
-model.fit(x_train_noised, x_train, epochs=20, batch_size=66,
+model.fit(x_train_noised, x_train, epochs=30, batch_size=256,
                 validation_split=0.2)
 output = model.predict(x_test)
-output2 = model.predict(a_test_noised)
+output2 = model.predict(a_test)
 
 from matplotlib import pyplot as plt
 import random 
