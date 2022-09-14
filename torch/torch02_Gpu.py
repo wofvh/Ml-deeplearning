@@ -23,7 +23,6 @@ print(x,y)
 print(x.shape, y.shape)
 
 
-'''
 #2. 모델구성
 model = nn.Linear(1,1,).to(DEVICE)
 
@@ -61,5 +60,4 @@ loss2 = evaluate(model,criterion,x,y)
 print('최종 loss : ',loss2)
 
 results = model(torch.Tensor([4]).to(DEVICE))
-print(" 4의 예측값 :",results.item()
-'''
+print(" 4의 예측값 :",results.item())
