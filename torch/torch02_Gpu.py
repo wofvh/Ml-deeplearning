@@ -42,7 +42,7 @@ def train(model, criterion, optimizer, x, y):
     optimizer.step()
     return loss.item()
 
-epochs = 100
+epochs = 500
 for epoch in range(1, epochs + 1):
     loss = train(model,criterion,optimizer, x, y)
     print("epoch:{}, loss:{}".format(epoch,loss))
