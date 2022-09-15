@@ -2,7 +2,8 @@
 
 from calendar import EPOCH
 from tkinter import Y
-from sklearn.datasets import load_breast_cancer
+from unittest import result
+from sklearn.datasets import load_digits
 
 import torch
 import torch.nn as nn 
@@ -15,22 +16,27 @@ DEVICE  = torch.device('cuda:0' if USE_CUDA else 'cpu')
 print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
 
 
-datasets = load_breast_cancer()
+datasets = load_digits()
 x = datasets.data 
 y = datasets.target
 
 x = torch.FloatTensor(x)
 y = torch.FloatTensor(y)
 
-
 x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.2, random_state=42 , stratify=y)
+
+print('x_trian:',x_train)  
+print('x_test:',x_test) 
+print('x_test:',y_train) 
+print('x_test:',y_test) 
+
 
 x_train = torch.FloatTensor(x_train)
 y_train = torch.FloatTensor(y_train).unsqueeze(1).to(DEVICE)
 x_test = torch.FloatTensor(x_test)
 y_test = torch.FloatTensor(y_test).unsqueeze(-1).to(DEVICE)
 
-
+'''
 print('x_trian:',x_train)  
 print('x_test:',x_test) 
 
@@ -89,6 +95,45 @@ for epoch in range(1,EPOCHS + 1):
 #4. 평가, 예측
 print('======================평가, 예측======================')
 
+# def evaluate(model, criterion,x,y):
+#     model.eval()
+    
+#     with torch.no_grad(): #평가할 때는 미분을 하지 않는다
+#         y_predict = model(x_test)
+#         results = criterion(y_predict, y_test)
+#     return results.item()
+
+# loss2 = evaluate(model, criterion, x_test, y_test)
+# print('loss2:',loss2)
+
+# results = model(x_test).to(DEVICE)
+# print('results:',results)
+
+def evaluate(model, criterion, x_test, y_test): #평가할 때는 test는 미분을 하지 않음 
+    model.eval()    #eval 은 무조건 명시해줘야함
+
+    with torch.no_grad():
+        y_predict = model(x_test)
+        loss = criterion(y_predict, y_test)
+    return loss.item()
 
 
+loss = evaluate(model, criterion, x_test, y_test) # evaluate는 loss.item()을 반환
+print('최종 loss : ',loss) #평가의 대한 loss는 loss 를 잡아주면 된다
 
+y_predict = (model(x_test) >=0.5).float() #0.5보다 크면 1, 작으면 0
+print(y_predict[:10])
+
+# # y_predict = model.predict([4])
+
+score = (y_predict == y_test).float().mean() #평균을 내서 정확도를 구함 0.5보다 크면 1, 작으면 0
+print('accuracy:,{:.4f}'.format(score))
+
+from sklearn.metrics import accuracy_score
+# score = accuracy_score(y_test, y_predict) #cpu안써서 에러
+# # print('accuracy_score:',(score))
+# print('accuracy_score:,{:.4f}'.format(score))
+
+score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
+print('accuracy_score:',(score))
+'''
