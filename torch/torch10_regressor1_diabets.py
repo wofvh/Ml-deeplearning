@@ -3,7 +3,7 @@
 from calendar import EPOCH
 from tkinter import Y
 from unittest import result
-from sklearn.datasets import load_wine
+from sklearn.datasets import load_diabetes
 
 import torch
 import torch.nn as nn 
@@ -16,63 +16,56 @@ DEVICE  = torch.device('cuda:0' if USE_CUDA else 'cpu')
 print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
 
 
-datasets = load_wine()
-x = datasets.data
+datasets = load_diabetes()
+x = datasets.data 
 y = datasets.target
 
-
 x = torch.FloatTensor(x)
-y = torch.LongTensor(y)
+y = torch.FloatTensor(y)
+# print(y.unique())
 
-print(y.unique())
-# tensor([0, 1, 2])
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.2, random_state=42 ,) #stratify=y)
-
+x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.2, random_state=42 )
 
 x_train = torch.FloatTensor(x_train)
-x_test  = torch.FloatTensor(x_test)
-y_train = torch.LongTensor(y_train).to(DEVICE) #Float이 길어지면 Double로 바꿔줘야함
-y_test = torch.LongTensor(y_test).to(DEVICE) #int가 길어지면 LONG으로 바꿔줌
+x_test = torch.FloatTensor(x_test)
+y_train = torch.FloatTensor(y_train).unsqueeze(-1).to(DEVICE)
+y_test = torch.FloatTensor(y_test).unsqueeze(-1).to(DEVICE)
 
+
+# print('x_trian:',x_train.size())  
+# print('x_test:',x_test.size()) 
+# print('y_trian:',y_train.size())  
+# print('y_test:',y_test.size()) 
 
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
-
-# x_test = (x_test- torch.mean(x_test))/ torch.std(x_test) # Standard Scaler
-# x_train = (x_train - torch.mean(x_train))/ torch.std(x_train) # Standard Scaler
-
-print("=============================scaler 후=============================")
+print('########################scaler 후##################')
 
 x_train = torch.FloatTensor(x_train).to(DEVICE)
 x_test = torch.FloatTensor(x_test).to(DEVICE)
 
-
-print(x_train.size())  #torch.Size([35, 13])
-print(x_test.size())   #torch.Size([143, 13])
-print(y_train.size())  #torch.Size([35,1])
-print(y_train.size())  #torch.Size([35,1])
+print(x_train.size()) #torch.Size([88, 10])
+print(x_train.shape)  #torch.Size([88, 10])
 
 #2. 모델구성
 model  = nn.Sequential(
-    nn.Linear(13, 64),
+    nn.Linear(10, 64),
     nn.ReLU(),
     nn.Linear(64, 32),
     nn.ReLU(),
     nn.Linear(32, 16),
     nn.ReLU(),
-    nn.Linear(16, 3),
-    nn.Softmax(), #softmax를 안 써줘도됨 
-    
+    nn.Linear(16, 1),
+    nn.Sigmoid(),
 ).to(DEVICE)
 
-
 #3. 컴파일, 훈련
-# criterion = nn.BCELoss().to(DEVICE) #바이너리 크로스 엔트로피 BCE #  criterion 표준,기준
-criterion = nn.CrossEntropyLoss().to(DEVICE) #크로스 엔트로피 #  criterion 표준,기준 #CrossEntropyLoss 쓰면 원핫인코드을 안해줘도됨
+criterion = nn.BCELoss().to(DEVICE) #바이너리 크로스 엔트로피 BCE #  criterion 표준,기준
+
 optimizer  = optim.Adam(model.parameters(), lr=0.01) # model.parameters() 모델의 가중치를 가져옴 #adam 옵티마이저 #lr 학습률
 
 
@@ -96,6 +89,20 @@ for epoch in range(1,EPOCHS + 1):
 #4. 평가, 예측
 print('======================평가, 예측======================')
 
+# def evaluate(model, criterion,x,y):
+#     model.eval()
+    
+#     with torch.no_grad(): #평가할 때는 미분을 하지 않는다
+#         y_predict = model(x_test)
+#         results = criterion(y_predict, y_test)
+#     return results.item()
+
+# loss2 = evaluate(model, criterion, x_test, y_test)
+# print('loss2:',loss2)
+
+# results = model(x_test).to(DEVICE)
+# print('results:',results)
+
 def evaluate(model, criterion, x_test, y_test): #평가할 때는 test는 미분을 하지 않음 
     model.eval()    #eval 은 무조건 명시해줘야함
 
@@ -104,27 +111,22 @@ def evaluate(model, criterion, x_test, y_test): #평가할 때는 test는 미분
         loss = criterion(y_predict, y_test)
     return loss.item()
 
-loss = evaluate(model, criterion, x_test, y_test) # evaluate는 loss.item()을 반환 #
+
+loss = evaluate(model, criterion, x_test, y_test) # evaluate는 loss.item()을 반환
 print('최종 loss : ',loss) #평가의 대한 loss는 loss 를 잡아주면 된다
 
-# y_predict = (model(x_test) >=0.5).float() #0.5보다 크면 1, 작으면 0
-# print(y_predict[:10])
-
-
-y_predict = torch.argmax(model(x_test), axis=1) #argmax는 가장 큰 값의 인덱스를 반환
+y_predict = (model(x_test) >=0.5).float() #0.5보다 크면 1, 작으면 0
 print(y_predict[:10])
+
 # # y_predict = model.predict([4])
 
 score = (y_predict == y_test).float().mean() #평균을 내서 정확도를 구함 0.5보다 크면 1, 작으면 0
-print('accuracy:,{:.4f}'.format(score))
+print('r2_score:,{:.4f}'.format(score))
 
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, r2_score
 # score = accuracy_score(y_test, y_predict) #cpu안써서 에러
 # # print('accuracy_score:',(score))
 # print('accuracy_score:,{:.4f}'.format(score))
 
-score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
-print('accuracy_score:',(score))
-
-# accuracy:,0.9301
-# accuracy_score: 0.9300699300699301
+score = r2_score(y_test.cpu().numpy(), y_predict.cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
+print('r2_score:',(score))

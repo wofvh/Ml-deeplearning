@@ -3,7 +3,7 @@
 from calendar import EPOCH
 from tkinter import Y
 from unittest import result
-from sklearn.datasets import load_wine
+from sklearn.datasets import load_digits
 
 import torch
 import torch.nn as nn 
@@ -16,7 +16,7 @@ DEVICE  = torch.device('cuda:0' if USE_CUDA else 'cpu')
 print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
 
 
-datasets = load_wine()
+datasets = load_digits()
 x = datasets.data
 y = datasets.target
 
@@ -25,7 +25,7 @@ x = torch.FloatTensor(x)
 y = torch.LongTensor(y)
 
 print(y.unique())
-# tensor([0, 1, 2])
+#tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.2, random_state=42 ,) #stratify=y)
 
@@ -36,14 +36,14 @@ y_train = torch.LongTensor(y_train).to(DEVICE) #Float이 길어지면 Double로 
 y_test = torch.LongTensor(y_test).to(DEVICE) #int가 길어지면 LONG으로 바꿔줌
 
 
-from sklearn.preprocessing import StandardScaler
-scaler = StandardScaler()
-x_train = scaler.fit_transform(x_train)
-x_test = scaler.transform(x_test)
+# from sklearn.preprocessing import StandardScaler
+# scaler = StandardScaler()
+# x_train = scaler.fit_transform(x_train)
+# x_test = scaler.transform(x_test)
 
 
-# x_test = (x_test- torch.mean(x_test))/ torch.std(x_test) # Standard Scaler
-# x_train = (x_train - torch.mean(x_train))/ torch.std(x_train) # Standard Scaler
+x_test = (x_test- torch.mean(x_test))/ torch.std(x_test) # Standard Scaler
+x_train = (x_train - torch.mean(x_train))/ torch.std(x_train) # Standard Scaler
 
 print("=============================scaler 후=============================")
 
@@ -58,13 +58,13 @@ print(y_train.size())  #torch.Size([35,1])
 
 #2. 모델구성
 model  = nn.Sequential(
-    nn.Linear(13, 64),
+    nn.Linear(64, 64),
     nn.ReLU(),
     nn.Linear(64, 32),
     nn.ReLU(),
     nn.Linear(32, 16),
     nn.ReLU(),
-    nn.Linear(16, 3),
+    nn.Linear(16, 10),
     nn.Softmax(), #softmax를 안 써줘도됨 
     
 ).to(DEVICE)
@@ -126,5 +126,5 @@ from sklearn.metrics import accuracy_score
 score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
 print('accuracy_score:',(score))
 
-# accuracy:,0.9301
-# accuracy_score: 0.9300699300699301
+# accuracy:,0.8860
+# accuracy_score: 0.885952712100139

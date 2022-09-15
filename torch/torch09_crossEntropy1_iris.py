@@ -64,7 +64,7 @@ model  = nn.Sequential(
     nn.Linear(32, 16),
     nn.ReLU(),
     nn.Linear(16, 3),
-    # nn.Sigmoid(), #softmax를 안 써줘도됨 
+    nn.Sigmoid(), #softmax를 안 써줘도됨 
 ).to(DEVICE)
 
 #3. 컴파일, 훈련
@@ -120,10 +120,12 @@ loss = evaluate(model, criterion, x_test, y_test) # evaluate는 loss.item()을 �
 print('최종 loss : ',loss) #평가의 대한 loss는 loss 를 잡아주면 된다
 
 
-y_predict = (model(x_test) >=0.5).float() #0.5보다 크면 1, 작으면 0
-print(y_predict[:10])
-y_predict = torch.argmax(model(x_test), dim=1) #argmax는 가장 큰 값의 인덱스를 반환
+# y_predict = (model(x_test) >=0.5).float() #0.5보다 크면 1, 작으면 0
+# print(y_predict[:10])
 
+
+y_predict = torch.argmax(model(x_test), axis=1) #argmax는 가장 큰 값의 인덱스를 반환
+print(y_predict[:10])
 # # y_predict = model.predict([4])
 
 score = (y_predict == y_test).float().mean() #평균을 내서 정확도를 구함 0.5보다 크면 1, 작으면 0
