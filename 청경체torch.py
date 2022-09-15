@@ -14,7 +14,7 @@ warnings.filterwarnings(action='ignore')
 
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-# Hyperparameter Setting
+# Hyperparameter Setting 하이퍼파라미터 설정
 
 CFG = {
     'EPOCHS':5,
@@ -23,7 +23,7 @@ CFG = {
     'SEED':41
 }
 
-# Fixed RandomSeed
+# Fixed RandomSeed 고정 RandomSeed
 
 def seed_everything(seed):
     random.seed(seed)
@@ -36,10 +36,10 @@ def seed_everything(seed):
 
 seed_everything(CFG['SEED']) # Seed 고정
 
-# Data Pre-processing
+# Data Pre-processing  데이터 전처리
 
-all_input_list = sorted(glob.glob('./train_input/*.csv'))
-all_target_list = sorted(glob.glob('./train_target/*.csv'))
+all_input_list = sorted(glob.glob('./_data/green/train_input/*.csv'))
+all_target_list = sorted(glob.glob('./_data/green/train_target/*.csv'))
 
 train_input_list = all_input_list[:50]
 train_target_list = all_target_list[:50]
@@ -47,8 +47,11 @@ train_target_list = all_target_list[:50]
 val_input_list = all_input_list[50:]
 val_target_list = all_target_list[50:]
 
-# CustomDataset
+print(val_input_list)
+print(val_target_list)
 
+
+# CustomDataset  커스텀 데이터셋
 class CustomDataset(Dataset):
     def __init__(self, input_paths, target_paths, infer_mode):
         self.input_paths = input_paths
@@ -93,7 +96,7 @@ val_dataset = CustomDataset(val_input_list, val_target_list, False)
 val_loader = DataLoader(val_dataset, batch_size=CFG['BATCH_SIZE'], shuffle=False, num_workers=6)
 
 
-# Model Define
+# Model Define 모델 정의
 
 class BaseModel(nn.Module):
     def __init__(self):
@@ -158,6 +161,7 @@ def validation(model, val_loader, criterion, device):
             val_loss.append(loss.item())
             
     return np.mean(val_loss)
+
 # Run!!
 
 model = BaseModel()
@@ -169,6 +173,8 @@ best_model = train(model, optimizer, train_loader, val_loader, scheduler, device
 
 test_input_list = sorted(glob.glob('./test_input/*.csv'))
 test_target_list = sorted(glob.glob('./test_target/*.csv'))
+
+# Inference 추론
 
 def inference_per_case(model, test_loader, test_path, device):
     model.to(device)
@@ -201,10 +207,7 @@ for path in test_target_list:
     submission.write(path)
 submission.close()
 
-
-
-
-
+'''
 
 
 
