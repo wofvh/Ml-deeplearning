@@ -1,45 +1,105 @@
-#logistic_regression 회기모델 (시그모이드 함수)2 진분류 0 N 1 
-
+# pytorch titcianic
 from calendar import EPOCH
 from tkinter import Y
 from unittest import result
 from sklearn.datasets import load_digits
-
+import pandas as pd
 import torch
 import torch.nn as nn 
 import torch.optim as optim
 from sklearn.model_selection import train_test_split
 import numpy as np
-
+import seaborn as sns
 USE_CUDA = torch.cuda.is_available()
 DEVICE  = torch.device('cuda:0' if USE_CUDA else 'cpu')
 print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
 
 
-datasets = load_digits()
-x = datasets.data 
-y = datasets.target
+path = './_data/kaggle_titanic/'
+train_set = pd.read_csv(path +'train.csv')
 
-x = torch.FloatTensor(x)
-y = torch.FloatTensor(y)
+test_set = pd.read_csv(path + 'test.csv',index_col=0) 
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.2, random_state=42 , stratify=y)
 
-print('x_trian:',x_train)  
-print('x_test:',x_test) 
-print('x_test:',y_train) 
-print('x_test:',y_test) 
+print(train_set.Pclass.value_counts()) 
 
+Pclass1 = train_set["Survived"][train_set["Pclass"] == 1].value_counts(normalize = True)[1]*100
+Pclass2 = train_set["Survived"][train_set["Pclass"] == 2].value_counts(normalize = True)[1]*100
+Pclass3 = train_set["Survived"][train_set["Pclass"] == 3].value_counts(normalize = True)[1]*100
+print(f"Percentage of Pclass 1 who survived: {Pclass1}")
+print(f"Percentage of Pclass 2 who survived: {Pclass2}")
+print(f"Percentage of Pclass 3 who survived: {Pclass3}")
+
+
+female = train_set["Survived"][train_set["Sex"] == 'female'].value_counts(normalize = True)[1]*100
+male = train_set["Survived"][train_set["Sex"] == 'male'].value_counts(normalize = True)[1]*100
+print(f"Percentage of females who survived: {female}")
+print(f"Percentage of males who survived: {male}")
+
+sns.barplot(x="SibSp", y="Survived", data=train_set)
+
+       
+# df = pd.DataFrame(y)
+# print(df)
+# oh = OneHotEncoder(sparse=False) # sparse=true 는 매트릭스반환 False는 array 반환
+# y = oh.fit_transform(df)
+# print(y)
+
+# print(test_set.columns)
+# print(train_set.info()) # info 정보출력
+# print(train_set.describe()) # describe 평균치, 중간값, 최소값 등등 출력
+
+#### 결측치 처리 1. 제거 ####
+
+train_set = train_set.fillna({"Embarked": "S"})
+train_set.Age = train_set.Age.fillna(value=train_set.Age.mean())
+
+train_set = train_set.drop(['Name'], axis = 1)
+test_set = test_set.drop(['Name'], axis = 1)
+
+train_set = train_set.drop(['Ticket'], axis = 1)
+test_set = test_set.drop(['Ticket'], axis = 1)
+
+train_set = train_set.drop(['Cabin'], axis = 1)
+test_set = test_set.drop(['Cabin'], axis = 1)
+
+train_set = pd.get_dummies(train_set,drop_first=True)
+test_set = pd.get_dummies(test_set,drop_first=True)
+
+test_set.Age = test_set.Age.fillna(value=test_set.Age.mean())
+test_set.Fare = test_set.Fare.fillna(value=test_set.Fare.mode())
+
+print(train_set, test_set, train_set.shape, test_set.shape)
+
+############################
+
+
+
+x = train_set.drop(['Survived', 'PassengerId'], axis=1)  # drop 데이터에서 ''사이 값 빼기
+print(x)
+print(x.columns)
+print(x.shape) # (891, 8)
+
+y = train_set['Survived'] 
+print(y)
+print(y.shape) # (891,)
+
+x = torch.FloatTensor(x.values)
+y = torch.FloatTensor(y.values)
+
+x_train, x_test, y_train, y_test = train_test_split(x,y,
+                                                    train_size=0.7,
+                                                    random_state=66
+                                                    )
+
+print(x_train.size(), x_test.size(), y_train.size(), y_test.size()) 
 
 x_train = torch.FloatTensor(x_train)
-y_train = torch.FloatTensor(y_train).unsqueeze(1).to(DEVICE)
 x_test = torch.FloatTensor(x_test)
+y_train = torch.FloatTensor(y_train).unsqueeze(-1).to(DEVICE)
 y_test = torch.FloatTensor(y_test).unsqueeze(-1).to(DEVICE)
 
-'''
-print('x_trian:',x_train)  
-print('x_test:',x_test) 
-
+print(x_train.size(), x_test.size(), y_train.size(), y_test.size()) 
 
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
@@ -54,12 +114,13 @@ print('x_test:',x_test)
 x_train = torch.FloatTensor(x_train).to(DEVICE)
 x_test = torch.FloatTensor(x_test).to(DEVICE)
 
-print(x_train.size()) #([113, 30]
-print(x_train.shape)  #[113, 30]
+print(x_train.size()) #torch.Size([623, 8])
+print(x_train.shape)  #torch.Size([623, 8])
+
 
 #2. 모델구성
 model  = nn.Sequential(
-    nn.Linear(30, 64),
+    nn.Linear(8 ,64),
     nn.ReLU(),
     nn.Linear(64, 32),
     nn.ReLU(),
@@ -136,4 +197,7 @@ from sklearn.metrics import accuracy_score
 
 score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
 print('accuracy_score:',(score))
-'''
+
+
+
+
