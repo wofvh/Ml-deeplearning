@@ -1,5 +1,6 @@
 #logistic_regression 회기모델 (시그모이드 함수)2 진분류 0 N 1 
 
+from calendar import EPOCH
 from tkinter import Y
 from sklearn.datasets import load_breast_cancer
 
@@ -63,13 +64,30 @@ model  = nn.Sequential(
 ).to(DEVICE)
 
 #3. 컴파일, 훈련
-criterion = nn.BCELoss().to(DEVICE) #바이너리 크로스 엔트로피 BCE # criterion은 
+criterion = nn.BCELoss().to(DEVICE) #바이너리 크로스 엔트로피 BCE #  criterion 표준,기준
+
+optimizer  = optim.Adam(model.parameters(), lr=0.01) # model.parameters() 모델의 가중치를 가져옴 #adam 옵티마이저 #lr 학습률
 
 
+def train(model, criterion , optimizer , x_train, y_train):
+    model.train() # 훈련모드로 바꿔줌 써도되고 안 써도됨 ^^
+    optimizer.zero_grad()#잔여 미분값 초기화 #필수정의
+    hypothesis = model(x_train)
+    loss = criterion(hypothesis, y_train) # criterion 표준,기준
+    # y_pred = model(x_train) #모델에 x_train을 넣어서 y_pred를 예측
+    # loss = criterion(y_pred, y_train) #예측값과 y_train을 비교해서 loss를 구함
+    loss.backward() # 역전파를 실행하게됨 ! #필수정의
+    optimizer.step()# 가중치를 갱신한다 
+    return loss.item() #loss.item() 스칼라값을 반환 
+
+EPOCHS = 100
+for epoch in range(1,EPOCHS + 1):   
+    loss = train(model, criterion , optimizer , x_train, y_train)
+    print('epoch {}, loss: {:.8f}'.format(epoch, loss)) 
 
 
-
-
+#4. 평가, 예측
+print('======================평가, 예측======================')
 
 
 

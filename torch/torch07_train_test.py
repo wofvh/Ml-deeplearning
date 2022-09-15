@@ -62,3 +62,50 @@ model = nn.Sequential(
     nn.Linear(3, 2),
     nn.Linear(2, 3),
     ).to(DEVICE)
+
+# 컴파일, 훈련
+# model.compile(loss='mse',optimizer='SGD')
+criterion = nn.MSELoss() # criterion 표준,기준
+optimizer = optim.Adam(model.parameters(),lr=0.01) # 모든 parameters에 맞춰 optim 적용
+# optim.Adam(model.parameters(),lr=0.01) # 모든 parameters에 맞춰 optim 적용
+
+
+def train(model, criterion, optimizer, x, y ):
+    # model.train()         # 훈련 mode (디폴트라서 명시 안하면 train mode임)
+    optimizer.zero_grad()   # 1.손실함수의 기울기를 초기화
+    hypthesis = model(x)
+    # loss =  nn.MSELoss(hypthesis, y) # 에러
+    # loss =  nn.MSELoss()(hypthesis, y)
+    loss  = criterion(hypthesis,y)
+    
+    loss.backward()         # 2.가중치 역전파
+    optimizer.step()        # 3.가중치 갱신
+    return loss.item()
+epochs = 50
+for epoch in range(1, epochs +1):
+    loss = train(model, criterion, optimizer, x, y)
+    print('epoch : {}, loss : {}'.format(epoch,loss))
+
+#4. 평가, 예측
+# loss = model.evaluate(x_test,y_test)
+def evaluate(model, criterion, x, y):
+    model.eval()            # 평가 mode
+
+    with torch.no_grad():
+        y_predict = model(x)
+        results = criterion(y_predict,y)
+    return results.item()
+
+
+loss2 = evaluate(model, criterion, x, y)
+print('최종 loss : ',loss2)
+
+# y_predict = model.predict([4])
+
+results = model(A).to(DEVICE)
+
+
+print('result : ',results.tolist())
+
+# 최종 loss :  0.00027760813827626407
+# result :  [[1.8611129522323608, 1.3490010499954224, 3.5845212936401367]]
