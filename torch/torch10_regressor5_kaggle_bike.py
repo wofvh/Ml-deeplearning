@@ -13,30 +13,65 @@ DEVICE  = torch.device('cuda:0' if USE_CUDA else 'cpu')
 print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
 
 
+
+#1. 데이터
 path = './_data/kaggle_bike/'
-train_set = pd.read_csv(path +'train.csv')
+train_set = pd.read_csv(path + 'train.csv') # + 명령어는 문자를 앞문자와 더해줌  index_col=n n번째 컬럼을 인덱스로 인식
+            
+test_set = pd.read_csv(path + 'test.csv') # 예측에서 쓸거임  
 
-test_set = pd.read_csv(path + 'test.csv',index_col=0) 
- 
+print(train_set.info()) # 컬럼별 정보 출력)      
+print(test_set.info()) # 컬럼별 정보 출력)      
+
+'''                        
+print(train_set)
+print(train_set.shape) # (10886, 12)
+                  
 print(test_set)
-print(test_set.shape) #(715, 9) #train_set과 열 값이 '1'차이 나는 건 count를 제외했기 때문이다.예측 단계에서 값을 대입
-
+print(test_set.shape) # (6493, 9)
+print(test_set.info()) # (715, 9)
 print(train_set.columns)
-print(train_set.info()) #null은 누락된 값이라고 하고 "결측치"라고도 한다.
-print(train_set.describe()) 
+print(train_set.info()) # info 정보출력
+print(train_set.describe()) # describe 평균치, 중간값, 최소값 등등 출력
+'''
 
-###### 결측치 처리 1.제거##### dropna 사용
-print(train_set.isnull().sum()) #각 컬럼당 결측치의 합계
-train_set = train_set.fillna(train_set.median())
-print(train_set.isnull().sum())
-print(train_set.shape)
-test_set = test_set.fillna(test_set.median())
 
-x = train_set.drop(['count'],axis=1) #axis는 컬럼 
+######## 년, 월 ,일 ,시간 분리 ############
+
+train_set["hour"] = [t.hour for t in pd.DatetimeIndex(train_set.datetime)]
+train_set["day"] = [t.dayofweek for t in pd.DatetimeIndex(train_set.datetime)]
+train_set["month"] = [t.month for t in pd.DatetimeIndex(train_set.datetime)]
+train_set['year'] = [t.year for t in pd.DatetimeIndex(train_set.datetime)]
+train_set['year'] = train_set['year'].map({2011:0, 2012:1})
+
+test_set["hour"] = [t.hour for t in pd.DatetimeIndex(test_set.datetime)]
+test_set["day"] = [t.dayofweek for t in pd.DatetimeIndex(test_set.datetime)]
+test_set["month"] = [t.month for t in pd.DatetimeIndex(test_set.datetime)]
+test_set['year'] = [t.year for t in pd.DatetimeIndex(test_set.datetime)]
+test_set['year'] = test_set['year'].map({2011:0, 2012:1})
+
+train_set.drop('datetime',axis=1,inplace=True) # 트레인 세트에서 데이트타임 드랍
+train_set.drop('casual',axis=1,inplace=True) # 트레인 세트에서 캐주얼 레지스터드 드랍
+train_set.drop('registered',axis=1,inplace=True)
+
+test_set.drop('datetime',axis=1,inplace=True) # 트레인 세트에서 데이트타임 드랍
+
+print(train_set)
+print(test_set)
+##########################################
+
+
+x = train_set.drop(['count'], axis=1)  # drop 데이터에서 ''사이 값 빼기
+print(x)
 print(x.columns)
-print(x.shape) #(1459, 9)
-y = train_set['count']
+print(x.shape) # (10886, 12)
 
+y = train_set['count'] 
+print(y)
+print(y.shape) # (10886,)
+
+# x = torch.FloatTensor(x.values)
+# y = torch.FloatTensor(y.values)
 
 x = torch.FloatTensor(x.values)
 y = torch.FloatTensor(y.values)
@@ -47,7 +82,7 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_si
 
 print(x_train.size(), x_test.size(), y_train.size(), y_test.size()) 
 
-'''
+
 x_train = torch.FloatTensor(x_train)
 x_test = torch.FloatTensor(x_test)
 y_train = torch.FloatTensor(y_train).unsqueeze(-1).to(DEVICE)
@@ -58,9 +93,6 @@ print('x_trian:',x_train.size())
 print('x_test:',x_test.size()) 
 print('y_trian:',y_train.size())  
 print('y_test:',y_test.size()) 
-
-
-
 
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
@@ -75,15 +107,17 @@ x_test = torch.FloatTensor(x_test).to(DEVICE)
 print(x_train) #torch.Size([88, 10])
 print(x_train)  #torch.Size([88, 10])
 
-#2. 모델구성
-model  = nn.Sequential(
-    nn.Linear(10, 64),
+#2. 모델 
+model = nn.Sequential(
+    nn.Linear(12,128),
     nn.ReLU(),
-    nn.Linear(64, 32),
+    nn.Linear(128,64),
     nn.Sigmoid(),
-    nn.Linear(32, 16),
+    nn.Linear(64,32),
     nn.ReLU(),
-    nn.Linear(16, 1),
+    nn.Linear(32,16),
+    nn.Linear(16,8),
+    nn.Linear(8,1),
 ).to(DEVICE)
 
 
@@ -156,6 +190,5 @@ score = r2_score(y_test.detach().cpu().numpy(), y_predict.detach().cpu().numpy()
 print('r2_score:',(score))
 
 
-# 최종 loss :  2689.358154296875
-# r2_score: 0.6052634231139864
-'''
+# 최종 loss :  4916.58349609375
+# r2_score: 0.8506773519377434
