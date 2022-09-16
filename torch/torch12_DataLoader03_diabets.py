@@ -126,8 +126,8 @@ def evaluate(model, criterion,loader): #평가할 때는 test는 미분을 하�
     for x_bacth, y_bacth in loader:
         with torch.no_grad():
             y_predict = model(x_bacth)
-            
             loss = criterion(y_predict, y_bacth)
+            total_loss += loss.item() 
     return total_loss
 
 
@@ -142,5 +142,5 @@ score = r2_score(y_test.detach().cpu().numpy(), y_predict.detach().cpu().numpy()
 print('r2_score:',(score))
 
 
-# 최종 loss :  4364.61572265625
-# r2_score: 0.26865163350032495
+# accuracy:,0.9649
+# accuracy_score: 0.9649122807017544
