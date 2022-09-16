@@ -1,5 +1,9 @@
 #logistic_regression 회기모델 (시그모이드 함수)2 진분류 0 N 1 
 
+import os # 에러가 설명
+os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
 from calendar import EPOCH
 from tkinter import Y
 from turtle import forward
@@ -23,18 +27,18 @@ y = datasets.target
 
 
 x = torch.FloatTensor(x)
-y = torch.LongTensor(y)
+y = torch.FloatTensor(y)
 
 print(y.unique())
 #tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.2, random_state=42 ,) #stratify=y)
+x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.7, random_state=42 ,) #stratify=y)
 
 
 x_train = torch.FloatTensor(x_train)
 x_test  = torch.FloatTensor(x_test)
-y_train = torch.LongTensor(y_train).to(DEVICE) #Float이 길어지면 Double로 바꿔줘야함
-y_test = torch.LongTensor(y_test).to(DEVICE) #int가 길어지면 LONG으로 바꿔줌
+y_train = torch.FloatTensor(y_train).unsqueeze(-1).to(DEVICE)
+y_test = torch.FloatTensor(y_test).unsqueeze(-1).to(DEVICE)
 
 
 # from sklearn.preprocessing import StandardScaler
@@ -51,13 +55,24 @@ print("=============================scaler 후=============================")
 x_train = torch.FloatTensor(x_train).to(DEVICE)
 x_test = torch.FloatTensor(x_test).to(DEVICE)
 
+###########################################################################################
+from torch.utils.data import TensorDataset,DataLoader
+train_set = TensorDataset(x_train, y_train) # x , y 를 합친다
+test_set = TensorDataset(x_test, y_test) # x , y 를 합친다
 
-print(x_train.size())  #torch.Size([35, 13])
-print(x_test.size())   #torch.Size([143, 13])
-print(y_train.size())  #torch.Size([35,1])
-print(y_train.size())  #torch.Size([35,1])
-
-
+print(train_set)
+print('-===============train_set[0]=================================')
+print(train_set[0])
+print('-===============train_set[0][0]=================================')
+print(train_set[0][0])
+print('-===============train_set[0][1]=================================')
+print(train_set[0][1])
+print('-===============train_setlen=================================')
+print(len(train_set))  #406708
+#x.y 배치를 합체한다 
+train_loader  = DataLoader(train_set, batch_size=10000, shuffle=True)
+test_loader  = DataLoader(test_set, batch_size=10000, shuffle=True)
+'''
 #2. 모델구성
 class Mymodel(nn.Module):
     def __init__(self, input_dim,output_dim):
@@ -87,33 +102,41 @@ criterion = nn.CrossEntropyLoss().to(DEVICE) #크로스 엔트로피 #  criterio
 optimizer  = optim.Adam(model.parameters(), lr=0.01) # model.parameters() 모델의 가중치를 가져옴 #adam 옵티마이저 #lr 학습률
 
 
-def train(model, criterion , optimizer , x_train, y_train):
+def train(model, criterion , optimizer , loader):
     model.train() # 훈련모드로 바꿔줌 써도되고 안 써도됨 ^^
-    optimizer.zero_grad()#잔여 미분값 초기화 #필수정의
-    hypothesis = model(x_train)
-    loss = criterion(hypothesis, y_train) # criterion 표준,기준
+    total_loss = 0
 
+    for x_batch, y_batch in loader:
+        optimizer.zero_grad()#잔여 미분값 초기화 #필수정의
+        hypothesis = model(x_train)
+        loss = criterion(hypothesis, y_train) # criterion 표준,기준
 
-    loss.backward() # 역전파를 실행하게됨 ! #필수정의
-    optimizer.step()# 가중치를 갱신한다 
-    return loss.item() #loss.item() 스칼라값을 반환 
+        loss.backward() # 역전파를 실행하게됨 ! #필수정의
+        optimizer.step()# 가중치를 갱신한다 
+        total_loss += loss.item() #loss.item() loss를 가져옴
+ 
+    return total_loss /len(loader) 
 
-EPOCHS = 10
+EPOCHS = 15
 for epoch in range(1,EPOCHS + 1):   
-    loss = train(model, criterion , optimizer , x_train, y_train)
-    print('epoch {}, loss: {:.8f}'.format(epoch, loss)) 
+    loss = train(model, criterion , optimizer , train_loader)
+    if epoch % 10==0:
+        print('epoch {}, loss: {:.8f}'.format(epoch, loss)) 
 
 
 #4. 평가, 예측
 print('======================평가, 예측======================')
 
-def evaluate(model, criterion, x_test, y_test): #평가할 때는 test는 미분을 하지 않음 
+def evaluate(model, criterion, loader): #평가할 때는 test는 미분을 하지 않음 
     model.eval()    #eval 은 무조건 명시해줘야함
+    total_loss = 0
 
-    with torch.no_grad():
-        y_predict = model(x_test)
-        loss = criterion(y_predict, y_test)
-    return loss.item()
+    for x_bacth ,y_batch in loader:
+        with torch.no_grad():
+            y_predict = model(x_bacth)
+            loss = criterion(y_predict, y_batch)
+            total_loss += loss.item()
+        return total_loss
 
 loss = evaluate(model, criterion, x_test, y_test) # evaluate는 loss.item()을 반환 #
 print('최종 loss : ',loss) #평가의 대한 loss는 loss 를 잡아주면 된다
@@ -130,4 +153,4 @@ from sklearn.metrics import accuracy_score
 score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
 print('accuracy_score:',(score))
 
-
+'''

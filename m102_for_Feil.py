@@ -16,7 +16,7 @@ feil_name = ["01_iris","02_cancer","03_diabets","04_wine","05_fetch_covtype",\
 #         file.write("")
 
 for feil_name in feil_name:
-    with open(f"./torch/torch11_class{feil_name}.py","w") as file:
+    with open(f"./torch/torch_DataLoader{feil_name}.py","w") as file:
         file.write("")
 
 
