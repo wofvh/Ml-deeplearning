@@ -1,6 +1,4 @@
 #logistic_regression 회기모델 (시그모이드 함수)2 진분류 0 N 1 
-from calendar import EPOCH
-from sklearn.datasets import fetch_california_housing
 import pandas as pd
 import torch
 import torch.nn as nn 
@@ -158,7 +156,6 @@ for epoch in range(EPOCHS+1):
     loss = train(model, criterion , optimizer,x_train ,y_train)
     print('epoch {}, loss: {:.8f}'.format(epoch, loss)) 
     
-
 
 #4. 평가, 예측
 print('======================평가, 예측======================')
