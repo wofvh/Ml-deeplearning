@@ -66,8 +66,8 @@ print(train_set[0][1])
 print('-===============train_setlen=================================')
 print(len(train_set))  #406708
 #x.y 배치를 합체한다 
-train_loader  = DataLoader(train_set, batch_size=1000, shuffle=True)
-test_loader  = DataLoader(test_set, batch_size=1000, shuffle=True)
+train_loader  = DataLoader(train_set, batch_size=500, shuffle=True)
+test_loader  = DataLoader(test_set, batch_size=500, shuffle=True)
 
 #2. 모델구성
 class Mymodel(nn.Module):
@@ -91,7 +91,7 @@ class Mymodel(nn.Module):
         x = self.softmax(x)
         return x
         
-model = Mymodel(54,8).to(DEVICE)
+model = Mymodel(x_test.shape[1],8).to(DEVICE)
 #3. 컴파일, 훈련
 # criterion = nn.BCELoss().to(DEVICE) #바이너리 크로스 엔트로피 BCE #  criterion 표준,기준
 criterion = nn.CrossEntropyLoss().to(DEVICE) #크로스 엔트로피 #  criterion 표준,기준 #CrossEntropyLoss 쓰면 원핫인코드을 안해줘도됨
@@ -113,7 +113,7 @@ def train(model, criterion , optimizer , loader):
  
     return total_loss /len(loader) 
 
-EPOCHS = 15
+EPOCHS = 100
 for epoch in range(1,EPOCHS + 1):   
     loss = train(model, criterion , optimizer , train_loader)
     if epoch % 10==0:
@@ -134,7 +134,7 @@ def evaluate(model, criterion, loader): #평가할 때는 test는 미분을 하�
             total_loss += loss.item()
         return total_loss
 
-loss = evaluate(model, criterion, x_test, y_test) # evaluate는 loss.item()을 반환 #
+loss = evaluate(model, criterion, test_loader) # evaluate는 loss.item()을 반환 #
 print('최종 loss : ',loss) #평가의 대한 loss는 loss 를 잡아주면 된다
 
 y_predict = torch.argmax(model(x_test), axis=1) #argmax는 가장 큰 값의 인덱스를 반환

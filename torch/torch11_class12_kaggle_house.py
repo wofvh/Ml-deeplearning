@@ -103,7 +103,7 @@ class Mymodel(nn.Module):
         self.relu = nn.ReLU()
         self.linear4 = nn.Linear(32 ,8)
         self.linear5 = nn.Linear(8, output_dim)
-    def forwad(self,input_size):
+    def forward(self,input_size):
         x = self.linear1(input_size)
         x = self.linear2(x)
         x = self.sigmoid(x)
@@ -158,3 +158,7 @@ from sklearn.metrics import r2_score
 
 score = r2_score(y_test.detach().cpu().numpy(), y_predict.detach().cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
 print('r2_score:',(score))
+
+
+# 최종 loss :  2079226496.0
+# r2_score: 0.6838466825739029
