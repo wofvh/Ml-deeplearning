@@ -1,10 +1,5 @@
 #logistic_regression 회기모델 (시그모이드 함수)2 진분류 0 N 1 
-
-from calendar import EPOCH
-from tkinter import Y
-from unittest import result
 from sklearn.datasets import load_iris
-
 import torch
 import torch.nn as nn 
 import torch.optim as optim
@@ -23,6 +18,7 @@ y = datasets['target']
 x = torch.FloatTensor(x)
 y = torch.LongTensor(y)
 
+print(y.unique())
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.2, random_state=42 , stratify=y)
 
@@ -56,16 +52,27 @@ print(x_train.size()) #torch.Size([30, 4])
 print(x_test.shape)  #torch.Size([120, 4])
 
 #2. 모델구성
-model  = nn.Sequential(
-    nn.Linear(4, 64),
-    nn.ReLU(),
-    nn.Linear(64, 32),
-    nn.ReLU(),
-    nn.Linear(32, 16),
-    nn.ReLU(),
-    nn.Linear(16, 3),
-    nn.Sigmoid(), #softmax를 안 써줘도됨 
-).to(DEVICE)
+class Mymodel(nn.Module):
+    def __init__(self, input_dim, output_dim):
+        super(Mymodel,self).__init__()
+        self.linear1 = nn.Linear(input_dim, 64)
+        self.linear2 = nn.Linear(64 ,32)
+        self.linear3 = nn.Linear(32,16)
+        self.linera4 = nn.Linear(16,output_dim)
+        self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
+    
+    def forward(self, input_size):
+        x = self.linear1(input_size)
+        x = self.relu(x)
+        x = self.linear2(x)
+        x = self.relu(x)
+        x = self.linear3(x)
+        x = self.linera4(x)
+        x = self.sigmoid(x)
+        return x
+
+model = Mymodel(4,3).to(DEVICE)
 
 #3. 컴파일, 훈련
 # criterion = nn.BCELoss().to(DEVICE) #바이너리 크로스 엔트로피 BCE #  criterion 표준,기준
@@ -125,5 +132,5 @@ print('accuracy_score:',(score))
 
 
 
-#accuracy:,0.9333
-#accuracy_score: 0.9333333333333333
+# accuracy:,0.9417
+# accuracy_score: 0.9416666666666667

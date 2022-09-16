@@ -199,5 +199,5 @@ score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())  # cpu로 
 print('accuracy_score:',(score))
 
 
-
-
+# accuracy:,0.8470
+# accuracy_score: 0.8470149253731343
