@@ -4,10 +4,6 @@ import os # 에러가 설명
 os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
-from calendar import EPOCH
-from tkinter import Y
-from turtle import forward
-from unittest import result
 from sklearn.datasets import fetch_covtype
 
 import torch
@@ -27,18 +23,18 @@ y = datasets.target
 
 
 x = torch.FloatTensor(x)
-y = torch.FloatTensor(y)
+y = torch.LongTensor(y)
 
 print(y.unique())
-#tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+#tensor([1, 2, 3, 4, 5, 6, 7])
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.7, random_state=42 ,) #stratify=y)
 
 
 x_train = torch.FloatTensor(x_train)
 x_test  = torch.FloatTensor(x_test)
-y_train = torch.FloatTensor(y_train).unsqueeze(-1).to(DEVICE)
-y_test = torch.FloatTensor(y_test).unsqueeze(-1).to(DEVICE)
+y_train = torch.LongTensor(y_train).to(DEVICE)
+y_test = torch.LongTensor(y_test).to(DEVICE)
 
 
 # from sklearn.preprocessing import StandardScaler
@@ -70,9 +66,9 @@ print(train_set[0][1])
 print('-===============train_setlen=================================')
 print(len(train_set))  #406708
 #x.y 배치를 합체한다 
-train_loader  = DataLoader(train_set, batch_size=10000, shuffle=True)
-test_loader  = DataLoader(test_set, batch_size=10000, shuffle=True)
-'''
+train_loader  = DataLoader(train_set, batch_size=1000, shuffle=True)
+test_loader  = DataLoader(test_set, batch_size=1000, shuffle=True)
+
 #2. 모델구성
 class Mymodel(nn.Module):
     def __init__(self, input_dim,output_dim):
@@ -95,7 +91,7 @@ class Mymodel(nn.Module):
         x = self.softmax(x)
         return x
         
-model = Mymodel(54,7).to(DEVICE)
+model = Mymodel(54,8).to(DEVICE)
 #3. 컴파일, 훈련
 # criterion = nn.BCELoss().to(DEVICE) #바이너리 크로스 엔트로피 BCE #  criterion 표준,기준
 criterion = nn.CrossEntropyLoss().to(DEVICE) #크로스 엔트로피 #  criterion 표준,기준 #CrossEntropyLoss 쓰면 원핫인코드을 안해줘도됨
@@ -152,5 +148,3 @@ from sklearn.metrics import accuracy_score
 
 score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
 print('accuracy_score:',(score))
-
-'''
