@@ -77,8 +77,8 @@ x = torch.FloatTensor(x.values)
 y = torch.FloatTensor(y.values)
 
 # print(y.unique())
-x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.2, random_state=42 )
-
+x_train, x_test, y_train, y_test = train_test_split(x, y, 
+                                                    shuffle=True, train_size=0.2, random_state=42 )
 
 print(x_train.size(), x_test.size(), y_train.size(), y_test.size()) 
 
@@ -168,7 +168,6 @@ def evaluate(model, criterion, x_test, y_test): #평가할 때는 test는 미분
         y_predict = model(x_test)
         loss = criterion(y_predict, y_test)
     return loss.item()
-
 
 loss = evaluate(model, criterion, x_test, y_test) # evaluate는 loss.item()을 반환
 print('최종 loss : ',loss) #평가의 대한 loss는 loss 를 잡아주면 된다

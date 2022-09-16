@@ -207,8 +207,6 @@ for path in test_target_list:
     submission.write(path)
 submission.close()
 
-'''
-
 
 
 

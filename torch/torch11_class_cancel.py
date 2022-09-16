@@ -1,10 +1,7 @@
-#logistic_regression 회기모델 (시그모이드 함수)2 진분류 0 N 1 
-
 from calendar import EPOCH
 from tkinter import Y
 from unittest import result
 from sklearn.datasets import load_breast_cancer
-
 import torch
 import torch.nn as nn 
 import torch.optim as optim
@@ -14,8 +11,8 @@ import numpy as np
 USE_CUDA = torch.cuda.is_available()
 DEVICE  = torch.device('cuda:0' if USE_CUDA else 'cpu')
 print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
-
-
+        
+        
 datasets = load_breast_cancer()
 x = datasets.data 
 y = datasets.target
@@ -52,17 +49,28 @@ x_test = torch.FloatTensor(x_test).to(DEVICE)
 print(x_train.size()) #([113, 30]
 print(x_train.shape)  #[113, 30]
 
-#2. 모델구성
-model  = nn.Sequential(
-    nn.Linear(30, 64),
-    nn.ReLU(),
-    nn.Linear(64, 32),
-    nn.ReLU(),
-    nn.Linear(32, 16),
-    nn.ReLU(),
-    nn.Linear(16, 1),
-    nn.Sigmoid(),
-).to(DEVICE)
+class Mymodel(nn.Module): #nn.Module을 상속받아서 사용
+    def __init__(self, input_dim, output_dim):#클래스에는 반드시 __init__이라는 함수가 들어감
+        super(Mymodel,self).__init__() # 생성자까지 다쓰겠다는 의미   
+        self.linear1 = nn.Linear(input_dim, 64)
+        self.linear2 = nn.Linear(64, 32)
+        self.linear3 = nn.Linear(32, 16)
+        self.linear4 = nn.Linear(16,output_dim )
+        self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
+    
+    def forward(self, input_size): #forward 함수는 반드시 있어야함 (순전파)
+        x = self.linear1(input_size) #input_size를 linear1에 넣어서 x에 저장 
+        x = self.relu(x)             #x를 relu에 넣어서 x에 저장
+        x = self.linear2(x)
+        x = self.relu(x)
+        x = self.linear3(x)
+        x = self.linear4(x)
+        x = self.sigmoid(x)
+        return x 
+        
+model = Mymodel(30,1).to(DEVICE)
+        
 
 #3. 컴파일, 훈련
 criterion = nn.BCELoss().to(DEVICE) #바이너리 크로스 엔트로피 BCE #  criterion 표준,기준
@@ -90,20 +98,6 @@ for epoch in range(1,EPOCHS + 1):
 #4. 평가, 예측
 print('======================평가, 예측======================')
 
-# def evaluate(model, criterion,x,y):
-#     model.eval()
-    
-#     with torch.no_grad(): #평가할 때는 미분을 하지 않는다
-#         y_predict = model(x_test)
-#         results = criterion(y_predict, y_test)
-#     return results.item()
-
-# loss2 = evaluate(model, criterion, x_test, y_test)
-# print('loss2:',loss2)
-
-# results = model(x_test).to(DEVICE)
-# print('results:',results)
-
 def evaluate(model, criterion, x_test, y_test): #평가할 때는 test는 미분을 하지 않음 
     model.eval()    #eval 은 무조건 명시해줘야함
 
@@ -125,13 +119,9 @@ score = (y_predict == y_test).float().mean() #평균을 내서 정확도를 구�
 print('accuracy:,{:.4f}'.format(score))
 
 from sklearn.metrics import accuracy_score
-# score = accuracy_score(y_test, y_predict) #cpu안써서 에러
-# # print('accuracy_score:',(score))
-# print('accuracy_score:,{:.4f}'.format(score))
 
 score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
 print('accuracy_score:',(score))
 
-
-# accuracy:0.9430
+# accuracy:,0.9430
 # accuracy_score: 0.9429824561403509
