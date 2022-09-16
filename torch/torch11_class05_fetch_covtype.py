@@ -80,7 +80,7 @@ class Mymodel(nn.Module):
         x = self.softmax(x)
         return x
         
-model = Mymodel(54,7).to(DEVICE)
+model = Mymodel(x_test.shape[1],8).to(DEVICE)
 #3. 컴파일, 훈련
 # criterion = nn.BCELoss().to(DEVICE) #바이너리 크로스 엔트로피 BCE #  criterion 표준,기준
 criterion = nn.CrossEntropyLoss().to(DEVICE) #크로스 엔트로피 #  criterion 표준,기준 #CrossEntropyLoss 쓰면 원핫인코드을 안해줘도됨
@@ -98,7 +98,7 @@ def train(model, criterion , optimizer , x_train, y_train):
     optimizer.step()# 가중치를 갱신한다 
     return loss.item() #loss.item() 스칼라값을 반환 
 
-EPOCHS = 10
+EPOCHS = 1000
 for epoch in range(1,EPOCHS + 1):   
     loss = train(model, criterion , optimizer , x_train, y_train)
     print('epoch {}, loss: {:.8f}'.format(epoch, loss)) 
@@ -131,3 +131,5 @@ score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())  # cpu로 
 print('accuracy_score:',(score))
 
 
+# accuracy:,0.4881
+# accuracy_score: 0.48807469718809837

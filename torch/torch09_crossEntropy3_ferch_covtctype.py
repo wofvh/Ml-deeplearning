@@ -65,7 +65,7 @@ model  = nn.Sequential(
     nn.ReLU(),
     nn.Linear(32, 16),
     nn.ReLU(),
-    nn.Linear(16, 7),
+    nn.Linear(16, 8),
     nn.Softmax(), #softmax를 안 써줘도됨 
     
 ).to(DEVICE)
@@ -88,7 +88,7 @@ def train(model, criterion , optimizer , x_train, y_train):
     optimizer.step()# 가중치를 갱신한다 
     return loss.item() #loss.item() 스칼라값을 반환 
 
-EPOCHS = 10
+EPOCHS = 100
 for epoch in range(1,EPOCHS + 1):   
     loss = train(model, criterion , optimizer , x_train, y_train)
     print('epoch {}, loss: {:.8f}'.format(epoch, loss)) 
@@ -130,3 +130,7 @@ print('accuracy_score:',(score))
 # CUDA error: device-side assert triggered
 # CUDA kernel errors might be asynchronously reported at some other API call,so the stacktrace below might be incorrect.
 # For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+
+
+# accuracy:,0.4881
+# accuracy_score: 0.48807469718809837

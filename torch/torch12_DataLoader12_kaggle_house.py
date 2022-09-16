@@ -153,7 +153,7 @@ def train(model, criterion,optimizer, loader):
 
 EPOCHS = 1000
 for epoch in range(EPOCHS+1):
-    loss = train(model, criterion , optimizer,x_train ,y_train)
+    loss = train(model, criterion , optimizer,train_loader)
     print('epoch {}, loss: {:.8f}'.format(epoch, loss)) 
     
 
@@ -178,3 +178,7 @@ from sklearn.metrics import r2_score
 
 score = r2_score(y_test.detach().cpu().numpy(), y_predict.detach().cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
 print('r2_score:',(score))
+
+
+# 최종 loss :  2602643200.0
+# r2_score: 0.6042594505124279

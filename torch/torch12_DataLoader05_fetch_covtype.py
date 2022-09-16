@@ -148,3 +148,7 @@ from sklearn.metrics import accuracy_score
 
 score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
 print('accuracy_score:',(score))
+
+
+# accuracy:,0.4881
+# accuracy_score: 0.4881012483936112
