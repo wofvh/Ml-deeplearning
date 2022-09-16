@@ -164,7 +164,6 @@ from sklearn.metrics import r2_score
 score = r2_score(y_test.detach().cpu().numpy(), y_predict.detach().cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
 print('r2_score:',(score))
 
-
 # ======================평가, 예측======================
 # 최종 loss :  3971.0791015625
 # r2_score: 0.879393478795192

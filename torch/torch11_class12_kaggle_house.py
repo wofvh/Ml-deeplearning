@@ -94,20 +94,25 @@ print(x_test.size())    #torch.Size([1168, 75])
 
 #2. 모델 
 class Mymodel(nn.Module):
-    def __init__(sefl, input_dim, ouput_dim):
-        super(Mymodel,self).
-    nn.Linear(75,512),
-    nn.ReLU(),
-    nn.Linear(512,256),
-    nn.Sigmoid(),
-    nn.Linear(256,128),
-    nn.ReLU(),
-    nn.Linear(128,64),
-    nn.Linear(64,32),
-    nn.Linear(32,1),
-).to(DEVICE)
-
-
+    def __init__(self, input_dim, output_dim):
+        super(Mymodel,self).__init__()
+        self.linear1 = nn.Linear(input_dim, 128)
+        self.linear2 = nn.Linear(128,64)
+        self.sigmoid = nn.Sigmoid()
+        self.linear3 = nn.Linear(64,32)
+        self.relu = nn.ReLU()
+        self.linear4 = nn.Linear(32 ,8)
+        self.linear5 = nn.Linear(8, output_dim)
+    def forwad(self,input_size):
+        x = self.linear1(input_size)
+        x = self.linear2(x)
+        x = self.sigmoid(x)
+        x = self.linear3(x)
+        x = self.relu(x)
+        x = self.linear4(x)
+        x = self.linear5(x)
+        return x
+        
 model = Mymodel(75,1).to(DEVICE)
 
 #3. 컴파일 훈련
