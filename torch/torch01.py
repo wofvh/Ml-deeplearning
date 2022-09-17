@@ -1,5 +1,3 @@
-from pickletools import optimize
-from unittest import result
 import numpy as np
 import torch
 import torch.nn as nn
@@ -21,7 +19,7 @@ model = nn.Linear(1,1)#input x, output y / 단층레이어, 선형회귀
 
 #3. 컴파일 훈련
 criterion  = nn.MSELoss()# 로스는 표준 , mse
-optimizer = optim.SGD(model.parameters(), lr=0.01)#Parameter를 모두 업데이트 하겠다. lr=0.01 <<무조건 명시해야함
+optimizer = optim.SGD(model.parameters(), lr=0.01)#Parameter를 모두 업데이트 하겠다. model.parameters() / lr=0.01 <<무조건 명시해야함
 
 def train(model, criterion, optimizer, x, y):
     optimizer.zero_grad() #돌면서 미분해서 남은 값을을 0 으로 초기화#역전파 전에 gradient를 0으로 초기화

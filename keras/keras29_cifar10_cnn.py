@@ -42,7 +42,7 @@ for i, idx in enumerate(random_idx):
     x_train = (x_train - x_mean) / x_std
     x_test = (x_test - x_mean) / x_std
     
-    x_train, x_val, y_train, y_val = train_test_split(x_train, y_train,t_size=0.3)
+    x_train, x_val, y_train, y_val = train_test_split(x_train, y_train,train_size=0.7)
     
     print(x_train.shape)
     print(y_train.shape)
@@ -65,7 +65,7 @@ for i, idx in enumerate(random_idx):
 def model_build():
      model = Sequential()
      
-     input= Input(shape=(32, 32, 3))
+     input= Input(shape=(32,))
      
      output = Conv2D(filter=32, kernel_size=3, padding='same',activation='relu')(input)
      output = MaxPool2D(pool_size=(2, 2), strides=2, padding='same')(output)

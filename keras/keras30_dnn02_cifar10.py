@@ -1,7 +1,7 @@
 import tensorflow as tf
 from warnings import filters
 from tensorflow.python.keras.models import Sequential, Model
-from tensorflow.python.keras.layers import Activation, Dense, Conv2D, Flatten, MaxPooling2D, Input
+from tensorflow.python.keras.layers import Activation, Dense, Conv2D, Flatten, MaxPooling2D, Input,LSTM
 from keras.datasets import mnist, fashion_mnist, cifar10, cifar100
 import numpy as np
 import pandas as pd
@@ -64,7 +64,7 @@ print(x_test.shape, y_test.shape)
 
 #2. 모델구성
 model = Sequential()
-model.add(LS(10, input_shape = (32*32*3,)))
+model.add(LSTM(10, input_shape = (32*32*3,)))
 model.add(Flatten())  # (N, 5408)
 model.add(Dense(32, activation='relu'))
 model.add(Dense(32, activation='relu'))

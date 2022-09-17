@@ -34,18 +34,18 @@ x_test = scaler.transform(x_test)
 x_train = scaler.transform(x_train)
 
 
-####################겟더미#######################
-# y = pd.get_dummies(y)  #겟더미는 y_predict 할때 np아니고 tf.argmax로 바꾸기
-# print(y)
-################################################
+###################겟더미#######################
+y = pd.get_dummies(y)  #겟더미는 y_predict 할때 np아니고 tf.argmax로 바꾸기
+print(y)
+###############################################
 
-# ####################원핫인코더###################
-# df = pd.DataFrame(y)
-# print(df)
-# oh = OneHotEncoder(sparse=False) # sparse=true 는 매트릭스반환 False는 array 반환
-# y = oh.fit_transform(df)
-# print(y)
-# ################################################
+####################원핫인코더###################
+df = pd.DataFrame(y)
+print(df)
+oh = OneHotEncoder(sparse=False) # sparse=true 는 매트릭스반환 False는 array 반환
+y = oh.fit_transform(df)
+print(y)
+################################################
 
 ###################케라스########################
 y_train = to_categorical(y_train)
