@@ -32,7 +32,7 @@ scaler = StandardScaler()
 scaler.fit(x_train)
 x_test = scaler.transform(x_test)
 x_train = scaler.transform(x_train)
-
+d
 
 ###################겟더미#######################
 y = pd.get_dummies(y)  #겟더미는 y_predict 할때 np아니고 tf.argmax로 바꾸기
