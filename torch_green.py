@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import os
 import glob
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -19,10 +18,10 @@ warnings.filterwarnings(action='ignore')
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 CFG = {
-    'EPOCHS':1,
+    'EPOCHS':50,
     'LEARNING_RATE':1e-3,
     'BATCH_SIZE':16,
-    'SEED':41
+    'SEED':123
 }
 
 def seed_everything(seed):
@@ -86,25 +85,7 @@ class CustomDataset(Dataset):
             imputed = imputer.fit_transform(input_df)
             input_df = pd.DataFrame(imputed, columns=input_df.columns)
             
-            # print(input_df)
-            # plt.rc('font', family='NanumBarunGothic')
-            # plt.figure(figsize=(10,5))
-            # ax = sns.heatmap(input_df)
-            # plt.show()
-            
-            # print(input_df.describe())
-            # q3 = input_df.quantile(0.75)
-            # q1 = input_df.quantile(0.25)
-
-            # iqr = (q3 - q1)
-            # iqr = iqr * 1.5
-            # lowest = q1 - iqr
-            # highest = q3 + iqr
-            # input_1 = input_df[iqr != 0.0]
-            # print(input_1)
-            # outlier_index = input_df[((input_1 < lowest) | (input_1 > highest))].index
-            # print(len(input_1))
-            # print(len(outlier_index))
+        
             input_df[input_df.columns] = standard.fit_transform(input_df[input_df.columns])
             input_length = int(len(input_df)/1440)
             target_length = int(len(target_df))
@@ -187,15 +168,15 @@ class BaseModel(nn.Module):
         self.lstm = nn.GRU(input_size=40, hidden_size=256, batch_first=True, bidirectional=False)
         self.classifier = nn.Sequential(
             
-            nn.Linear(256,50),
-            nn.ReLU6(),
-            nn.Linear(50,32),
-            nn.ReLU6(),
-            nn.Linear(32,16),
-            nn.ReLU6(),
-            nn.Linear(16,8),
+            nn.Linear(256,128),
             nn.ReLU(),
-            nn.Dropout(0.1),
+            nn.Linear(128,64),
+            nn.ReLU(),
+            nn.Linear(64,32),
+            nn.ReLU(),
+            nn.Linear(32,8),
+            nn.ReLU(),
+            # nn.Dropout(0.1),
             nn.Linear(8,1),
             
         )
@@ -288,13 +269,6 @@ for test_input_path, test_target_path in zip(test_input_list, test_target_list):
     test_loader = DataLoader(test_dataset, batch_size = CFG['BATCH_SIZE'], shuffle=False, num_workers=0)
     inference_per_case(best_model, test_loader, test_target_path, device)
     
-# import zipfile
-# os.chdir("D:\study_data\_data\green/test_target/")
-# submission = zipfile.ZipFile("../submission.zip", 'w')
-# for path in test_target_list:
-#     path = path.split('/')[-1]
-#     submission.write(path)
-# submission.close()
 
 import zipfile
 filelist = ['TEST_01.csv','TEST_02.csv','TEST_03.csv','TEST_04.csv','TEST_05.csv', 'TEST_06.csv']
