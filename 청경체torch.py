@@ -3,12 +3,16 @@ import pandas as pd
 import numpy as np
 import os
 import glob
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, Normalizer
+from sklearn.impute import KNNImputer
+from datetime import datetime
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from tqdm.auto import tqdm
+
 import warnings
 warnings.filterwarnings(action='ignore') 
 
@@ -17,7 +21,7 @@ device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cp
 # Hyperparameter Setting 하이퍼파라미터 설정
 
 CFG = {
-    'EPOCHS':5,
+    'EPOCHS':20,
     'LEARNING_RATE':1e-3,
     'BATCH_SIZE':16,
     'SEED':41
@@ -50,7 +54,6 @@ val_target_list = all_target_list[50:]
 print(val_input_list)
 print(val_target_list)
 
-
 # CustomDataset  커스텀 데이터셋
 class CustomDataset(Dataset):
     def __init__(self, input_paths, target_paths, infer_mode):
@@ -64,10 +67,53 @@ class CustomDataset(Dataset):
         for input_path, target_path in tqdm(zip(self.input_paths, self.target_paths)):
             input_df = pd.read_csv(input_path)
             target_df = pd.read_csv(target_path)
-            
+            # minmax = MinMaxScaler()
+            standard = StandardScaler()
+            # norm = Normalizer()
+            # print(input_df.info())
+            input_df['시간'] = pd.to_datetime(input_df['시간'])
+            input_df['년'] = input_df['시간'].dt.year 
+            input_df['월'] = input_df['시간'].dt.month 
+            input_df['일'] = input_df['시간'].dt.day 
+            input_df['시'] = input_df['시간'].dt.hour 
+            input_df['분'] = input_df['시간'].dt.minute 
             input_df = input_df.drop(columns=['시간'])
-            input_df = input_df.fillna(0)
+            try:
+              input_df = input_df.drop(columns=['외부온도추정관측치', '외부습도추정관측치'])
+            except:
+              input_df = input_df.drop(columns=['외부온도관측치', '외부습도관측치'])
+            # input_df = input_df.dropna(how='all').reset_index(drop=True)
+            # input_df = input_df.fillna(0)
+            # try:
+            #   input_df['외부온도추정관측치'] = input_df['외부온도추정관측치'].fillna(0)
+            #   input_df['외부습도추정관측치'] = input_df['외부습도추정관측치'].fillna(0)
+            # except:
+            #   input_df['외부습도관측치'] = input_df['외부습도관측치'].fillna(0)
+            #   input_df['외부습도관측치'] = input_df['외부습도관측치'].fillna(0)
+            imputer = KNNImputer(n_neighbors=5)
+            imputed = imputer.fit_transform(input_df)
+            input_df = pd.DataFrame(imputed, columns=input_df.columns)
             
+            # print(input_df)
+            # plt.rc('font', family='NanumBarunGothic')
+            # plt.figure(figsize=(10,5))
+            # ax = sns.heatmap(input_df)
+            # plt.show()
+            
+            # print(input_df.describe())
+            # q3 = input_df.quantile(0.75)
+            # q1 = input_df.quantile(0.25)
+
+            # iqr = (q3 - q1)
+            # iqr = iqr * 1.5
+            # lowest = q1 - iqr
+            # highest = q3 + iqr
+            # input_1 = input_df[iqr != 0.0]
+            # print(input_1)
+            # outlier_index = input_df[((input_1 < lowest) | (input_1 > highest))].index
+            # print(len(input_1))
+            # print(len(outlier_index))
+            input_df[input_df.columns] = standard.fit_transform(input_df[input_df.columns])
             input_length = int(len(input_df)/1440)
             target_length = int(len(target_df))
             
@@ -96,8 +142,21 @@ val_dataset = CustomDataset(val_input_list, val_target_list, False)
 val_loader = DataLoader(val_dataset, batch_size=CFG['BATCH_SIZE'], shuffle=False, num_workers=6)
 
 
-# Model Define 모델 정의
+train_dataset[0]
 
+train_dataset[0][0]
+
+len(train_dataset)
+
+
+len(train_dataset[0][0])
+
+it = iter(train_dataset)
+
+for i in range(10):
+    print(i, next(it))
+    
+# Model Define 모델 정의
 class BaseModel(nn.Module):
     def __init__(self):
         super(BaseModel, self).__init__()
@@ -206,6 +265,7 @@ for path in test_target_list:
     path = path.split('/')[-1]
     submission.write(path)
 submission.close()
+'''
 
 
 
