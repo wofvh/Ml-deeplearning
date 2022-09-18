@@ -51,7 +51,7 @@ optimizer = adam_v2.Adam(lr=learning_rate)
 
 model.compile(loss='mae', optimizer='adam',metrics=['acc'])
 # "".join은 " "사이에 있는 문자열을 합치겠다는 기능
-hist = model.fit(x_train, y_train, epochs=50, batch_size=1000, 
+hist = model.fit(x_train, y_train, epochs=500, batch_size=100, 
                 validation_data=(val_data, val_target),
                 verbose=2,callbacks = [es,reduced_lr]
                 )
