@@ -162,8 +162,16 @@ class BaseModel(nn.Module):
         super(BaseModel, self).__init__()
         self.lstm = nn.LSTM(input_size=37, hidden_size=256, batch_first=True, bidirectional=False)
         self.classifier = nn.Sequential(
-            nn.Linear(256, 1),
+              nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Linear(64, 32),
+            nn.ReLU(),
+            nn.Linear(32, 16),
+            nn.Linear(16, 1),
         )
+        
         
     def forward(self, x):
         hidden, _ = self.lstm(x)
@@ -233,6 +241,9 @@ best_model = train(model, optimizer, train_loader, val_loader, scheduler, device
 test_input_list = sorted(glob.glob('./test_input/*.csv'))
 test_target_list = sorted(glob.glob('./test_target/*.csv'))
 
+test_input_list = sorted(glob.glob('D:\study_data\_data\dacon_vegi/test_input/*.csv'))
+test_target_list = sorted(glob.glob('D:\study_data\_data\dacon_vegi/test_target/*.csv'))
+
 # Inference 추론
 
 def inference_per_case(model, test_loader, test_path, device):
@@ -265,6 +276,17 @@ for path in test_target_list:
     path = path.split('/')[-1]
     submission.write(path)
 submission.close()
+
+import zipfile
+filelist = ['TEST_01.csv','TEST_02.csv','TEST_03.csv','TEST_04.csv','TEST_05.csv', 'TEST_06.csv']
+os.chdir("D:\study_data\_data\dacon_vegi/test_target")
+with zipfile.ZipFile("submission.zip", 'w') as my_zip:
+    for i in filelist:
+        my_zip.write(i)
+    my_zip.close()
+
+
+
 '''
 
 
