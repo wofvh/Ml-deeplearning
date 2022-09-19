@@ -110,7 +110,7 @@ print('-===============train_setlen=================================')
 print(len(train_set))  #309
 #x.y 배치를 합체한다 
 train_loader  = DataLoader(train_set, batch_size=40, shuffle=True) #DataLoader은 데이터를 미니배치 단위로 끊어서 가져올 수 있게 해준다.
-test_loader  = DataLoader(test_set, batch_size=40, shuffle=True)
+test_loader  = DataLoader(test_set, batch_size=40, shuffle=False)
 
 class Mymodel(nn.Module):
     def __init__(self, input_dim, output_dim):

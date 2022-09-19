@@ -89,8 +89,9 @@ y = torch.FloatTensor(y.values)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,
                                                     train_size=0.7,
-                                                    random_state=66
-                                                    )
+                                                    random_state=66,
+                                                    shuffle=True)
+                                                    
 
 print(x_train.size(), x_test.size(), y_train.size(), y_test.size()) 
 
@@ -133,7 +134,7 @@ print('-===============train_setlen=================================')
 print(len(train_set))  #309
 #x.y 배치를 합체한다 
 train_loader  = DataLoader(train_set, batch_size=40, shuffle=True) #DataLoader은 데이터를 미니배치 단위로 끊어서 가져올 수 있게 해준다.
-test_loader  = DataLoader(test_set, batch_size=40, shuffle=True)
+test_loader  = DataLoader(test_set, batch_size=40, shuffle=False)
 
 
 
