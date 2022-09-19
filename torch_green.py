@@ -18,9 +18,9 @@ warnings.filterwarnings(action='ignore')
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 CFG = {
-    'EPOCHS':50,
-    'LEARNING_RATE':1e-3,
-    'BATCH_SIZE':16,
+    'EPOCHS':100,
+    'LEARNING_RATE':0.001,
+    'BATCH_SIZE':100,
     'SEED':123
 }
 
@@ -165,20 +165,16 @@ for i in range(10):
 class BaseModel(nn.Module):
     def __init__(self):
         super(BaseModel, self).__init__()
-        self.lstm = nn.GRU(input_size=40, hidden_size=256, batch_first=True, bidirectional=False)
+        self.lstm = nn.LSTM(input_size=40, hidden_size=256, batch_first=True, bidirectional=False)
         self.classifier = nn.Sequential(
-            
-            nn.Linear(256,128),
+              nn.Linear(256, 128),
             nn.ReLU(),
-            nn.Linear(128,64),
+            nn.Linear(128, 64),
             nn.ReLU(),
-            nn.Linear(64,32),
+            nn.Linear(64, 32),
             nn.ReLU(),
-            nn.Linear(32,8),
-            nn.ReLU(),
-            # nn.Dropout(0.1),
-            nn.Linear(8,1),
-            
+            nn.Linear(32, 16),
+            nn.Linear(16, 1),
         )
         
     def forward(self, x):
