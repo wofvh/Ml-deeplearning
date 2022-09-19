@@ -22,4 +22,4 @@ print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
 
 
 reader = easyocr.Reader(['en','ko'], gpu=False)  
-wget.download https://meeco.kr/files/attach/images/24268070/716/533/032/17a03beb045782788810949204bd20c1.jpg -O 01.jpg
+wget.download('https://meeco.kr/files/attach/images/24268070/716/533/032/17a03beb045782788810949204bd20c1.jpg')
