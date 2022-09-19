@@ -49,7 +49,7 @@ x_train = (x_train - torch.mean(x_train))/ torch.std(x_train) # Standard Scaler
 print("=============================scaler 후=============================")
 
 x_train = torch.FloatTensor(x_train).to(DEVICE)
-x_test = torch.FloatTensor(x_test).to(DEVICE)
+x_test = torch.FloatTensor(x_test).to(False)
 
 ###########################################################################################
 from torch.utils.data import TensorDataset,DataLoader

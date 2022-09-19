@@ -67,7 +67,7 @@ print('-===============train_setlen=================================')
 print(len(train_set))  #398
 #x.y 배치를 합체한다 
 train_loader  = DataLoader(train_set, batch_size=40, shuffle=True)
-test_loader  = DataLoader(test_set, batch_size=40, shuffle=True)
+test_loader  = DataLoader(test_set, batch_size=40, shuffle=False)
 
 
 #2. 모델구성
