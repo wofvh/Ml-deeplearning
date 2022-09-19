@@ -8,7 +8,7 @@ import requests
 import numpy as np
 from PIL import ImageFont, ImageDraw, Image
 
-def plt_imshow(title='image', img=None, figsize=(8 ,5)):
+def plt_imshow(title='image', img=None, figsize=(10 ,10)):
     plt.figure(figsize=figsize)
  
     if type(img) == list:
@@ -43,7 +43,7 @@ def plt_imshow(title='image', img=None, figsize=(8 ,5)):
         plt.show()
  
  
-def make_scan_image(image, width, ksize=(5,5), min_threshold=75, max_threshold=200):
+def make_scan_image(image, width, ksize=(6,6), min_threshold=75, max_threshold=200):
   image_list_title = []
   image_list = []
  
@@ -52,6 +52,7 @@ def make_scan_image(image, width, ksize=(5,5), min_threshold=75, max_threshold=2
  
   # 이미지를 grayscale로 변환하고 blur를 적용
   # 모서리를 찾기위한 이미지 연산
+  
   gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
   blurred = cv2.GaussianBlur(gray, ksize, 0)
   edged = cv2.Canny(blurred, min_threshold, max_threshold)
@@ -76,7 +77,6 @@ def make_scan_image(image, width, ksize=(5,5), min_threshold=75, max_threshold=2
       findCnt = approx
       break
  
- 
   # 만약 추출한 윤곽이 없을 경우 오류
   if findCnt is None:
     raise Exception(("Could not find outline."))
@@ -95,3 +95,71 @@ def make_scan_image(image, width, ksize=(5,5), min_threshold=75, max_threshold=2
   plt_imshow("Transform", transform_image)
  
   return transform_image
+
+def putText(cv_img, text, x, y, color=(0, 0, 0), font_size=22):
+  # Colab이 아닌 Local에서 수행 시에는 gulim.ttc 를 사용하면 됩니다.
+  # font = ImageFont.truetype("fonts/gulim.ttc", font_size)
+  font = ImageFont.truetype('/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf', font_size)
+  img = Image.fromarray(cv_img)
+   
+  draw = ImageDraw.Draw(img)
+  draw.text((x, y), text, font=font, fill=color)
+ 
+  cv_img = np.array(img)
+  
+  return cv_img
+
+url = 'https://user-images.githubusercontent.com/69428232/155486780-55525c3c-8f5f-4313-8590-dd69d4ce4111.jpg'
+ 
+image_nparray = np.asarray(bytearray(requests.get(url).content), dtype=np.uint8)
+org_image = cv2.imdecode(image_nparray, cv2.IMREAD_COLOR) 
+plt_imshow("orignal image", org_image)
+ 
+business_card_image = make_scan_image(org_image, width=200, ksize=(8, 8), min_threshold=20, max_threshold=100)
+
+langs = ['ko', 'en','ja','zh-CN','zh-TW']
+ 
+print("[INFO] OCR'ing input image...")
+reader = Reader(lang_list=langs, gpu=True)
+results = reader.readtext(business_card_image)
+
+results
+
+simple_results = reader.readtext(business_card_image, detail = 0)
+simple_results
+
+
+# loop over the results
+for (bbox, text, prob) in results:
+  print("[INFO] {:.4f}: {}".format(prob, text))
+  
+  (tl, tr, br, bl) = bbox
+  tl = (int(tl[0]), int(tl[1]))
+  tr = (int(tr[0]), int(tr[1]))
+  br = (int(br[0]), int(br[1]))
+  bl = (int(bl[0]), int(bl[1]))
+ 
+	# 추출한 영역에 사각형을 그리고 인식한 글자를 표기합니다.
+  cv2.rectangle(business_card_image, tl, br, (0, 255, 0), 2)
+  business_card_image = putText(business_card_image, text, tl[0], tl[1] - 60, (0, 255, 0), 50)
+	# cv2.putText(business_card_image, text, (tl[0], tl[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+
+
+plt_imshow("Image", business_card_image, figsize=(16,10))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
