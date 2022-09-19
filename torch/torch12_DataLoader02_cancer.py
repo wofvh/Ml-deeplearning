@@ -62,7 +62,7 @@ print('-===============train_setlen=================================')
 print(len(train_set))  #398
 #x.y 배치를 합체한다 
 train_loader  = DataLoader(train_set, batch_size=40, shuffle=True)
-test_loader  = DataLoader(test_set, batch_size=40, shuffle=True)
+test_loader  = DataLoader(test_set, batch_size=40,shuffle=False)
 
 
 #모델
@@ -145,5 +145,5 @@ from sklearn.metrics import accuracy_score
 score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())  # cpu로 바꿔줘야함 #np array로 바꿔줘도되고 안바꿔줘도됨
 print('accuracy_score:',(score))
 
-# accuracy:,0.9649
-# accuracy_score: 0.9649122807017544
+# accuracy:,0.9766
+# accuracy_score: 0.9766081871345029
