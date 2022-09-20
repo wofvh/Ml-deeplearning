@@ -12,6 +12,8 @@ data = data.transpose()
 data.columns = ['x1','x2','x3','x4']
 print(data)
 
+
+'''
 from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import SimpleImputer,KNNImputer, IterativeImputer
 # imputer = SimpleImputer(strategy='mean')    
@@ -27,3 +29,4 @@ imputer = KNNImputer()
 imputer.fit(data)
 data2 = imputer.transform(data)
 print(data2)
+'''

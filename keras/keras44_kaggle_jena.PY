@@ -7,15 +7,15 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.datasets import load_breast_cancer
-from tensorflow.keras.models import Sequential, Model
-from tensorflow.keras.layers import MaxPooling1D, GRU, Activation, Dense, Conv1D, Reshape, LSTM, Conv2D, Flatten, MaxPooling2D, Input, Dropout
+from tensorflow.python.keras.models import Sequential, Model
+from tensorflow.python.keras.layers import MaxPooling1D, GRU, Activation, Dense, Conv1D, Reshape, LSTM, Conv2D, Flatten, MaxPooling2D, Input, Dropout
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.python.keras.callbacks import EarlyStopping
 from sklearn.metrics import r2_score, accuracy_score
-from tensorflow.keras.utils import to_categorical
+from tensorflow.python.keras.utils import to_categorical
 from sklearn.preprocessing import OneHotEncoder
 from keras.layers import BatchNormalization
-from tensorflow.keras.layers import Bidirectional
+from tensorflow.python.keras.layers import Bidirectional
 import time
 start = time.time()
 
