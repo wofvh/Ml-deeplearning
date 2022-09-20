@@ -20,15 +20,15 @@ x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7, shuffle
 
 #모델
 model = Sequential()
-model.add(Dense(100, input_dim=8))
-model.add(Dense(100))
-model.add(Dense(100))
+model.add(Dense(128, input_dim=8))
+model.add(Dense(64))
+model.add(Dense(32))
 model.add(Dense(1))
 
 
 #컴파일 훈련model.compile(loss='mse', optimizer='adam')
 model.compile(loss='mae', optimizer='adam')
-model.fit(x_train, y_train, epochs=100, batch_size=100, validation_split=0.25)
+model.fit(x_train, y_train, epochs=30, batch_size=100, validation_split=0.25)
 
 #평가 예측
 loss = model.evaluate(x_test, y_test)

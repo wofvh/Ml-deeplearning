@@ -8,8 +8,8 @@
 #8. loss 지표는 mse, ,mae
  
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
 import numpy as np
 from sklearn.model_selection import train_test_split
 
@@ -19,17 +19,17 @@ y = np.array([1,2,3,4,5,6,7,8,9,10,11,12,13,8,5,16,17,23,21,20])
 from posixpath import split
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,
-        train_size=0.7, shuffle=True, random_state=5)   #shuffle을 바꿧을때도 효과있음 fleas or true
+        train_size=0.7, shuffle=True, random_state=123)   #shuffle을 바꿧을때도 효과있음 fleas or true
 
 #2. 모델구성
 model = Sequential()
 model.add(Dense(10, input_dim=1))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
+model.add(Dense(512))
+model.add(Dense(256))
+model.add(Dense(128))
+model.add(Dense(64))
+model.add(Dense(32))
+model.add(Dense(16))
 model.add(Dense(1))
 
 #3.컴파일 훈련
@@ -47,6 +47,6 @@ from sklearn.metrics import r2_score
 r2 = r2_score(y, y_predict)
 print('r2스코어 :', r2 )
 
-# #레이어를 늘렸을떄 지표가 낮게나옴 나옴 
-# loss :  36.21261215209961
-# r2스코어 : 0.458462218622419
+
+# loss :  20.037099838256836
+# r2스코어 : 0.792691770992876

@@ -1,6 +1,6 @@
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.models import Sequential#순차적 코드진행
-from tensorflow.keras.layers import Dense#노드를 연결해줌 
+from tensorflow.python.keras.models import Sequential#순차적 코드진행
+from tensorflow.python.keras.layers import Dense#노드를 연결해줌 
 from sklearn import datasets
 from sklearn.datasets import load_diabetes #sklearn 데이터 저장소
 
@@ -8,7 +8,7 @@ from sklearn.datasets import load_diabetes #sklearn 데이터 저장소
 datasets = load_diabetes()
 x = datasets.data
 y = datasets.target
-x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7, shuffle=True, random_state=52) 
+x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7, shuffle=True, random_state=1234) 
 
 # print(x) 
 # print(y)
@@ -19,14 +19,12 @@ x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7, shuffle
 
 #1.모델
 model = Sequential() #순차적 
-model.add(Dense(48, input_dim=10))
-model.add(Dense(89))
-model.add(Dense(225))
-model.add(Dense(225))
-model.add(Dense(285))
-model.add(Dense(155))
-model.add(Dense(448))
-model.add(Dense(92))
+model.add(Dense(516, input_dim=10))
+model.add(Dense(128))
+model.add(Dense(64))
+model.add(Dense(32))
+model.add(Dense(16))
+model.add(Dense(8))
 model.add(Dense(1))
 
 

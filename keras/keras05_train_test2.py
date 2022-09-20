@@ -1,6 +1,6 @@
 import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
 
 #1.데이터
 x = np.array([1,2,3,4,5,6,7,8,9,10])
@@ -26,9 +26,10 @@ print(y_test)
 #2. 모델구성
 model = Sequential()
 model.add(Dense(10, input_dim=1))
-model.add(Dense(15))
-model.add(Dense(18))
-model.add(Dense())
+model.add(Dense(256))
+model.add(Dense(128))
+model.add(Dense(64))
+model.add(Dense(32))
 model.add(Dense(1))
 
 #3. 컴파일
@@ -40,3 +41,7 @@ loss = model.evaluate(x_test, y_test)
 print('loss : ',loss)
 result = model.predict([11])
 print('11의 예측값 : ', result)
+
+
+# loss :  0.0012542374897748232
+# 11의 예측값 :  [[11.01016]]

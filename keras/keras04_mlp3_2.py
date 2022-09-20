@@ -1,12 +1,13 @@
 from unittest import result
 import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
 
 #. 데이터
 x = np.array([range(10), range(21,33), range(201, 211)])
-print((range10)) #range 범위, 거리 8-10까지의 정수형 숫자
-for 1 in range(10): # for :반복하라
+print((range(10))) #range 범위, 거리 8-10까지의 정수형 숫자
+
+for i in range(10): # for :반복하라
     print(i) 
  
 print(x.shape) # (3, 10)

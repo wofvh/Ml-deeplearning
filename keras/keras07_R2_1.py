@@ -1,6 +1,6 @@
 from pickletools import optimize
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
 import numpy as np
 from sklearn.model_selection import train_test_split
 
@@ -20,15 +20,15 @@ print(y_test)             #[ 2 17  5  6  4 10]
 #2. 모델구성
 model = Sequential()
 model.add(Dense(4, input_dim=1))
-model.add(Dense(193))
-model.add(Dense(222))
-model.add(Dense(193))
-model.add(Dense(123))
+model.add(Dense(256))
+model.add(Dense(128))
+model.add(Dense(64))
+model.add(Dense(32))
 model.add(Dense(1))
 
 #3.컴파일 훈련
 model.compile(loss='mse', optimizer='adam')
-model.fit(x_train, y_train, epochs=184, batch_size=1)
+model.fit(x_train, y_train, epochs=50, batch_size=1)
 
 #4. 평가 예측
 loss = model.evaluate(x_test, y_test)
@@ -39,3 +39,6 @@ y_predict = model.predict(x)
 from sklearn.metrics import r2_score
 r2 = r2_score(y, y_predict)
 print('r2스코어 :', r2)
+
+
+# r2스코어 : 0.7995454893349759

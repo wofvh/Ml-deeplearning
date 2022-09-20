@@ -27,14 +27,14 @@ print(x_val)
 # y_val = np.array([14,15,16])
 
 model = Sequential()
-model.add(Dense(5, input_dim = 1))
-model.add(Dense(3))
-model.add(Dense(3))
+model.add(Dense(128, input_dim = 1))
+model.add(Dense(64))
+model.add(Dense(32))
 model.add(Dense(1))
 
 #컴파일 , 훈련 
 model.compile(loss ='mse',optimizer='adam')
-model.fit(x_train, y_train, epochs=100, batch_size=2,
+model.fit(x_train, y_train, epochs=100, batch_size=5,
           validation_data=(x_val,y_val))
 
 #4. 평가.예측
@@ -43,3 +43,7 @@ print('loss:', loss)
 
 result = model.predict([17])
 print("17의 예측값",result)
+
+
+# loss: 6.158425094326958e-05
+# 17의 예측값 [[16.98115]]

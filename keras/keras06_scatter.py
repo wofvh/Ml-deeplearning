@@ -1,7 +1,7 @@
 from pickletools import optimize
 from posixpath import split
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
 import numpy as np
 from sklearn.model_selection import train_test_split
 
@@ -13,10 +13,10 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
 
 #2. 모델구성
 model = Sequential()
-model.add(Dense(5, input_dim=1))
-model.add(Dense(15))
-model.add(Dense(18))
-model.add(Dense(3))
+model.add(Dense(256, input_dim=1))
+model.add(Dense(128))
+model.add(Dense(64))
+model.add(Dense(32))
 model.add(Dense(1))
 
 #3.컴파일 훈련

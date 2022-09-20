@@ -1,7 +1,7 @@
 from tabnanny import verbose
 from tracemalloc import start
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_boston 
 from sklearn.metrics import r2_score 
@@ -11,7 +11,7 @@ from sklearn.metrics import r2_score
 datasets = load_boston()
 x = datasets.data
 y = datasets.target
-x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7, shuffle=True, random_state=50)
+x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7, shuffle=True, random_state=1234)
 
 #print (x)
 #print (y)
@@ -27,14 +27,12 @@ x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7, shuffle
 
 #2.모델구성
 model = Sequential() #순차적 
-model.add(Dense(6, input_dim=13))
-model.add(Dense(89))
-model.add(Dense(225))
-model.add(Dense(225))
-model.add(Dense(285))
-model.add(Dense(155))
-model.add(Dense(228))
-model.add(Dense(92))
+model.add(Dense(512, input_dim=13))
+model.add(Dense(256))
+model.add(Dense(128))
+model.add(Dense(64))
+model.add(Dense(32))
+model.add(Dense(16))
 model.add(Dense(1))
 
 import time

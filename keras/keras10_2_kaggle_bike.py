@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 from pyrsistent import b
 from sqlalchemy import true #pandas : 엑셀땡겨올때 씀
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.ensemble import RandomForestRegressor
@@ -27,7 +27,6 @@ print(y)
 print(y.shape) #(10886,)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.75, random_state=31 )
-
 
 #2. 모델구성
 model = Sequential()

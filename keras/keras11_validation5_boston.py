@@ -11,15 +11,17 @@ datasets = load_boston()
 x = datasets.data
 y = datasets.target
 x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7, shuffle=True, random_state=77)
-print(x,y)
-'''
+print(x_train,y_train)
+print(x_test,y_test)
+
+
 model = Sequential()
-model.add(Dense(20, input_dim=13))
-model.add(Dense(98))
-model.add(Dense(72))
-model.add(Dense(85))
-model.add(Dense(95))
-model.add(Dense(82))
+model.add(Dense(512, input_dim=13))
+model.add(Dense(256))
+model.add(Dense(128))
+model.add(Dense(64))
+model.add(Dense(32))
+model.add(Dense(16))
 model.add(Dense(1))
 
 #3.컴파일 훈련
@@ -35,4 +37,7 @@ y_predict = model.predict(x_test)
 
 r2 = r2_score(y_test, y_predict)
 print('r2스코어 :', r2)
-'''
+
+
+# loss :  27.51490592956543
+# r2스코어 : 0.6329029887552504
