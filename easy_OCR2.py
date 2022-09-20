@@ -7,6 +7,9 @@ import cv2
 import requests
 import numpy as np
 from PIL import ImageFont, ImageDraw, Image
+import wget
+wget.download('https://img.etnews.com/photonews/1909/1227580_20190925141436_569_0003.jpg')
+
 
 def plt_imshow(title='image', img=None, figsize=(10 ,10)):
     plt.figure(figsize=figsize)
@@ -100,6 +103,11 @@ def putText(cv_img, text, x, y, color=(0, 0, 0), font_size=22):
   # Colab이 아닌 Local에서 수행 시에는 gulim.ttc 를 사용하면 됩니다.
   # font = ImageFont.truetype("fonts/gulim.ttc", font_size)
   font = ImageFont.truetype('/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf', font_size)
+
+
+  
+  
+  
   img = Image.fromarray(cv_img)
    
   draw = ImageDraw.Draw(img)

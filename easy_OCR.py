@@ -10,7 +10,6 @@ import easyocr
 import cv2
 import matplotlib.pyplot as plt
 import wget
-
 USE_CUDA = torch.cuda.is_available()
 DEVICE  = torch.device('cuda:0' if USE_CUDA else 'cpu')
 print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
@@ -34,10 +33,9 @@ def read(img_path):
         if conf > THRESHOLD:
             print(text)
     cv2.rectangle(img, pt1=bbox[0][0], pt2=bbox[2], color=(0,255,0), thickness=2)
+    print(r)
     plt.figure(figsize=(10,10))
     plt.imshow(img[:,:,::-1])
     plt.axis('off')
-
-plt.show()
-
-    
+    plt.show()
+    read(img_path)
