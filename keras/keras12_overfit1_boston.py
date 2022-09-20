@@ -33,20 +33,18 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
 
 #2.모델구성
 model = Sequential() #순차적 
-model.add(Dense(6, input_dim=13))
-model.add(Dense(89))
-model.add(Dense(225))
-model.add(Dense(225))
-model.add(Dense(285))
-model.add(Dense(155))
-model.add(Dense(228))
-model.add(Dense(92))
+model.add(Dense(512, input_dim=13))
+model.add(Dense(256))
+model.add(Dense(128))
+model.add(Dense(64))
+model.add(Dense(32))
+model.add(Dense(16))
 model.add(Dense(1))
 
 import time
 #3.컴파일 훈련
 model.compile(loss='mse', optimizer='adam')
-hist = model.fit(x,y, epochs=500, batch_size=1, verbose=1,validation_split = 0.2)
+hist = model.fit(x,y, epochs=50, batch_size=1, verbose=1,validation_split = 0.2)
 
 end_time = time.time()               
 
