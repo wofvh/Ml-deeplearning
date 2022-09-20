@@ -1,7 +1,7 @@
 import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense ,Flatten,Conv2D,MaxPooling2D,Dropout
-from keras.applications import VGG16
+from keras.applications import VGG16 ,
 
 
 # model = VGG16() # vgg16은 이미지 분류 모델 #include_top = False : 이미지 분류 모델에서는 마지막 레이어를 제외하고 사용 # if include_top = True , input_shape = (224, 224, 3) 
