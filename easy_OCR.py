@@ -16,11 +16,11 @@ print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
 
 
 THRESHOLD = 0.5
-reader = easyocr.Reader(['ja','en',], gpu=True)
+reader = easyocr.Reader(['ja','en',], gpu=False)
 # wget.download('https://img.etnews.com/photonews/1909/1227580_20190925141436_569_0003.jpg')
 
 img_path = '1227580_20190925141436_569_0003.jpg'
-
+img = cv2.imread(img_path)
 # result = reader.readtext(img_path, detail=0)
 def read(img_path):
     img = cv2.imread(img_path)
@@ -33,9 +33,11 @@ def read(img_path):
         if conf > THRESHOLD:
             print(text)
     cv2.rectangle(img, pt1=bbox[0][0], pt2=bbox[2], color=(0,255,0), thickness=2)
+
     print(r)
-    plt.figure(figsize=(10,10))
-    plt.imshow(img[:,:,::-1])
-    plt.axis('off')
-    plt.show()
-    read(img_path)
+plt.figure(figsize=(10,10))
+plt.imshow(img[:,:,::-1])
+plt.axis('off')
+plt.show()
+read(img_path)
+print(img_path)
