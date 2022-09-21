@@ -61,3 +61,20 @@ class CRAFT(nn.Module):
         y = F.interpolate(y, size=sources[2].size()[2:], mode='bilinear', align_corners=False)
         y = torch.cat([y, sources[2]], dim=1)
         y = self.upconv2(y)
+
+        y = F.interpolate(y, size=sources[3].size()[2:], mode='bilinear', align_corners=False)
+        y = torch.cat([y, sources[3]], dim=1)
+        y = self.upconv3(y)
+
+        y = F.interpolate(y, size=sources[4].size()[2:], mode='bilinear', align_corners=False)
+        y = torch.cat([y, sources[4]], dim=1)
+        feature = self.upconv4(y)
+
+        y = self.conv_cls(feature)
+
+        return y.permute(0,2,3,1), feature
+
+if __name__ == '__main__':
+    model = CRAFT(pretrained=True).cuda()
+    output, _ = model(torch.randn(1, 3, 768, 768).cuda())
+    print(output.shape)
