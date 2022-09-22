@@ -1,4 +1,3 @@
-from pickletools import optimize
 from torchvision.datasets import MNIST
 from torch.utils.data import DataLoader,TensorDataset #데이터를 합쳐주는 역할을한다 
 import torch.nn as nn
