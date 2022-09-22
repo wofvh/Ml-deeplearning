@@ -122,7 +122,7 @@ def evaluate(model, criterion,loader):
     epoch_loss = 0
     epoch_acc = 0
     
-    with torch.no_grad(): #평가할때는 미분을 하지 않는다 
+    with torch.no_grad(): #no_grad 를 사용하면 gradient를 계산하지 않는다
         for x_batch, y_batch in loader:
             x_batch, y_batch = x_batch.to(DEVICE), y_batch.to(DEVICE)
             
@@ -132,7 +132,7 @@ def evaluate(model, criterion,loader):
             epoch_loss += loss.item()
             
             y_predict = torch.argmax(hypothesis, dim=1)
-            acc = (y_predict == y_batch).float().mean() #정확도
+            acc = (y_predict == y_batch).float().mean() #mean을 써서 true false 0 or 1평균을 구한다 
         
             epoch_acc += acc.item()
     return epoch_loss/len(loader), epoch_acc/len(loader)
