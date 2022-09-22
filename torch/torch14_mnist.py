@@ -136,3 +136,15 @@ def evaluate(model, criterion,loader):
         
             epoch_acc += acc.item()
     return epoch_loss/len(loader), epoch_acc/len(loader)
+
+#loss , acc = model.evaluate(x_test, y_test) #loss와 acc가 반환된다
+
+epochs = 20
+for epoch in range(1, epochs+1):
+    
+   loss, acc = train(model, criterion, optimizer, train_loader)
+   
+   val_loss, val_acc = evaluate(model, criterion, test_loader)
+   
+   print('epoch:{}, loss:{:.4f},acc:{:.3f},val_loss:{:.4f},val_acc:{:.3f}'\
+       .format(epoch, loss, acc, val_loss, val_acc))
