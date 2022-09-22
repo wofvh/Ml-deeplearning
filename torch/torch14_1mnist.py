@@ -7,6 +7,7 @@ import numpy as np
 import torch
 import torchvision.transforms as tr
 
+
 USE_CUDA = torch.cuda.is_available()
 DEVICE  = torch.device('cuda:0' if USE_CUDA else 'cpu')
 print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
@@ -148,3 +149,4 @@ for epoch in range(1, epochs+1):
    
    print('epoch:{}, loss:{:.4f},acc:{:.3f},val_loss:{:.4f},val_acc:{:.3f}'\
        .format(epoch, loss, acc, val_loss, val_acc))
+
