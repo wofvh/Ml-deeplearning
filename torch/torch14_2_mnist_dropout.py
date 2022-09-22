@@ -7,11 +7,9 @@ import numpy as np
 import torch
 import torchvision.transforms as tr
 
-
 USE_CUDA = torch.cuda.is_available()
 DEVICE  = torch.device('cuda:0' if USE_CUDA else 'cpu')
 print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
-
 
 transf = tr.Compose([tr.Resize(150),tr.ToTensor()]) #평균과 표준편차를 정규화한다
 path = './_data/torch_data/'
@@ -45,30 +43,35 @@ test_loader =  DataLoader(test_dset , batch_size=32, shuffle =False)
 
 
 #2. 모델
-class DNN(nn.Module):
+class DNN(nn.Module): #dropout은 test 평가할떄는 적용이 되면 안됨 훈련할때만 가능 
     def __init__(self, num_features):
         super().__init__()
         
         self.hidden_layer1 = nn.Sequential(
-            nn.Linear(num_features, 100),
+            nn.Linear(num_features, 100),   #num_features = 784
             nn.ReLU(),
+            nn.Dropout(0.2),                #0.5는 50%를 랜덤으로 끈다
         )
         
         self.hidden_layer2 = nn.Sequential(
             nn.Linear(100, 100),
             nn.ReLU(),
+            nn.Dropout(0.2),  
         )
         self.hidden_layer3 = nn.Sequential(
             nn.Linear(100, 100),
             nn.ReLU(),
+            nn.Dropout(0.2),  
         )
         self.hidden_layer4 = nn.Sequential(
             nn.Linear(100, 100),
             nn.ReLU(),
+            nn.Dropout(0.2),  
         )
         self.hidden_layer5 = nn.Sequential(
             nn.Linear(100, 100),
             nn.ReLU(),
+            nn.Dropout(0.2),  
         )
         self.output_layer = nn.Linear(100,10)
         
@@ -118,7 +121,7 @@ def train(model,criterion,optimizer,loader):
 #엄밀하게 말하면 hist라고 하기는 어렵고 loss와 acc가 반환해준다고함    
         
 def evaluate(model, criterion,loader):
-    model.eval()
+    model.eval()   #dropout은 test 평가할떄는 적용이 되면 안됨 훈련할때만 가능 "eval()"에서는 훈련이 안되기 때문에 dropout이 적용이 안된다
     
     epoch_loss = 0
     epoch_acc = 0
