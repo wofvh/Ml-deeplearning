@@ -34,4 +34,4 @@ with tf.compat.v1.Session() as sess:
             if step %4 == 0:
                 print(step,sess.run(loss) ,sess.run(w),sess.run(b))
 
-# sess.close()
+# epoch:20, loss:3.8312,acc:0.095,val_loss:3.8735,val_acc:0.097
