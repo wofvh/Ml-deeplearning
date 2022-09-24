@@ -12,7 +12,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from tqdm.auto import tqdm
-
+from xgboost import XGBClassifier,XGBRFRegressor
 import warnings
 warnings.filterwarnings(action='ignore') 
 
