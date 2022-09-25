@@ -8,7 +8,6 @@ from sklearn.preprocessing import OneHotEncoder  # https://psystat.tistory.com/1
 from sklearn.model_selection import KFold, cross_val_score , GridSearchCV
 from sklearn.metrics import accuracy_score ,r2_score
 from sklearn.datasets import load_breast_cancer
-from sklearn.experimental import enable_halving_search_cv
 from sklearn.model_selection import train_test_split,KFold,cross_val_score ,StratifiedKFold,HalvingGridSearchCV
 
 #
