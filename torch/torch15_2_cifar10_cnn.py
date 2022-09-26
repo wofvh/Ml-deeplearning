@@ -92,10 +92,8 @@ class CNN(nn.Module): #dropout은 test 평가할떄는 적용이 되면 안됨 �
         return x
     
 model = CNN(3).to(DEVICE)
-# from torchsummary import summary
-# summary(model, (1, 32,32))#torch summary를 사용하면 모델의 구조를 볼수있다
-# print(model)
-
+from torchsummary import summary
+summary(model, (3, 32,32))#torch summary를 사용하면 모델의 구조를 볼수있다
 
 #3. 훈련
 criterion = nn.CrossEntropyLoss().to(DEVICE)
