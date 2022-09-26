@@ -24,23 +24,19 @@ test_dataset = CIFAR100(path, train=False, download=False)  #train=False 테스�
 x_train , y_train = train_dataset.data/255., train_dataset.targets #데이터를 255로 나누어서 0~1사이의 값으로 만들어준다
 x_test , y_test = test_dataset.data/255., test_dataset.targets 
 
-x_train = torch.FloatTensor(x_train)
-x_test = torch.FloatTensor(x_test)
-y_train = torch.LongTensor(y_train)
-y_test = torch.LongTensor(y_test)
+x_train = torch.FloatTensor(x_train).to(DEVICE)
+x_test = torch.FloatTensor(x_test).to(DEVICE)
+y_train = torch.LongTensor(y_train).to(DEVICE)
+y_test = torch.LongTensor(y_test).to(DEVICE)
 
-print(x_train.shape ,x_test.size())  #([50000, 32, 32, 3][10000, 32, 32, 3])
-print(y_train.shape ,y_test.size()) #([50000]) [10000])
 # print(x_test,y_test)
 
-print(np.min(x_train.numpy())), np.max((x_train.numpy())) #0.0 1.0
+# print(np.min(x_train.numpy())), np.max((x_train.numpy())) #0.0 1.0
 
-print(x_train.shape ,x_test.size())  #torch.Size([50000, 32, 32, 3]) torch.Size([10000, 32, 32, 3])
 
-exit()
-x_train , x_test = x_train.reshape(50000,32*32*3), x_test.reshape(10000,32*32*3) #데이터를 3차원으로 만들어준다
 
-print(x_train.shape ,x_test.size())  #torch.Size([50000, 3072]) torch.Size([10000, 3072])
+x_train , x_test = x_train.reshape(50000,3,32,32), x_test.reshape(10000,3,32,32) #데이터를 3차원으로 만들어준다
+
 
 
 
@@ -51,50 +47,43 @@ test_dset = TensorDataset(x_test, y_test)
 train_loader = DataLoader(train_dset, batch_size=32, shuffle =True)#batch_size=32 한번에 32개씩 불러온다 #shuffle=True 데이터를 섞어준다
 test_loader =  DataLoader(test_dset , batch_size=32, shuffle =False)
 
-
 #2. 모델
-class DNN(nn.Module): #dropout은 test 평가할떄는 적용이 되면 안됨 훈련할때만 가능 
+class CNN(nn.Module): #dropout은 test 평가할떄는 적용이 되면 안됨 훈련할때만 가능 
     def __init__(self, num_features):
-        super().__init__()
+        super(CNN,self).__init__()
         
         self.hidden_layer1 = nn.Sequential(
-            nn.Linear(num_features, 100),   #num_features = 784
+            nn.Linear(num_features,128, kernel_size=(3,3),stride=1),   #num_features = 784
             nn.ReLU(),
+            nn.MaxPool2d(kernel_size=(2,2)),
             nn.Dropout(0.2),                #0.5는 50%를 랜덤으로 끈다
         )
         
         self.hidden_layer2 = nn.Sequential(
-            nn.Linear(100, 100),
+            nn.Conv2d(128,64, kernel_size=(3,3),),   #num_features = 784
             nn.ReLU(),
-            nn.Dropout(0.2),  
+            nn.MaxPool2d(kernel_size=(2,2)),
+            nn.Dropout(0.3),                #0.5는 50%를 랜덤으로 끈다
         )
-        self.hidden_layer3 = nn.Sequential(
-            nn.Linear(100, 100),
-            nn.ReLU(),
-            nn.Dropout(0.2),  
-        )
-        self.hidden_layer4 = nn.Sequential(
-            nn.Linear(100, 100),
-            nn.ReLU(),
-            nn.Dropout(0.2),  
-        )
-        self.hidden_layer5 = nn.Sequential(
-            nn.Linear(100, 100),
-            nn.ReLU(),
-            nn.Dropout(0.2),  
-        )
-        self.output_layer = nn.Linear(100,100)
+     
+        self.hidden_layer3 = nn.Linear(32*6*6, 32)
+        
+        self.output_layer = nn.Linear(64,100)
         
     def forward(self, x):
         x = self.hidden_layer1(x)
         x = self.hidden_layer2(x)
+        x = x.view(x.shape[0], -1)     #flatten
         x = self.hidden_layer3(x)
-        x = self.hidden_layer4(x)
-        x = self.hidden_layer5(x)
         x = self.output_layer(x)
         return x
-model = DNN(3072).to(DEVICE)
     
+model = CNN(3).to(DEVICE)
+from torchsummary import summary
+summary(model, (3, 32,32))#torch summary를 사용하면 모델의 구조를 볼수있다
+exit()
+
+
 #3. 훈련
 criterion = nn.CrossEntropyLoss().to(DEVICE)
 
