@@ -63,19 +63,19 @@ class CNN(nn.Module): #dropout은 test 평가할떄는 적용이 되면 안됨 �
             nn.Conv2d(num_features,128, kernel_size=(3,3),stride=1),   #num_features = 784
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=(2,2)),
-            nn.Dropout(0.3),                #0.5는 50%를 랜덤으로 끈다
+            nn.Dropout(0.3),              
         )
         
         self.hidden_layer2 = nn.Sequential(
             nn.Conv2d(128,32, kernel_size=(3,3),),   #num_features = 784
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=(2,2)),
-            nn.Dropout(0.3),                #0.5는 50%를 랜덤으로 끈다
+            nn.Dropout(0.3),             
         )
         self.hidden_layer3 = nn.Linear(32*6*6, 32)
         
         # self.flatten = nn.Flatten()
-            
+        
         # self.hidden_layer5 = nn.Sequential(
         #     nn.Linear(100, 100),
         #     nn.ReLU(),
@@ -83,7 +83,7 @@ class CNN(nn.Module): #dropout은 test 평가할떄는 적용이 되면 안됨 �
         # )
         self.output_layer = nn.Linear(in_features=32,out_features=10)
         
-    def forward(self,x): #nn 모듈을 상속받았기 때문에 forward를 사용해야한다
+    def forward(self,x): 
         x = self.hidden_layer1(x)
         x = self.hidden_layer2(x)
         x = x.view(x.shape[0], -1)     #flatten
