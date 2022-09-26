@@ -82,11 +82,31 @@ class CNN(nn.Module): #dropout은 test 평가할떄는 적용이 되면 안됨 �
         x = x.view(x.shape[0], -1)     #flatten
         x = self.hidden_layer3(x)
         x = self.output_layer(x)
-        return x
-    
+        return x   
 model = CNN(1).to(DEVICE)
 
 
+print(model)
+
+CNN(
+  (hidden_layer1): Sequential(
+    (0): Conv2d(1, 64, kernel_size=(3, 3), stride=(1, 1))
+    (1): ReLU()
+    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
+    (3): Dropout(p=0.3, inplace=False)
+  )
+  (hidden_layer2): Sequential(
+    (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1))
+    (1): ReLU()
+    (2): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
+    (3): Dropout(p=0.3, inplace=False)
+  )
+  (hidden_layer3): Linear(in_features=800, out_features=32, bias=True)
+  (output_layer): Linear(in_features=32, out_features=10, bias=True)
+)
+
+
+'''
 #3. 훈련,컴파일
 criterion = nn.CrossEntropyLoss().to(DEVICE) #손실함수
 
@@ -152,3 +172,4 @@ for epoch in range(1, epochs+1):
    print('epoch:{}, loss:{:.4f},acc:{:.3f},val_loss:{:.4f},val_acc:{:.3f}'\
        .format(epoch, loss, acc, val_loss, val_acc))
 
+'''
