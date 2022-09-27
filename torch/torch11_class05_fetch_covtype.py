@@ -1,11 +1,9 @@
 #logistic_regression 회기모델 (시그모이드 함수)2 진분류 0 N 1 
-
 from calendar import EPOCH
 from tkinter import Y
 from turtle import forward
 from unittest import result
 from sklearn.datasets import fetch_covtype
-
 import torch
 import torch.nn as nn 
 import torch.optim as optim
@@ -21,7 +19,7 @@ datasets = fetch_covtype()
 x = datasets.data
 y = datasets.target
 
-
+x
 x = torch.FloatTensor(x)
 y = torch.LongTensor(y)
 
