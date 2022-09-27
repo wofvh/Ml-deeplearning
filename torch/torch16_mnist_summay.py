@@ -176,3 +176,5 @@ print(model)
 from torchsummary import summary
 
 summary(model, (1, 28, 28))#torch summary를 사용하면 모델의 구조를 볼수있다
+
+ss
