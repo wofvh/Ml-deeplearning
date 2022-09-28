@@ -84,6 +84,7 @@ def make_scan_image(image, width, ksize=(6,6), min_threshold=75, max_threshold=2
   if findCnt is None:
     raise Exception(("Could not find outline."))
  
+ 
   output = image.copy()
   cv2.drawContours(output, [findCnt], -1, (0, 255, 0), 2)
   
