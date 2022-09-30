@@ -31,7 +31,7 @@ train = optimizer.minimize(loss)
 sess = tf.compat.v1.Session()
 sess.run(tf.compat.v1.global_variables_initializer())
 
-epoch = 500
+epoch = 50000
 for epochs in range(epoch):
     cost_val, hy_val, _  = sess.run([loss, h, train], feed_dict = {x:x_data, y:y_data})
     # if epochs %20 == 0:

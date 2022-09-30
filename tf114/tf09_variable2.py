@@ -55,7 +55,7 @@ train = optimizer.minimize(loss)       # optimizer='sgd'
 sess = tf.compat.v1.Session()
 sess.run(tf.compat.v1.global_variables_initializer())
 
-epochs = 50
+epochs = 1000
 for step in range(epochs):
     # sess.run(train)
     _, loss_val, w_val, b_val = sess.run([train, loss, w, b], 
@@ -84,7 +84,7 @@ train = optimizer.minimize(loss)       # optimizer='sgd'
 sess = tf.compat.v1.InteractiveSession()
 sess.run(tf.compat.v1.global_variables_initializer())
 
-epochs = 50
+epochs = 1000
 for step in range(epochs):
     # sess.run(train)
     _, loss_val, w_val, b_val = sess.run([train, loss, w, b],
