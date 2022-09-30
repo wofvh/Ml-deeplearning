@@ -1,100 +1,117 @@
-
-   #[418 rows x 10 columns]
-path = './_data/kaggle_titanic/'
-train_set = pd.read_csv(path +'train.csv')
-
-test_set = pd.read_csv(path + 'test.csv',index_col=0)  # index_col=n n번째 컬럼을 인덱스로 인식
-
-print(train_set.Pclass.value_counts())  
-
-# 3    491
-# 1    216
-# 2    184
-
-Pclass1 = train_set["Survived"][train_set["Pclass"] == 1].value_counts(normalize = True)[1]*100
-Pclass2 = train_set["Survived"][train_set["Pclass"] == 2].value_counts(normalize = True)[1]*100
-Pclass3 = train_set["Survived"][train_set["Pclass"] == 3].value_counts(normalize = True)[1]*100
-print(f"Percentage of Pclass 1 who survived: {Pclass1}")
-print(f"Percentage of Pclass 2 who survived: {Pclass2}")
-print(f"Percentage of Pclass 3 who survived: {Pclass3}")
+from logging import critical
+from torchvision.datasets import CIFAR10
+from torch.utils.data import DataLoader, TensorDataset
+import torch
+import torchvision
+import torchvision.transforms as transforms
+import torch.nn as nn
+import torch.nn.functional as F
+import matplotlib.pyplot as plt
+import numpy as np
+import json
+import os
+import torchvision.transforms as tr
+from torchsummary import summary
+USE_CUDA = torch.cuda.is_available()
+DEVICE  = torch.device('cuda:0' if USE_CUDA else 'cpu')
+print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
 
 
-female = train_set["Survived"][train_set["Sex"] == 'female'].value_counts(normalize = True)[1]*100
-male = train_set["Survived"][train_set["Sex"] == 'male'].value_counts(normalize = True)[1]*100
-print(f"Percentage of females who survived: {female}")
-print(f"Percentage of males who survived: {male}")
+path = './_data/torch_data/'
 
-sns.barplot(x="SibSp", y="Survived", data=train_set)
+transf = tr.Compose([tr.Resize(224,224),tr.ToTensor(),tr.Normalize])
 
-       
-# df = pd.DataFrame(y)
-# print(df)
-# oh = OneHotEncoder(sparse=False) # sparse=true 는 매트릭스반환 False는 array 반환
-# y = oh.fit_transform(df)
-# print(y)
+# train_dataset = CIFAR10(path, train=True, download=True)  #train=True 학습용 데이터 #download=True 데이터를 다운로드 받겠다
+# test_dataset = CIFAR10(path, train=False, download=True)  #train=False 테스트용 데이터 
+train_dataset = CIFAR10(path, train=True, download=True)
+test_dataset = CIFAR10(path, train=False, download=True)
 
-# print(test_set.columns)
-# print(train_set.info()) # info 정보출력
-# print(train_set.describe()) # describe 평균치, 중간값, 최소값 등등 출력
+x_train , y_train = train_dataset.data/255., train_dataset.targets #데이터를 255로 나누어서 0~1사이의 값으로 만들어준다
+x_test , y_test = test_dataset.data/255., test_dataset.targets 
 
-#### 결측치 처리 1. 제거 ####
+x_train = torch.FloatTensor(x_train).to(DEVICE)
+x_test = torch.FloatTensor(x_test).to(DEVICE)
+y_train = torch.LongTensor(y_train).to(DEVICE)
+y_test = torch.LongTensor(y_test).to(DEVICE)
 
-train_set = train_set.fillna({"Embarked": "S"})
-train_set.Age = train_set.Age.fillna(value=train_set.Age.mean())
+print(x_train.shape ,x_test.size())  
+print(y_train.shape ,y_test.size())
+# print(x_test,y_test)
 
-train_set = train_set.drop(['Name'], axis = 1)
-test_set = test_set.drop(['Name'], axis = 1)
+print(np.min(x_train.numpy())), np.max((x_train.numpy())) #0.0 1.0
 
-train_set = train_set.drop(['Ticket'], axis = 1)
-test_set = test_set.drop(['Ticket'], axis = 1)
+print(x_train.shape ,x_test.size())  #torch.Size([50000, 32, 32, 3]) torch.Size([10000, 32, 32, 3])
 
-train_set = train_set.drop(['Cabin'], axis = 1)
-test_set = test_set.drop(['Cabin'], axis = 1)
 
-train_set = pd.get_dummies(train_set,drop_first=True)
-test_set = pd.get_dummies(test_set,drop_first=True)
+x_train , x_test = x_train.reshape(50000,32*32*3), x_test.reshape(10000,32*32*3) #데이터를 3차원으로 만들어준다
 
-test_set.Age = test_set.Age.fillna(value=test_set.Age.mean())
-test_set.Fare = test_set.Fare.fillna(value=test_set.Fare.mode())
+print(x_train.shape ,x_test.size())  #torch.Size([50000, 3072]) torch.Size([10000, 3072])
 
-print(train_set, test_set, train_set.shape, test_set.shape)
+print(y_test.unique())
 
-############################
+train_dset = TensorDataset(x_train, y_train)
+test_dset = TensorDataset(x_test, y_test)
+
+
+train_loader = DataLoader(train_dset, batch_size=32, shuffle =True)#batch_size=32 한번에 32개씩 불러온다 #shuffle=True 데이터를 섞어준다
+test_loader =  DataLoader(test_dset , batch_size=32, shuffle =False)
 
 
 
-x = train_set.drop(['Survived', 'PassengerId'], axis=1)  # drop 데이터에서 ''사이 값 빼기
-print(x)
-print(x.columns)
-print(x.shape) # (891, 8)
+class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.conv = nn.Sequential(
+            nn.Conv2d(3,64,3, padding=1),nn.LeakyReLU(0.2),
+            nn.Conv2d(64,64,3, padding=1),nn.LeakyReLU(0.2),
+            nn.MaxPool2d(2,2),
+            
+            nn.Conv2d(64,128,3, padding=1),nn.LeakyReLU(0.2),
+            nn.Conv2d(128,128,3, padding=1),nn.LeakyReLU(0.2),
+            nn.MaxPool2d(2,2),
+            
+            nn.Conv2d(128,256,3, padding=1),nn.LeakyReLU(0.2),
+            nn.Conv2d(256,256,3, padding=1),nn.LeakyReLU(0.2),
+            nn.Conv2d(256,256,3, padding=1),nn.LeakyReLU(0.2),
+            nn.MaxPool2d(2,2),
+            
+            nn.Conv2d(256,512,3, padding=1),nn.LeakyReLU(0.2),
+            nn.Conv2d(512,512,3, padding=1),nn.LeakyReLU(0.2),
+            nn.Conv2d(512,512,3, padding=1),nn.LeakyReLU(0.2),
+            
+            nn.Conv2d(512, 512, 3, padding=1),nn.LeakyReLU(0.2),
+            nn.Conv2d(512, 512, 3, padding=1),nn.LeakyReLU(0.2),
+            nn.Conv2d(512, 512, 3, padding=1),nn.LeakyReLU(0.2),
+            nn.MaxPool2d(2, 2)
+        )
+        self.avg_pool = nn.AvgPool2d((7, 7))
+        self.Classifier = nn.Linear(512, 1000)
+        
+        self.avg_pool = nn.AvgPool2d(7)
+        #512 1 1
+        self.classifier = nn.Linear(512, 1000)
+        """
+        self.fc1 = nn.Linear(512*2*2,4096)
+        self.fc2 = nn.Linear(4096,4096)
+        self.fc3 = nn.Linear(4096,10)
+        """
 
-y = train_set['Survived'] 
-print(y)
-print(y.shape) # (891,)
-
-x_train, x_test, y_train, y_test = train_test_split(x,y,
-                                                    train_size=0.7,
-                                                    random_state=66
-                                                    )
-scaler =  MinMaxScaler()
-# scaler = StandardScaler()
-# scaler.fit(x_train)
-# x_train = scaler.transform(x_train) # x_train을 수치로 변환해준다.
-# x_test = scaler.transform(x_test) # 
-print(np.min(x_train))   # 0.0
-print(np.max(x_train))   # 1.0000000000000002
-print(np.min(x_test))   # -0.06141956477526944
-print(np.max(x_test))   # 1.1478180091225068
- 
-##### [ 3가지 성능 비교 ] #####
-# scaler 사용하기 전
-# scaler =  MinMaxScaler()
-# scaler = StandardScaler()
-
-#2. 모델구성
-model = Sequential()
-model.add(Dense(19, input_dim=8, activation='linear')) #sigmoid : 이진분류일때 아웃풋에 activation = 'sigmoid' 라고 넣어줘서 아웃풋 값 범위를 0에서 1로 제한해줌
-model.add(Dense(18, activation='sigmoid'))               # 출력이 0 or 1으로 나와야되기 때문, 그리고 최종으로 나온 값에 반올림을 해주면 0 or 1 완성
-model.add(Dense(19, activation='relu'))               # relu : 히든에서만 쓸수있음, 요즘에 성능 젤좋음
-model.add(Dense(25, activation='linear'))               
-model.add(Dense(1, activation='sigmoid'))   
+    def forward(self, x):
+        #print(x.size())
+        features = self.conv(x)
+        #print(features.size())
+        x = self.avg_pool(features)
+        #print(avg_pool.size())
+        x = x.view(features.size(0), -1)
+        #print(flatten.size())
+        x = self.classifier(x)
+        #x = self.softmax(x)
+        return x, features
+        
+        
+        
+        
+model = Net(3).to(DEVICE)
+from torchsummary import summary
+summary(model, (3, 32,32))#torch summary를 사용하면 모델의 구조를 볼수있다
+exit()
