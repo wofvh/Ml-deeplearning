@@ -15,8 +15,7 @@ class double_conv(nn.Module):
             nn.Conv2d(mid_ch, out_ch, kernel_size=3, padding=1),
             nn.BatchNorm2d(out_ch),
             nn.ReLU(inplace=True)d
-        )ff
-        ddd
+        )
 
     def forward(self, x):
         x = self.conv(x)
