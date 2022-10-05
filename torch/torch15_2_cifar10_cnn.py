@@ -34,7 +34,6 @@ print(y_train.shape ,y_test.size()) #torch.Size([50000]) torch.Size([10000])
 
 # print(np.min(x_train.numpy())), np.max((x_train.numpy())) #0.0 
 
-
 # x_train , x_test = x_train.unsqueeze(1),x_test.unsqueeze(1) #차원 바꿔주기 
 
 x_train, x_test = x_train.reshape(50000,3,32,32),x_test.reshape(10000,3,32,32)
