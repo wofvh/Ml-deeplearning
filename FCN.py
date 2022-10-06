@@ -5,7 +5,6 @@ import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout, Conv2DTranspose, BatchNormalization, ReLU, Concatenate, Softmax
 # import BatchNormalization and ReLU
-from tensorflow.keras.layers import BatchNormalization, ReLU
  
 import tensorflow as tf
 # import tensorflow_datasets as tfds
@@ -22,7 +21,7 @@ from keras.preprocessing.image import ImageDataGenerator
 
 # pixel labels in the video frames
 class_names = ['sky', 'building','column/pole', 'road', 
-               'side walk', 'vegetation', 'traffic light', 'fence', 'vehicle', 'pedestrian', 'bicyclist', 'void']
+               'side walk', 'vegetation', 'traffic light', 'fence', 'vehicle', 'pedestrian', 'bicyclist', 'void'] 
 
 
 train_image_path = 'D:\study_data\_data\dataset1/images_prepped_train/'
@@ -213,8 +212,8 @@ fcnn.save('FCN_8s.h5')
 pred = fcnn.predict(validation_dataset, steps=validation_steps) # steps : Total number of steps (batches of samples) before declaring the prediction round finished. Ignored with the default value of None.
 pred = np.argmax(pred, axis=3) # (batch_size, 224, 224)
 
-my_image_path1 = 'C:\study/bbb.jpg'
-my_image_path2 = 'C:\study/bbb.jpg'
+my_image_path1 = 'C:\study/testtt.jpg'
+my_image_path2 = 'C:\study/testtt.jpg'
 
 def predict_image(image_path):
     image = cv2.imread(image_path)
