@@ -33,19 +33,14 @@ y_test = torch.LongTensor(y_test).to(DEVICE)
 
 # print(np.min(x_train.numpy())), np.max((x_train.numpy())) #0.0 1.0
 
-
-
 x_train , x_test = x_train.reshape(50000,3,32,32), x_test.reshape(10000,3,32,32) #데이터를 3차원으로 만들어준다
-
-
-
 
 train_dset = TensorDataset(x_train, y_train)
 test_dset = TensorDataset(x_test, y_test)
 
-
 train_loader = DataLoader(train_dset, batch_size=32, shuffle =True)#batch_size=32 한번에 32개씩 불러온다 #shuffle=True 데이터를 섞어준다
 test_loader =  DataLoader(test_dset , batch_size=32, shuffle =False)
+print(len(train_loader), len(test_loader)) #1563 313
 
 #2. 모델
 class CNN(nn.Module): #dropout은 test 평가할떄는 적용이 되면 안됨 훈련할때만 가능 
@@ -60,7 +55,7 @@ class CNN(nn.Module): #dropout은 test 평가할떄는 적용이 되면 안됨 �
         )
         
         self.hidden_layer2 = nn.Sequential(
-            nn.Conv2d(128,64, kernel_size=(3,3),),   #num_features = 784
+            nn.Conv2d(128,32, kernel_size=(3,3),),   #num_features = 784
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=(2,2)),
             nn.Dropout(0.3),                #0.5는 50%를 랜덤으로 끈다
@@ -68,8 +63,8 @@ class CNN(nn.Module): #dropout은 test 평가할떄는 적용이 되면 안됨 �
      
         self.hidden_layer3 = nn.Linear(32*6*6, 32)
         
-        self.output_layer = nn.Linear(64,100)
-        
+        self.output_layer = nn.Linear(32,100)
+        self.output_layer = nn.Linear(in_features=32,out_features=100)
     def forward(self, x):
         x = self.hidden_layer1(x)
         x = self.hidden_layer2(x)
@@ -79,9 +74,8 @@ class CNN(nn.Module): #dropout은 test 평가할떄는 적용이 되면 안됨 �
         return x
     
 model = CNN(3).to(DEVICE)
-from torchsummary import summary
-summary(model, (3, 32,32))#torch summary를 사용하면 모델의 구조를 볼수있다
-exit()
+# from torchsummary import summary
+# summary(model, (3, 32,32))#torch summary를 사용하면 모델의 구조를 볼수있다
 
 
 #3. 훈련
