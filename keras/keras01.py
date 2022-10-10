@@ -11,12 +11,14 @@ y = np.array([1,2,3])
  
  
 model = Sequential()
-model.add(Dense(4, input_dim=1))
-model.add(Dense(5))
-model.add(Dense(40))
-model.add(Dense(30))
+model.add(Dense(5, input_dim=1))
+model.add(Dense(4))
+model.add(Dense(3))
+model.add(Dense(2))
 model.add(Dense(1))
+model.summary()
 
+'''
 #3. 컴파일, 훈련
 model.compile(loss='mse',optimizer='adam') #(mse 평균) (loss 오차)compile (Optimizer(최적화)
 model.fit(x, y, epochs=167)
@@ -30,3 +32,4 @@ print('4의 예측값 : ',result )
 
 # loss :  4.721324220469114e-09
 # 4의 예측값 :  [[3.9998505]]
+'''
