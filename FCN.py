@@ -5,6 +5,7 @@ import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout, Conv2DTranspose, BatchNormalization, ReLU, Concatenate, Softmax
 # import BatchNormalization and ReLU
+from tensorflow.keras.layers import BatchNormalization, ReLU
  
 import tensorflow as tf
 # import tensorflow_datasets as tfds
@@ -14,6 +15,7 @@ import pandas as pd
 #import load_image
 import glob
 import cv2
+# cv2 pip install opencv-python
 import random
 from keras.preprocessing.image import ImageDataGenerator
 
@@ -21,7 +23,7 @@ from keras.preprocessing.image import ImageDataGenerator
 
 # pixel labels in the video frames
 class_names = ['sky', 'building','column/pole', 'road', 
-               'side walk', 'vegetation', 'traffic light', 'fence', 'vehicle', 'pedestrian', 'bicyclist', 'void'] 
+               'side walk', 'vegetation', 'traffic light', 'fence', 'vehicle', 'pedestrian', 'bicyclist', 'void']
 
 
 train_image_path = 'D:\study_data\_data\dataset1/images_prepped_train/'
@@ -73,7 +75,7 @@ def map_filename_to_image_and_mask(t_filename, a_filename, height=224, width=224
     annotation = tf.stack(stack_list, axis=2)
  
     # Normalize pixels in the input image
-    image = image / 127.5
+    image = image / 127.5 # normalize to [-1, 1]
     image -= 1
  
     return image, annotation
@@ -144,15 +146,151 @@ validation_image_paths, validation_label_map_paths = get_dataset_slice_paths(tes
 training_dataset = get_training_dataset(training_image_paths, training_label_map_paths)
 validation_dataset = get_validation_dataset(validation_image_paths, validation_label_map_paths)
 
-# # generate a list that contains one color for each class
-# colors = sns.color_palette(None, len(class_names))
+# generate a list that contains one color for each class
+colors = sns.color_palette(None, len(class_names)) # None
  
-# # print class name - normalized RGB tuple pairs
-# # the tuple values will be multiplied by 255 in the helper functions later
-# # to convert to the (0,0,0) to (255,255,255) RGB values you might be familiar with
-# for class_name, color in zip(class_names, colors): # zip the class names and colors together
-#     print(f'{class_name} -- {color}')
-
+# print class name - normalized RGB tuple pairs
+# the tuple values will be multiplied by 255 in the helper functions later
+# to convert to the (0,0,0) to (255,255,255) RGB values you might be familiar with
+for class_name, color in zip(class_names, colors): # zip the class names and colors together
+    print(f'{class_name} -- {color}')
+    
+    
+# Visualization Utilities
+ 
+def fuse_with_pil(images):
+    '''
+    Creates a blank image and pastes input images
+ 
+    Args:
+        images (list of numpy arrays) - numpy array representations of the images to paste
+  
+    Returns:
+        PIL Image object containing the images
+    '''
+ 
+    widths = (image.shape[1] for image in images)
+    heights = (image.shape[0] for image in images)
+    total_width = sum(widths)
+    max_height = max(heights)
+ 
+    new_im = PIL.Image.new('RGB', (total_width, max_height))
+ 
+    x_offset = 0
+    for im in images:
+        pil_image = PIL.Image.fromarray(np.uint8(im))
+        new_im.paste(pil_image, (x_offset,0))
+        x_offset += im.shape[1]
+  
+    return new_im
+ 
+ 
+def give_color_to_annotation(annotation):
+    '''
+    Converts a 2-D annotation to a numpy array with shape (height, width, 3) where
+    the third axis represents the color channel. The label values are multiplied by
+    255 and placed in this axis to give color to the annotation
+ 
+    Args:
+        annotation (numpy array) - label map array
+  
+    Returns:
+        the annotation array with an additional color channel/axis
+    '''
+    seg_img = np.zeros( (annotation.shape[0],annotation.shape[1], 3) ).astype('float')
+  
+    for c in range(12):
+        segc = (annotation == c)
+        seg_img[:,:,0] += segc*( colors[c][0] * 255.0)
+        seg_img[:,:,1] += segc*( colors[c][1] * 255.0)
+        seg_img[:,:,2] += segc*( colors[c][2] * 255.0)
+  
+    return seg_img
+ 
+ 
+def show_predictions(image, labelmaps, titles, iou_list, dice_score_list):
+    '''
+    Displays the images with the ground truth and predicted label maps
+ 
+    Args:
+        image (numpy array) -- the input image
+        labelmaps (list of arrays) -- contains the predicted and ground truth label maps
+        titles (list of strings) -- display headings for the images to be displayed
+        iou_list (list of floats) -- the IOU values for each class
+        dice_score_list (list of floats) -- the Dice Score for each vlass
+    '''
+ 
+    true_img = give_color_to_annotation(labelmaps[1])
+    pred_img = give_color_to_annotation(labelmaps[0])
+ 
+    image = image + 1
+    image = image * 127.5
+    images = np.uint8([image, pred_img, true_img])
+ 
+    metrics_by_id = [(idx, iou, dice_score) for idx, (iou, dice_score) in enumerate(zip(iou_list, dice_score_list)) if iou > 0.0]
+    metrics_by_id.sort(key=lambda tup: tup[1], reverse=True)  # sorts in place
+  
+    display_string_list = ["{}: IOU: {} Dice Score: {}".format(class_names[idx], iou, dice_score) for idx, iou, dice_score in metrics_by_id]
+    display_string = "\n\n".join(display_string_list) 
+ 
+    plt.figure(figsize=(15, 4))
+ 
+    for idx, im in enumerate(images):
+        plt.subplot(1, 3, idx+1)
+        if idx == 1:
+            plt.xlabel(display_string)
+        plt.xticks([])
+        plt.yticks([])
+        plt.title(titles[idx], fontsize=12)
+        plt.imshow(im)
+ 
+ 
+def show_annotation_and_image(image, annotation):
+    '''
+    Displays the image and its annotation side by side
+ 
+    Args:
+        image (numpy array) -- the input image
+        annotation (numpy array) -- the label map
+    '''
+    new_ann = np.argmax(annotation, axis=2)
+    seg_img = give_color_to_annotation(new_ann)
+  
+    image = image + 1
+    image = image * 127.5
+    image = np.uint8(image)
+    images = [image, seg_img]
+  
+    images = [image, seg_img]
+    fused_img = fuse_with_pil(images)
+    plt.imshow(fused_img)
+ 
+ 
+def list_show_annotation(dataset):
+    '''
+    Displays images and its annotations side by side
+ 
+    Args:
+        dataset (tf Dataset) - batch of images and annotations
+    '''
+ 
+    ds = dataset.unbatch()
+    ds = ds.shuffle(buffer_size=100)
+ 
+    plt.figure(figsize=(25, 15))
+    plt.title("Images And Annotations")
+    plt.subplots_adjust(bottom=0.1, top=0.9, hspace=0.05)
+ 
+    # we set the number of image-annotation pairs to 9
+    # feel free to make this a function parameter if you want
+    for idx, (image, annotation) in enumerate(ds.take(9)):
+        plt.subplot(3, 3, idx + 1)
+        plt.yticks([])
+        plt.xticks([])
+        show_annotation_and_image(image.numpy(), annotation.numpy())
+        
+# print(class_names) # result = 
+# print(colors) #result = 
 
 
 def conv_block(inputs, filters, kernel_size, strides, padding='same'): # padding='same' or 'valid'
@@ -166,28 +304,35 @@ def deconv_block(inputs, filters, kernel_size, strides, padding='same'):
     x = tf.keras.layers.BatchNormalization()(x)
     x = tf.keras.layers.ReLU()(x)
     return x
-Vgg16 = tf.keras.applications.VGG16(include_top=False, weights='imagenet', input_shape=(224, 224, 3))
-Vgg16.trainable = False # freeze the Vgg16
+
+# Vgg16.trainable = False # freeze the Vgg16
+
+# nn.conv2d(input, filter, strides, padding, use_cudnn_on_gpu=None, data_format=None, dilations=None, name=None) kernel_size default = 3
+# torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, groups=1, bias=True, padding_mode='zeros', device=None, dtype=None)
 
 def FCN_8s():
-    x = Vgg16(Vgg16.input)
+    model = tf.keras.applications.VGG16(include_top=False, weights='imagenet', input_shape=(224, 224, 3))
+    for layer in model.layers:
+        layer.trainable = False
+    x = model.output
+    x = conv_block(x, 4096, 7, 1)
     x = conv_block(x, 4096, 1, 1)
-    x = conv_block(x, 4096, 1, 1)
-    x = conv_block(x, 4096, 1, 1)
-    block5_conv1 = Vgg16.get_layer('block5_conv1').output
-    block5_conv1 = conv_block(block5_conv1, 256, 1, 1)
-    block4_conv1 = Vgg16.get_layer('block4_conv1').output
-    block4_conv1 = conv_block(block4_conv1, 512, 1, 1)
-    x = deconv_block(x, 256, 4, 2)
+    x = conv_block(x, 12, 1, 1)
+    block5_conv1 = model.get_layer('block4_pool').output
+    block5_conv1 = conv_block(block5_conv1, 12, 1, 1)
+    block4_conv1 = model.get_layer('block3_pool').output
+    block4_conv1 = conv_block(block4_conv1, 12, 1, 1)
+    x = deconv_block(x, 12, 4, 2)
     concat1 = tf.keras.layers.Concatenate()([x, block5_conv1])
-    x = deconv_block(concat1, 512, 4, 2)
+    x = deconv_block(concat1, 12, 4, 2)
     concat2 = tf.keras.layers.Concatenate()([x, block4_conv1])
     # 8x upsampling
     x = deconv_block(concat2, 12, 16, 8)
     x = tf.keras.layers.Softmax()(x)
     # x = deconv_block(concat2, 128, 16, 8)
     # x = tf.keras.layers.Conv2D(1, 1, 1, padding='same', activation='softmax')(x)
-    return tf.keras.Model(inputs=Vgg16.input, outputs=x)
+    model = tf.keras.Model(inputs=model.input, outputs=x)
+    return model
 
 
 train_count = len(training_image_paths)
@@ -199,34 +344,53 @@ validation_steps = validation_count // BATCH_SIZE
 
 fcnn = FCN_8s()
 fcnn.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-fcnn.fit(training_dataset, epochs=170, validation_data=validation_dataset, steps_per_epoch=steps_per_epoch, validation_steps=validation_steps)
-fcnn.summary()
+fcnn.fit(training_dataset, epochs=1, validation_data=validation_dataset, steps_per_epoch=steps_per_epoch, validation_steps=validation_steps)
 
-# save the model
-fcnn.save('FCN_8s.h5')
+# # save the model
+# fcnn.save('FCN_8s.h5')
 
 # load the model
 # fcnn = tf.keras.models.load_model('FCN_8s.h5')
+fcnn.summary()
 
 # predict the test image
-pred = fcnn.predict(validation_dataset, steps=validation_steps) # steps : Total number of steps (batches of samples) before declaring the prediction round finished. Ignored with the default value of None.
-pred = np.argmax(pred, axis=3) # (batch_size, 224, 224)
+pred = fcnn.predict(validation_dataset, steps=validation_steps, verbose=1)
 
-my_image_path1 = 'C:\study/testtt.jpg'
-my_image_path2 = 'C:\study/testtt.jpg'
+my_image_path1 = 'D:/636E5906-FD2F-4C2E-BC7D-A257CA5BF180.png'
+my_image_path2 = 'D:/D1AC37EF-52D2-4260-880C-A87B70BB49D1.png'
 
 def predict_image(image_path):
     image = cv2.imread(image_path)
     image = cv2.resize(image, (224, 224))
-    image = image / 255.0
+    image = image / 255.0 # normalization
     image = np.expand_dims(image, axis=0)
     pred = fcnn.predict(image)
     pred = np.argmax(pred, axis=3)
     pred = np.squeeze(pred, axis=0)
     return pred
 
-pred1 = predict_image(my_image_path1)
-pred2 = predict_image(my_image_path2)
+# iou
+def iou(y_true, y_pred):
+    intersection = np.sum(y_true * y_pred)
+    union = np.sum(y_true) + np.sum(y_pred) - intersection
+    return intersection / union
+
+# extract first image from validation dataset
+image, annotation = next(iter(validation_dataset)) # (1, 224, 224, 3), (1, 224, 224, 1), next : get next element
+image = image.numpy()
+annotation = annotation.numpy()
+
+score = iou(annotation[0], pred[0]) # 0.0
+print(annotation[0].shape) # (224, 224, 1)
+print(pred[0].shape) # (224, 224, 12)
+exit()
+print('iou score = ', score)
+
+pred = np.argmax(pred, axis=3) # (batch_size, 224, 224)
+
+
+# pred1 = predict_image(my_image_path1)
+# pred2 = predict_image(my_image_path2)
 
 def plot_image(image_path, pred):
     image = cv2.imread(image_path)
@@ -238,29 +402,29 @@ def plot_image(image_path, pred):
     plt.imshow(pred)
     plt.show()
     
-plot_image(my_image_path1, pred1)
-plot_image(my_image_path2, pred2)
+# plot_image(my_image_path1, pred1)
+# plot_image(my_image_path2, pred2)
 
 
-# # show 3 random images from the test set
-# for i in range(3):
-#     # get a random image from the test set
-#     image_index = np.random.randint(0, len(validation_image_paths))
-#     image = cv2.imread(validation_image_paths[image_index])
-#     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) # convert from BGR to RGB
-#     # get the label map for the image
-#     label_map = cv2.imread(validation_label_map_paths[image_index], 0)
-#     # get the predicted label map for the image
-#     pred_label_map = pred[image_index]
-#     # plot the image, label map, and predicted label map
-#     fig, ax = plt.subplots(1, 3, figsize=(20, 20))
-#     ax[0].imshow(image)
-#     ax[1].imshow(label_map)
-#     ax[2].imshow(pred_label_map)
-#     ax[0].set_title('Image')
-#     ax[1].set_title('Label Map')
-#     ax[2].set_title('Predicted Label Map')
-#     plt.show()
+# show 3 random images from the test set
+for i in range(3):
+    # get a random image from the test set
+    image_index = np.random.randint(0, len(validation_image_paths)) # image.shape = (224, 224, 3)
+    image = cv2.imread(validation_image_paths[image_index])
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) # convert from BGR to RGB
+    # get the label map for the image
+    label_map = cv2.imread(validation_label_map_paths[image_index], 0) # label_map.shape = (224, 224)
+    # get the predicted label map for the image
+    pred_label_map = pred[image_index]
+    # plot the image, label map, and predicted label map
+    fig, ax = plt.subplots(1, 3, figsize=(20, 20))
+    ax[0].imshow(image)
+    ax[1].imshow(label_map)
+    ax[2].imshow(pred_label_map)
+    ax[0].set_title('Image')
+    ax[1].set_title('Label Map')
+    ax[2].set_title('Predicted Label Map')
+    plt.show()
 
 
 
