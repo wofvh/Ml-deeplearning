@@ -383,7 +383,9 @@ annotation = annotation.numpy()
 score = iou(annotation[0], pred[0]) # 0.0
 print(annotation[0].shape) # (224, 224, 1)
 print(pred[0].shape) # (224, 224, 12)
-exit()
+
+# exit()
+
 print('iou score = ', score)
 
 pred = np.argmax(pred, axis=3) # (batch_size, 224, 224)
@@ -425,7 +427,6 @@ for i in range(3):
     ax[1].set_title('Label Map')
     ax[2].set_title('Predicted Label Map')
     plt.show()
-
 
 
 # Model: "vgg16"
