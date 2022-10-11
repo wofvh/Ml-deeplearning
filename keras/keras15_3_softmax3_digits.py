@@ -11,7 +11,7 @@ from matplotlib import font_manager, rc
 font_path = "C:/Windows/Fonts/gulim.TTc"
 font = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font)
-from tensorflow.keras.utils import to_categorical # https://wikidocs.net/22647 케라스 원핫인코딩
+from tensorflow.python.keras.utils import to_categorical # https://wikidocs.net/22647 케라스 원핫인코딩
 from sklearn.preprocessing import OneHotEncoder  # https://psystat.tistory.com/136 싸이킷런 원핫인코딩
 from sklearn.datasets import load_digits
 import tensorflow as tf
