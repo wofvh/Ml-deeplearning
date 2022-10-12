@@ -7,7 +7,7 @@ from keras.layers.recurrent import LSTM, SimpleRNN
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from sklearn.preprocessing import MaxAbsScaler, RobustScaler
+
 import datetime as dt
 import time
 start = time.time()
@@ -25,18 +25,6 @@ path = './_data/kaggle_bike/'
 train_set = pd.read_csv(path + 'train.csv') # + 명령어는 문자를 앞문자와 더해줌  index_col=n n번째 컬럼을 인덱스로 인식
             
 test_set = pd.read_csv(path + 'test.csv') # 예측에서 쓸거임        
-
-'''                        
-print(train_set)
-print(train_set.shape) # (10886, 12)
-                  
-print(test_set)
-print(test_set.shape) # (6493, 9)
-print(test_set.info()) # (715, 9)
-print(train_set.columns)
-print(train_set.info()) # info 정보출력
-print(train_set.describe()) # describe 평균치, 중간값, 최소값 등등 출력
-'''
 
 
 ######## 년, 월 ,일 ,시간 분리 ############
