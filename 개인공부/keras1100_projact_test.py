@@ -95,7 +95,7 @@ for batch in train_gen:
 y_train = np.load('d:/study_data/_save/_npy/keras101_5_train_y.npy')
 y_test = np.load('d:/study_data/_save/_npy/keras101_5_test_y.npy')
 
-'''
+
 model = Sequential()
 model.add(Conv2D(filters=64 ,kernel_size=(2, 2), padding='same', input_shape=(94,94,3), activation='relu'))
 model.add(MaxPooling2D())
