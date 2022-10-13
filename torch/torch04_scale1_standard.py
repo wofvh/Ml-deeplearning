@@ -81,6 +81,6 @@ results = model(torch.Tensor([A]).to(DEVICE))
 
 print('result : ',results.item())
 
-# 최종 loss :  3.72038653040363e-06
-# result :  4.003868579864502
+# 최종 loss :  3.7203865304
+# result :  4.003868579
 
