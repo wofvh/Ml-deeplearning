@@ -42,7 +42,6 @@ print(Amo) #2018/05/04
 Amo.at[1035:,'종가'] = 0
 print(Amo) #2018/05/04
 
-
 # Amo.index = pd.to_datetime(Amo['일자'],
 #                             format = "%Y/%m/%d") 
 # Sam.index = pd.to_datetime(Sam['일자'],
