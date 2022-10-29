@@ -42,9 +42,6 @@ x_test = (x_test-mean)/std
 
 print(x_train.shape, x_test.shape)
 
-
-
-
 ###################리세이프#######################
 x_train = x_train.reshape(50000, 32, 96)
 x_test = x_test.reshape(10000, 32, 96)
