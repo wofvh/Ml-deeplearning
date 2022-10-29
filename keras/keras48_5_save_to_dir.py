@@ -52,7 +52,6 @@ x_augumented = train_datagen.flow(x_augumented,y_augumented,
 end_time = time.time() - start_time
 print(augument_size,'개 증폭에 걸린시간: ',round(end_time,3 ),'초' )
 
-
 # print(x_augumented)
 # print(x_augumented.shape)    #(40000, 28, 28, 1)
 # print(y_augumented.shape)    #(40000,)
@@ -85,7 +84,6 @@ model.compile(loss= 'mae',optimizer='adam', metrics=['accuracy'])
 hist = model.fit_generator(x_train,y_train ,epochs=30,batch_size=100,
                  validation_split=0.2,
                  verbose=2)
-
 
 #4. 평가,예측
 results = model.evaluate(x_test, y_test)
