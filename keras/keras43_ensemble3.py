@@ -12,7 +12,6 @@ print(x1.shape)     #(100, 2)
 print(x2.shape)     #(100, 3)
 print(x3.shape)     #(100, 2)
 
-
 print(x1.shape, x2.shape, x3.shape)  #(100, 2) (100, 3) (100, 2)
 
 y1 = np.array(range(2001, 2101)) #금리  print(y.shape)#(100,) 
