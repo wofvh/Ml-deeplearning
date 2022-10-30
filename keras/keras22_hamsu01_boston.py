@@ -48,7 +48,6 @@ x_test = scaler.transform(x_test) #
 # scaler =  MinMaxScaler()
 # scaler = StandardScaler()
 
-
  #2. 모델구성
 
 # model = Sequential()
@@ -63,7 +62,7 @@ x_test = scaler.transform(x_test) #
 input1 = Input(shape=(13,))
 dense1 = Dense(10)(input1)
 dense2 = Dense(18,activation='relu')(dense1)
-dense3 = Dense(20,activation='sigmoid')(dense2)
+dense3 = Dense(28,activation='sigmoid')(dense2)
 output1 = Dense(19)(dense3)
 model = Model(inputs=input1, outputs=output1)
 model.summary()
