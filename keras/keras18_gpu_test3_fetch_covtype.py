@@ -70,7 +70,6 @@ print(y_test)
 print(y_train)
 print(y)
 
-
 #2. 모델
 
 model = Sequential()

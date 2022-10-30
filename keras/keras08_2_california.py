@@ -9,7 +9,6 @@ x = datasets.data
 y = datasets.target
 x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.85, shuffle=True, random_state=1234)
 
-
 # print(x)
 # print(y)
 # print(x.shape, y.shape)   #(20640, 8) (20640,)
