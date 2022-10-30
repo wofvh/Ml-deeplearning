@@ -63,8 +63,6 @@ sns.barplot(x="SibSp", y="Survived", data=train_set)
 # y = oh.fit_transform(df)
 # print(y)
 
-
-
 # print(test_set.columns)
 # print(train_set.info()) # info 정보출력
 # print(train_set.describe()) # describe 평균치, 중간값, 최소값 등등 출력
@@ -107,7 +105,6 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
                                                     train_size=0.8,
                                                     random_state=66
                                                     )
-
 # scaler = MinMaxScaler()
 # scaler = StandardScaler()
 # scaler = MaxAbsScaler()
