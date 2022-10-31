@@ -14,7 +14,6 @@ import pandas as pd
 datasets = load_breast_cancer()
 x, y = datasets.data, datasets.target
 
-
 df = pd.DataFrame (x, columns=[['mean radius' 'mean texture' 'mean perimeter' 'mean area'
  'mean smoothness' 'mean compactness' 'mean concavity'
  'mean concave points' 'mean symmetry' 'mean fractal dimension'
@@ -71,8 +70,6 @@ hist = model.fit(x_train, y_train, epochs=1000, batch_size=100,
                  validation_split=0.2,
                  callbacks=[earlyStopping],
                  verbose=1)
-
-
 
 
 end_time = time.time() - start_time
