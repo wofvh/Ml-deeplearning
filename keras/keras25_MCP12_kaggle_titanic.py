@@ -89,8 +89,7 @@ test_set.Fare = test_set.Fare.fillna(value=test_set.Fare.mode())
 
 print(train_set, test_set, train_set.shape, test_set.shape)
 
-############################
-
+########################
 
 x = train_set.drop(['Survived'], axis=1)  # drop 데이터에서 ''사이 값 빼기
 print(x)
