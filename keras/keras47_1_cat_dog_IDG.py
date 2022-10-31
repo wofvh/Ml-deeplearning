@@ -79,7 +79,6 @@ np.save('d:/study_data/_save/_npy/cat_dog_1_test_y.npy',arr=xy_test[0][1])
 #현대 5,200,200,1 짜리 데이터가 32 덩어러 
 
 
-
 #2. 모델구성
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense , Conv2D , Flatten,MaxPool2D
