@@ -40,7 +40,7 @@ xy_train = train_datagen.flow_from_directory(
     class_mode='binary',
     shuffle = True,
     #Found 160 images belonging to 2 classes 160 데이터가 0~1로 데이터가 됬다
-    #타겟싸이즈 맞춰야함 
+    #타겟사이즈 맞춰야함 
 )
 
 xy_test = test_datagen.flow_from_directory(
@@ -70,14 +70,12 @@ np.save('d:/study_data/_save/_npy/cat_dog_1_train_y.npy',arr=xy_train[0][1])
 np.save('d:/study_data/_save/_npy/cat_dog_1_test_x.npy',arr=xy_test[0][0])
 np.save('d:/study_data/_save/_npy/cat_dog_1_test_y.npy',arr=xy_test[0][1])
 
-# print(type(xy_train))     #반복자 DirectoryIterator
+# print(type(xy_train))   #반복자 DirectoryIterator
 # print(type(xy_train[0]))  #<class 'tuple'> 수정할수없는 Lsit
 # print(type(xy_train[0][0]))  #<class 'numpy.ndarray'>
 # print(type(xy_train[0][1]))  #<class 'numpy.ndarray'>
 
-
 #현대 5,200,200,1 짜리 데이터가 32 덩어러 
-
 
 #2. 모델구성
 from tensorflow.python.keras.models import Sequential
