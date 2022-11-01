@@ -9,7 +9,6 @@ token.fit_on_texts([text1, text2])
 
 print(token.word_index)
 
-
 x = token.texts_to_sequences([text1,text2])
 print(x)
 # [[4, 2, 3, 3, 2, 5, 6, 7, 1, 1, 1, 8]]
