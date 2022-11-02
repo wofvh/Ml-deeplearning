@@ -29,7 +29,6 @@ with mp_face_mesh.FaceMesh(
         #     # 비디오 파일의 경우 'continue'를 사용하시고, 웹캠에 경우에는 'break'를 사용
         #     continue
 
-
         image.flags.writeable = False
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         results = face_mesh.process(image)
