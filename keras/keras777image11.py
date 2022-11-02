@@ -30,8 +30,6 @@ print(file_name_list)
 # #     cv2.waitKey(0)
 # #     cv2.destroyAllWindows()
     
-   
-
 # # def Cutting_face_save(image, name):
 # #     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 # #     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -47,8 +45,6 @@ print(file_name_list)
 # #         # 이미지 저장하기
 # #         cv2.imwrite(f"d:/project/actor/minsik/{name}.jpg", resize)
         
-   
-   
 # 얼굴 + 눈 인식해서 크롭      
 def Cutting_face_save(image, name):
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')

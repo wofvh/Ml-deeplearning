@@ -58,14 +58,11 @@ model.add(LSTM(32))
 model.add(Dense(46, activation='softmax'))
 model.summary()             
 
-
 #3. 컴파일, 훈련
 es = EarlyStopping(monitor='val_loss', patience=5, mode='auto', verbose=1, 
                               restore_best_weights=True)
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 model.fit(x_train, y_train, epochs=20, batch_size=500 ,validation_split=0.2,callbacks=[es])
-
-
 
 #4. 평가, 예측
 
