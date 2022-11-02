@@ -12,7 +12,6 @@ from keras.layers import BatchNormalization
 from keras.preprocessing.image import ImageDataGenerator
 from sklearn.model_selection import train_test_split
 
-
 ###########################폴더 생성시 현재 파일명으로 자동생성###########################################
 import inspect, os
 a = inspect.getfile(inspect.currentframe()) #현재 파일이 위치한 경로 + 현재 파일 명
@@ -21,9 +20,6 @@ print(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))))
 print(a.split("\\")[-1]) #현재 파일 명
 current_name = a.split("\\")[-1]
 ##########################밑에 filepath경로에 추가로  + current_name + '/' 삽입해야 돌아감###################
-
-
-
 
 #1. 데이터
 train_datagen = ImageDataGenerator(
@@ -55,8 +51,6 @@ test_set = train_datagen.flow_from_directory(
     class_mode='binary'
 ) #Found 1 images belonging to 1 classes.
 
-
-
 x = train_set[0][0]
 y = train_set[0][1]
 
@@ -72,12 +66,8 @@ x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.7,
                                                     shuffle=True
                                                     )
 
-
-
 # print(x_train.shape,x_test.shape) #(8005, 100, 100, 3) (2023, 100, 100, 3)
 # print(y_train.shape,y_test.shape) #(8005, 2) (2023, 2)
-
-
 
 #################################### 스케일링 ######################################
 x_train1 = x_train.reshape((x_train.shape[0]), (x_train.shape[1])*(x_train.shape[2])*3)
@@ -119,16 +109,12 @@ print(x_augumented[0][1])
 x_train = np.concatenate((x_train, x_augumented))
 y_train = np.concatenate((y_train, y_augumented))
 
-
-
 xy_train = test_datagen.flow(x_train, y_train,
                                   batch_size=100000,
                                   shuffle=False)
 
 print(xy_train[0][0])
 print(xy_train[0][0].shape)
-
-
 
 print(xy_train[0][0].shape) #(200, 150, 150, 1)
 print(xy_train[0][1]) #(200,)
