@@ -56,13 +56,10 @@ model.add(Flatten())
 model.add(Dense(1, activation='sigmoid')) 
 model.summary()
 
-
 '''
 #3.컴파일훈련 
 model.compile(loss='binary_crossentropy',optimizer='adam', metrics=['acc'])
 model.fit(pad_x, labels ,epochs=16, batch_size=16)
-
-
 
 # _________________________________________________________________
 # Layer (type)                 Output Shape              Param #
