@@ -13,7 +13,6 @@ docs = ['너무 재밋어요', '참 최고에요', '참 잘 만든 영화에요'
 ]
 test_set = ['나는 형권이가 정말 재미없다 너무 정말']
 
-
 # 긍정 1, 부정 0
 labels = np.array([1,1,1,1,1,0,0,0,0,0,0,1,1,0]) # (14,)
 
@@ -70,8 +69,6 @@ print(np.unique(pad_x, return_counts=True))
 #       dtype=int64))
 
 #2. 모델
-
-
 
 model = Sequential()
 # model.add(Embedding(34, 20, input_length=5))

@@ -17,8 +17,6 @@ token.fit_on_texts(docs)
 print(token.word_index)
 
 
-#  
-
 x = token.texts_to_sequences(docs) #pad 로 앞부분 부터 0을 채우는게 좋음 
 print(x)
 
@@ -33,7 +31,6 @@ print(pad_x.shape)  #(13, 5) #rehape 해서 3~4차원으로 LSTM 가능
 word_size = len(token.word_index)
 print('word_size:',word_size)    #word_size: 27 #단어사전의 갯수 : 30개 / 현재 27개
 # print(np.unique(pad_x, return_counts=True))
-
 
 # (array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 
 # 15, 16,
@@ -60,7 +57,6 @@ model.summary()
 #3.컴파일훈련 
 model.compile(loss='binary_crossentropy',optimizer='adam', metrics=['acc'])
 model.fit(pad_x, labels ,epochs=16, batch_size=16)
-
 
 
 # _________________________________________________________________
