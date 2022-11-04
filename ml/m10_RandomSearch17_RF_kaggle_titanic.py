@@ -30,7 +30,6 @@ train_set[["SibSp", "Survived"]].groupby(['SibSp'], as_index=False).mean().sort_
 train_set[["Parch", "Survived"]].groupby(['Parch'], as_index=False).mean().sort_values(by='Survived', ascending=False)
 
 
-
 print(test_set) # [418 rows x 10 columns]
 print(train_set.isnull().sum()) #각 컬럼당 결측치의 합계
 
