@@ -16,11 +16,9 @@ print(train_data.shape,label_data.shape)    # (1607, 1440, 37) (1607,)
 print(val_data.shape,val_target.shape)      # (206, 1440, 37) (206,)
 print(test_data.shape,test_target.shape)    # (195, 1440, 37) (195,)
 
-
 # train_data = train_data.reshape(1607, 1440, 37, 1)
 # val_data = val_data.reshape(206, 1440, 37, 1)
 # test_data = test_data.reshape(195, 1440, 37, 1)
-
                             
 x_train,x_test,y_train,y_test = train_test_split(train_data,label_data,train_size=0.87,shuffle=True,random_state=72)
 print(x_train.shape)
@@ -56,7 +54,6 @@ hist = model.fit(x_train, y_train, epochs=500, batch_size=100,
                 verbose=2,callbacks = [es,reduced_lr]
                 )
 model.save_weights("C:\Study\_save/keras57_12_save_weights1.h5")
-
 
 #4. 평가,예측
 loss = model.evaluate(x_test, y_test)
