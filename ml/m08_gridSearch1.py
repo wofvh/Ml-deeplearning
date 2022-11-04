@@ -30,7 +30,6 @@ parameters = [
 #2. 모델 구성
 from sklearn.svm import LinearSVC,SVC
 
-
 # model = LinearSVC() 
 # model = LogisticRegression() 
 # model = KNeighborsClassifier() 
