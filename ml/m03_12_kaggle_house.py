@@ -41,7 +41,6 @@ for col in tqdm_notebook(cols):
     train_set[col]=le.fit_transform(train_set[col])
     test_set[col]=le.fit_transform(test_set[col])
 
-
 print(test_set)
 print(train_set.shape) #(1460,76)
 print(test_set.shape) #(1459, 75) #train_set과 열 값이 '1'차이 나는 건 count를 제외했기 때문이다.예측 단계에서 값을 대입
