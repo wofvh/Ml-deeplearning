@@ -51,7 +51,6 @@ GridSearchCV
 model = GridSearchCV(pipe,Parameters,cv=kfold,verbose=1)
 # model = GridSearchCV(pipe, parameters,cv=5,verbose=1)
 
-
 #훈련
 model.fit(x_train,y_train)
 
