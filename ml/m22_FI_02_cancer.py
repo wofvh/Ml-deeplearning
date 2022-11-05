@@ -4,7 +4,6 @@
 # 컬럼삭제후 acc : 
 # 4개 모델 비교 
 
-
 from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, accuracy_score, r2_score
@@ -21,8 +20,6 @@ y = datasets['target']
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size =0.2,                                
     shuffle=True, random_state =58525)
 
-
-
 # x = np.array(x)
 # y = np.array(y) 
 
@@ -30,7 +27,6 @@ x_train, x_test, y_train, y_test = train_test_split(x,y, test_size =0.2,
 # x = np.delete(x,4, axis=1) 
 
 # y = np.delete(y,1, axis=1) 
-
 
 print(x.shape,y.shape)
 print(datasets.feature_names)
