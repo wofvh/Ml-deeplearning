@@ -18,7 +18,6 @@ x_train ,x_test, y_train ,y_test = train_test_split(x,y, train_size=0.8,
 # x_train = scaler.fit_transform(x_train)
 # x_test = scaler.transform(x_test)
 
-
 #모델구성
 
 from sklearn.svm import LinearSVC, SVC

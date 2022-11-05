@@ -42,7 +42,6 @@ print(train_set.shape) #(10886,11)
 
 x = train_set.drop([ 'casual', 'registered','count'],axis=1) #axis는 컬럼 
 
-
 print(x.columns)
 print(x.shape) #(10886, 8)
 
