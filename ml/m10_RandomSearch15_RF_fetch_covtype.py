@@ -47,8 +47,6 @@ parameters = [
 
 #2. 모델 구성
 
-
-
 model = GridSearchCV(RandomForestClassifier(),parameters,cv=kfold,verbose=1,
                      refit=True,n_jobs=-1) 
 # Fitting 5 folds(kfold의 인수) for each of 42 candidates, totalling 210 fits(42*5)

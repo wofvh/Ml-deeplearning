@@ -9,7 +9,6 @@ from sklearn.svm import LinearSVR
 from sklearn.metrics import r2_score
 from sklearn.model_selection import RandomizedSearchCV
 
-
 #1. 데이터
 datasets = fetch_california_housing()
 x = datasets.data #데이터를 리스트 형태로 불러올 때 함
