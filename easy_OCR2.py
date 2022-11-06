@@ -10,7 +10,6 @@ from PIL import ImageFont, ImageDraw, Image
 import wget
 wget.download('https://img.etnews.com/photonews/1909/1227580_20190925141436_569_0003.jpg')
 
-
 def plt_imshow(title='image', img=None, figsize=(10 ,10)):
     plt.figure(figsize=figsize)
  
