@@ -2,11 +2,7 @@
 #class 맴버 : class 내부에 포함되는 변수
 #class 함수 : class 내부의 클래스 내부의 포함되는 함수 (매소드 라고부름)
 
-
-
 from unicodedata import name
-
-
 class Car:           #class란 어떤 사물을 객채로 컴퓨터가 받아 드릴수있게 지정해줌 
     #클래스의 생성자
     def __init__(self, name , color, high,peple):    #  __init__ <<(생성자 ,self 라는 것을 기본적으로 가지고있음)
