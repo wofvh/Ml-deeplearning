@@ -156,12 +156,10 @@ train_loader = DataLoader(train_dataset, batch_size = CFG['BATCH_SIZE'], shuffle
 val_dataset = CustomDataset(val_input_list, val_target_list, False)
 val_loader = DataLoader(val_dataset, batch_size=CFG['BATCH_SIZE'], shuffle=False, num_workers=0)
 
-
 it = iter(train_dataset)
 
 for i in range(10):
     print(i, next(it))   
-
 class BaseModel(nn.Module):
     def __init__(self):
         super(BaseModel, self).__init__()
