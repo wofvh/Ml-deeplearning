@@ -136,7 +136,6 @@ def get_validation_dataset(image_paths, label_map_paths):
  
     return validation_dataset
 
-
 # get the paths to the images
 training_image_paths, training_label_map_paths = get_dataset_slice_paths(train_image_path, train_label_path)
 validation_image_paths, validation_label_map_paths = get_dataset_slice_paths(test_image_path, test_label_path)
