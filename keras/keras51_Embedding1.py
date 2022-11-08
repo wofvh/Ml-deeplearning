@@ -10,11 +10,11 @@ docs = ['너무 재밋어요',' 참 최고에요','참 잘 만든 영화에요',
         '안결 혼해요']
 
 # 긍정 1 , 부정 0 
-labels = np.array([1,1,1,1,1,0,0,0,0,0,0,1,1])
+labels = np.array([1,1,1,1,1,0,0,0,0,0,0,1,1]) # 1은 긍정 0은 부정
 
-token = Tokenizer()
-token.fit_on_texts(docs)
-print(token.word_index)
+token = Tokenizer() # 토큰화
+token.fit_on_texts(docs) # 토큰화를 시키는 함수
+print(token.word_index) # 단어의 인덱스를 보여줌
 
 
 x = token.texts_to_sequences(docs) #pad 로 앞부분 부터 0을 채우는게 좋음 
