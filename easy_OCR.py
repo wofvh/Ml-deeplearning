@@ -11,7 +11,6 @@ USE_CUDA = torch.cuda.is_available()
 DEVICE  = torch.device('cuda:0' if USE_CUDA else 'cpu')
 print('torch:', torch.__version__,'사용DEVICE :',DEVICE)
 
-
 THRESHOLD = 0.5
 reader = easyocr.Reader(['ja','en',], gpu=False)
 # wget.download('https://img.etnews.com/photonews/1909/1227580_20190925141436_569_0003.jpg')
@@ -24,7 +23,6 @@ def read(img_path):
     
     result = reader.readtext (img_path)  
     r = []
-
 
     for bbox, text, conf in result:
         if conf > THRESHOLD:
