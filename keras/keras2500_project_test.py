@@ -6,7 +6,6 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.preprocessing import MaxAbsScaler, RobustScaler 
 from sklearn.model_selection import train_test_split
 
-
 season = ImageDataGenerator(
     rescale=1./255)
 
