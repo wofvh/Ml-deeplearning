@@ -173,7 +173,6 @@ for df in [train_set, test_set]:
     df['Elc_num'] = 1       
     df.loc[(df['Electrical'] == 'SBrkr' ), 'Elc_num'] = 2 
 
-
     df['KiQ_num'] = 1       
     df.loc[(df['KitchenQual'] == 'TA' ), 'KiQ_num'] = 2     
     df.loc[(df['KitchenQual'] == 'Gd' ), 'KiQ_num'] = 3     
