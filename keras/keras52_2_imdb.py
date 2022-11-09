@@ -14,7 +14,6 @@ import pandas as pd
     num_words=10000
 )
 
-
 print(x_train.shape, x_test.shape) # (25000,) (25000,)
 print(y_train.shape, y_test.shape) # (25000,) (25000,)
 print(np.unique(y_train, return_counts=True)) # [0, 1]
@@ -39,7 +38,6 @@ from keras.utils.np_utils import to_categorical
 x_train = pad_sequences(x_train, padding='pre', maxlen=100, truncating='pre')
                         #(8982,) -> (8982,100)
 x_test = pad_sequences(x_test, padding='pre', maxlen=100, truncating='pre')
-
 
 # y_train = to_categorical(y_train)
 # y_test = to_categorical(y_test)
@@ -67,8 +65,6 @@ es = EarlyStopping(monitor='val_loss', patience=5, mode='auto', verbose=1,
                               restore_best_weights=True)
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 model.fit(x_train, y_train, epochs=20, batch_size=500 ,validation_split=0.2,callbacks=[es])
-
-
 
 #4. 평가, 예측
 
