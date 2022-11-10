@@ -19,10 +19,7 @@ y_train = np.load('d:/study_data/_save/_npy/keras106_8_train_y.npy')
 x_test = np.load('d:/study_data/_save/_npy/keras106_8_test_x.npy' )
 y_test = np.load('d:/study_data/_save/_npy/keras106_8_test_y.npy' )
 
-
-
 # print(face)
-
 
 print(x_train.shape)
 print(x_test.shape)
