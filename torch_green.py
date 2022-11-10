@@ -174,7 +174,6 @@ class BaseModel(nn.Module):
             nn.Linear(32, 16),
             nn.Linear(16, 1),
         )
-        
     def forward(self, x):
         hidden, _ = self.lstm(x)
         output = self.classifier(hidden[:,-1,:])
