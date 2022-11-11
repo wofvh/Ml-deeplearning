@@ -11,7 +11,6 @@ mp_face_mesh = mp.solutions.face_mesh
 # Call Camera
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
-
 with mp_face_mesh.FaceMesh(
         max_num_faces=1,
         refine_landmarks=True,
