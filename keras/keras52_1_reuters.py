@@ -9,7 +9,6 @@ from tensorflow.python.keras.layers import Activation, Dense, Conv2D, Flatten, M
 from keras.layers import BatchNormalization
 import pandas as pd
 
-
 (x_train, y_train), (x_test, y_test) = reuters.load_data(num_words=10000, test_split=0.2)
 
 print(x_train.shape, x_test.shape) # (8982,) (2246,)
@@ -36,7 +35,6 @@ from keras.utils.np_utils import to_categorical
 x_train = pad_sequences(x_train, padding='pre', maxlen=100, truncating='pre')
                         #(8982,) -> (8982,100)
 x_test = pad_sequences(x_test, padding='pre', maxlen=100, truncating='pre')
-
 
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
