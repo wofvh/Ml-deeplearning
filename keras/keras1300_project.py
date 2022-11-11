@@ -12,7 +12,6 @@ from sklearn.model_selection import train_test_split
 import tensorflow as tf
 from PIL import Image
 
-
 #1. 데이터 로드
 
 train = pd.read_csv('./_data/project/cls_data.csv',index_col=0)
