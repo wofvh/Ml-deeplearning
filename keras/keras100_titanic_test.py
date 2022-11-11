@@ -29,7 +29,6 @@ from sklearn.neighbors import KNeighborsClassifier
 #cabin > 객실 >pclass 객실등급 >결과적으로 중요함 돈 낸만큼 좋은 객실 타입에 배정되기 때문 
 #embarked
 
-
 #1.데이터 처리 
 path = './_data/kaggle_titanic/'
 
