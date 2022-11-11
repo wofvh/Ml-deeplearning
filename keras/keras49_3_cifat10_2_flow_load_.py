@@ -4,7 +4,6 @@ from keras.datasets import mnist,cifar10
 import pandas as pd
 import numpy as np
 
-
 #1. 데이터 전처리
 # np.save('D:/study_data/_save/_npy/keras49_3_train_x.npy',arr=xy_df3[0][0])
 # np.save('D:/study_data/_save/_npy/keras49_3_train_y.npy',arr=xy_df3[0][1])
