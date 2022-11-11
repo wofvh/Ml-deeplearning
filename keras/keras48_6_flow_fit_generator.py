@@ -34,7 +34,6 @@ x_augumented = x_augumented.reshape(x_augumented.shape[0],
                                     x_augumented.shape[1],
                                     x_augumented.shape[2], 1)
 
-
 x_test = x_test.reshape(x_test.shape[0],x_test.shape[1],x_test.shape[2],1)
 
 xy_df2 = train_datagen.flow(x_train,y_train,
