@@ -51,7 +51,6 @@ ss = ss.rename(columns={'Unnamed: 6':'증감량'})
 print(am.info())
 print(ss.info())  
 
-
 am = am.drop(columns=['전일비','증감량','금액(백만)','개인','외인(수량)','외국계','프로그램','외인비'])
 ss = ss.drop(columns=['전일비','증감량','금액(백만)','개인','외인(수량)','외국계','프로그램','외인비'])
 aa = am['종가']
