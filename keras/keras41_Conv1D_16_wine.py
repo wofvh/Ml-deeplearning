@@ -51,7 +51,6 @@ print(x_train.shape,x_test.shape)
 x_train = x_train.reshape(124, 13, 1)
 x_test = x_test.reshape(54, 13, 1)
 
-
 #2. 모델
 
 # model = load_model("./_save/keras22_hamsu06_wine.h5")
