@@ -16,7 +16,6 @@ token = Tokenizer()
 token.fit_on_texts(docs)
 print(token.word_index)
 
-
 {'참': 1, '너무': 2, '재밋어요': 3, '최고에요': 4, '잘': 5, '만든': 
 6, '영화에요': 7, '추천하고': 8, '싶은': 9, '영화입니다'
 : 10, '한번': 11, '더': 12, '보고싶네요': 13, '글세요': 14, '재미없어요': 15, 
@@ -37,7 +36,6 @@ print(pad_x.shape)  #(13, 5) #rehape 해서 3~4차원으로 LSTM 가능
 word_size = len(token.word_index)
 print('word_size:',word_size)    #word_size: 27 #단어사전의 갯수 : 30개 / 현재 27개
 # print(np.unique(pad_x, return_counts=True))
-
 
 # (array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 
 # 15, 16,
