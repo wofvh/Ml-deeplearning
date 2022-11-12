@@ -35,7 +35,6 @@ train_datagen = ImageDataGenerator(
 
 test_datagen = ImageDataGenerator()
 
-
 train_set = train_datagen.flow_from_directory(
     'C:\study\_data\project',
     target_size=(250,250),
@@ -57,7 +56,6 @@ y = train_set[0][1]
 test_set_x = test_set[0][0]
 print(x) 
 print(y) 
-
 
 print(test_set) 
 print(x.shape,y.shape) #(840, 100, 100, 3) (840, 3)
