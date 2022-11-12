@@ -61,7 +61,6 @@ xy_test = test_datagen.flow_from_directory(
 print(xy_train)  #(5, 200, 200, 3) (5,)
 print(xy_test)   #(5, 200, 200, 3) (5,)
 
-
 print(xy_train[0][0].shape, xy_train[0][1].shape)#(160, 150, 150, 1) (160,)
 print(xy_test[0][0].shape, xy_test[0][1].shape) #(120, 150, 150, 1) (120,)
 
