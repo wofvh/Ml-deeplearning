@@ -12,7 +12,6 @@ print(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))))
 print(a.split("\\")[-1]) #현재 파일 명
 current_name = a.split("\\")[-1]
 
-
 #1. 데이터
 datasets = load_boston()
 x, y = datasets.data, datasets.target
