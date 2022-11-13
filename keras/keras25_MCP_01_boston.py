@@ -50,8 +50,6 @@ date = datetime.datetime.now()
 date = date.strftime("%m%d_%H%M") # 0707_1723
 print(date)
 
-
-
 filepath = './_ModelCheckPoint/' + current_name + '/'
 filename = '{epoch:04d}-{val_loss:.4f}.hdf5'
 
