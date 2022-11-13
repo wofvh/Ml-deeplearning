@@ -8,7 +8,6 @@ import time
 from tensorflow.python.keras.layers import Dense,Input
 from tensorflow.python.keras.models import Sequential,load_model,Model
 
-
 #여기서
 import inspect, os
 a = inspect.getfile(inspect.currentframe()) #현재 파일이 위치한 경로 + 현재 파일 명
