@@ -54,7 +54,6 @@ x_test = x_test.reshape(54, 13, 1)
 #2. 모델
 
 # model = load_model("./_save/keras22_hamsu06_wine.h5")
-
 # model = Sequential()
 # model.add(Dense(30, input_dim=13, activation='linear')) #sigmoid : 이진분류일때 아웃풋에 activation = 'sigmoid' 라고 넣어줘서 아웃풋 값 범위를 0에서 1로 제한해줌
 # model.add(Dense(20, activation='sigmoid'))               # 출력이 0 or 1으로 나와야되기 때문, 그리고 최종으로 나온 값에 반올림을 해주면 0 or 1 완성
