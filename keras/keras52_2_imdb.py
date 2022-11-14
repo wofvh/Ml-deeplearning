@@ -59,7 +59,6 @@ model.add(LSTM(32))
 model.add(Dense(1, activation='sigmoid'))
 model.summary()             
 
-
 #3. 컴파일, 훈련
 es = EarlyStopping(monitor='val_loss', patience=5, mode='auto', verbose=1, 
                               restore_best_weights=True)
