@@ -13,7 +13,6 @@ token = Tokenizer()
 token.fit_on_texts(docs)
 print(token.word_index)
 
-
 {'정말': 1, '나는': 2, '형권이가': 3, '재미없다': 4, '너무': 5}
 
 x = token.texts_to_sequences(docs) #pad 로 앞부분 부터 0을 채우는게 좋음 
