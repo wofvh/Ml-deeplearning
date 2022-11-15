@@ -4,7 +4,6 @@ from keras.datasets import mnist,cifar10
 import pandas as pd
 import numpy as np
 
-
 #1. 데이터 전처리
 
 x_train = np.load('D:/study_data/_save/_npy/keras49_4_train_x.npy')
@@ -15,7 +14,7 @@ print(x_train)
 
 print(x_test.shape)
 model = Sequential()
-model.add(Conv2D(32,(2,2),input_shape=(32,32,3),padding='same',activation='relu'))
+model.add(Conv2D(32,(2,2),input_shape=(32,32,3),padding='same',activation='relu')) #32는 노드의 갯수 2,2는 커널사이즈 3은 컬러
 model.add(Conv2D(64,(3,3),activation='relu'))
 model.add(Flatten())
 model.add(Dense(10,activation='relu'))
@@ -25,7 +24,7 @@ model.add(Dense(100,activation='softmax'))
 #3. 컴파일,훈련
 model.compile(loss='sparse_categorical_crossentropy',optimizer='adam')
 
-model.fit(x_train,y_train,epochs=4,verbose=2,
+model.fit(x_train,y_train,epochs=10,verbose=2,
           validation_split=0.25,batch_size=5000)
 
 #4. 평가,예측
