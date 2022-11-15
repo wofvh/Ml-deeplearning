@@ -16,7 +16,6 @@ token = Tokenizer() # 토큰화
 token.fit_on_texts(docs) # 토큰화를 시키는 함수
 print(token.word_index) # 단어의 인덱스를 보여줌
 
-
 x = token.texts_to_sequences(docs) #pad 로 앞부분 부터 0을 채우는게 좋음 
 print(x)
 
