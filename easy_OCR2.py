@@ -44,7 +44,6 @@ def plt_imshow(title='image', img=None, figsize=(10 ,10)):
         plt.xticks([]), plt.yticks([])
         plt.show()
  
- 
 def make_scan_image(image, width, ksize=(6,6), min_threshold=75, max_threshold=200):
   image_list_title = []
   image_list = []
