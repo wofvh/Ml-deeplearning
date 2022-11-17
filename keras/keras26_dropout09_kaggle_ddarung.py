@@ -43,7 +43,6 @@ print(train_set.shape) # (1328, 10)
 
 ############################
 
-
 x = train_set.drop(['count'], axis=1)  # drop 데이터에서 ''사이 값 빼기
 print(x)
 print(x.columns)
@@ -71,7 +70,6 @@ print(np.max(x_train))  # 1.0
 
 print(np.min(x_test))  # 1.0
 print(np.max(x_test))  # 1.0
-
 
 #2. 모델구성
 
