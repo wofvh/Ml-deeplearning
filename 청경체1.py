@@ -177,8 +177,6 @@ r2 = r2_score(y_predict,y_test)
 from sklearn.metrics import mean_squared_error
 rmse = np.sqrt(mean_squared_error(y_test,y_predict))
                       
-                  
-
 print(test_input_list2)
 model.fit(train_data,label_data)
 y_summit = model.predict(test_data)
