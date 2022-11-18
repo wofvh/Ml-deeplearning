@@ -100,8 +100,7 @@ def putText(cv_img, text, x, y, color=(0, 0, 0), font_size=22):
   # Colab이 아닌 Local에서 수행 시에는 gulim.ttc 를 사용하면 됩니다.
   # font = ImageFont.truetype("fonts/gulim.ttc", font_size)
   font = ImageFont.truetype('/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf', font_size)
-
-
+  
   img = Image.fromarray(cv_img)
    
   draw = ImageDraw.Draw(img)
@@ -129,7 +128,6 @@ results
 
 simple_results = reader.readtext(business_card_image, detail = 0)
 simple_results
-
 
 # loop over the results
 for (bbox, text, prob) in results:
