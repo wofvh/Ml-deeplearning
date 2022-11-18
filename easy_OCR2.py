@@ -82,7 +82,6 @@ def make_scan_image(image, width, ksize=(6,6), min_threshold=75, max_threshold=2
   if findCnt is None:
     raise Exception(("Could not find outline."))
  
- 
   output = image.copy()
   cv2.drawContours(output, [findCnt], -1, (0, 255, 0), 2)
   
@@ -103,9 +102,6 @@ def putText(cv_img, text, x, y, color=(0, 0, 0), font_size=22):
   font = ImageFont.truetype('/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf', font_size)
 
 
-  
-  
-  
   img = Image.fromarray(cv_img)
    
   draw = ImageDraw.Draw(img)
@@ -149,7 +145,6 @@ for (bbox, text, prob) in results:
   cv2.rectangle(business_card_image, tl, br, (0, 255, 0), 2)
   business_card_image = putText(business_card_image, text, tl[0], tl[1] - 60, (0, 255, 0), 50)
 	# cv2.putText(business_card_image, text, (tl[0], tl[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-
 
 plt_imshow("Image", business_card_image, figsize=(16,10))
 
