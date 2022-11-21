@@ -26,5 +26,4 @@ model.add(Dense(256, activation= 'relu'))
 model.add(Dropout(0.2))
 model.add(Dense(100,activation='sodftmax'))
 
-
 model.compile
