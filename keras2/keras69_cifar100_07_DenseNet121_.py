@@ -11,7 +11,6 @@ from keras.optimizers import Adam
 from tensorflow.python.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from sklearn.metrics import accuracy_score
 
-
 # 1. data
 (x_train, y_train), (x_test, y_test) = cifar100.load_data()
 
