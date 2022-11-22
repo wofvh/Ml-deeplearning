@@ -9,7 +9,6 @@ print(x, len(x))
 
 y = f(x)
 
-
 ###########그리기 #####
 
 plt.plot(x,y,'k-')
