@@ -6,7 +6,6 @@ from keras.datasets import cifar100
 import numpy as np
 #함수형으로 만들기 
 
-
 base_model = InceptionV3(weights = "imagenet", include_top=False)
 # base_model.summary()
 
