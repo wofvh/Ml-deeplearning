@@ -18,8 +18,6 @@ x_test = x_test.reshape(10000, 28,28,1).astype('float32')/255.
 # y_test = to_categorical(y_test)
 
 
-
-
 # 2. model
 optimizer='adam'
 drop=0.2
