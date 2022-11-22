@@ -27,7 +27,6 @@ y_test = to_categorical(y_test)
 x_train, x_test, y_train, y_test = train_test_split(x_train, y_train,
                                                     train_size=0.8, shuffle=True, random_state=66)
 
-
 xception = Xception(weights='imagenet', include_top=False, input_shape=(32,32,3))
 
 xception.trainable = False 
@@ -37,7 +36,6 @@ xception.trainable = False
 # x_train_reshape = x_train.reshape(n,-1) 
 # x_train_transform = scaler.fit_transform(x_train_reshape)
 # x_train = x_train_transform.reshape(x_train.shape) 
-
 
 
 model = Sequential()
