@@ -36,7 +36,6 @@ model.compile(loss='mse', optimizer='adam')
 
 model.fit(x, y, epochs=100, batch_size=1)
 
-
 y_predict = model.predict(x)
 print(y_predict[:3])
 # loss = model.evaluate(x, y)
