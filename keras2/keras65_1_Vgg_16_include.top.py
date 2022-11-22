@@ -3,7 +3,6 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense
 from keras.applications import VGG16
 
-
 # model = VGG16() # vgg16은 이미지 분류 모델 #include_top = False : 이미지 분류 모델에서는 마지막 레이어를 제외하고 사용 # if include_top = True , input_shape = (224, 224, 3) 
 model = VGG16(weights='imagenet', include_top=False, input_shape=(32,32,3)) # include_top=False : 이미지 분류 모델에서는 1000개의 노드가 있지만 우리는 10개의 노드만 필요하므로 False로 설정
 
