@@ -17,7 +17,6 @@ x_test = x_test.reshape(10000, 28,28,1).astype('float32')/255.
 # y_train = to_categorical(y_train)
 # y_test = to_categorical(y_test)
 
-
 # 2. model
 optimizer='adam'
 drop=0.2
@@ -61,7 +60,6 @@ y_predict = np.argmax(model.predict(x_test), axis=-1)
 
 print('걸린시간 : ', end-start)
 print('acc : ', accuracy_score(y_test,y_predict))
-
 
 # 걸린시간 :  14.816811084747314
 # acc :  0.8242
