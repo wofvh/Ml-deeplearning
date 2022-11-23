@@ -27,8 +27,6 @@ from tensorflow.keras.utils import to_categorical
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
 
-
-
 # 2. model
 
 activation = 'relu'
@@ -73,7 +71,6 @@ loss, acc = model.evaluate(x_test,y_test)
 print('걸린 시간: ', end)
 print('loss: ', loss)
 print('acc: ', acc)
-
 
 # 러닝레이트를 줄여서 핑퐁구간을 줄인다
 # 얼리스탑과 함께 사용함. 얼리스탑동안 갱신이 없으면 러닝레이트를 줄이고, 다시 갱신이 없다면 최종 얼리스탑 건다
