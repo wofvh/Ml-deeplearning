@@ -40,7 +40,6 @@ x_test = scaler.transform(x_test) #
 # print(np.min(x_test))   # -0.06141956477526944
 # print(np.max(x_test))   # 1.1478180091225068
 
-
 #2.모델구성
 model = Sequential() #순차적 
 model.save_weights
