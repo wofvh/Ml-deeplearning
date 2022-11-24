@@ -21,8 +21,6 @@ print(a.split("\\")[-1]) #현재 파일 명
 current_name = a.split("\\")[-1]
 ##########################밑에 filepath경로에 추가로  + current_name + '/' 삽입해야 돌아감#######################
 
-
-
 import tensorflow as tf
 tf.random.set_seed(66)  # y=wx 할때 w는 랜덤으로 돌아가는데 여기서 랜덤난수를 지정해줄수있음
 
@@ -44,7 +42,6 @@ scaler = MaxAbsScaler()
 scaler.fit(x_train)
 x_train = scaler.transform(x_train)
 x_test = scaler.transform(x_test)
-
 
 #2. 모델
 
@@ -76,7 +73,6 @@ import datetime
 date = datetime.datetime.now()
 date = date.strftime("%m%d_%H%M") # 0707_1723
 print(date)
-
 
 filepath = './_ModelCheckPoint/' + current_name + '/'
 filename = '{epoch:04d}-{val_loss:.4f}.hdf5'
