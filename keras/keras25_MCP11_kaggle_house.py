@@ -21,7 +21,6 @@ print(a.split("\\")[-1]) #현재 파일 명
 current_name = a.split("\\")[-1]
 ##########################밑에 filepath경로에 추가로  + current_name + '/' 삽입해야 돌아감#######################
 
-
 #1. 데이터
 path = './_data/kaggle_house/'
 train_set = pd.read_csv(path + 'train.csv') # + 명령어는 문자를 앞문자와 더해줌  index_col=n n번째 컬럼을 인덱스로 인식
@@ -63,7 +62,6 @@ train_set.shape
 
 print(train_set)
 #############################################################################
-
 
 # 수치형 변수와 범주형 변수 찾기
 numerical_feats = train_set.dtypes[train_set.dtypes != "object"].index
