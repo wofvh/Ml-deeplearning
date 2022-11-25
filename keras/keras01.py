@@ -6,10 +6,7 @@ x = np.array([1,2,3])
 y = np.array([1,2,3])
 
 #2. 모델구성
- 
- 
- 
- 
+
 model = Sequential()
 model.add(Dense(5, input_dim=1))
 model.add(Dense(4))
