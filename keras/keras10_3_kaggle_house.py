@@ -11,7 +11,6 @@ path = './_data/kaggle_house/'
 train_df =  pd.read_csv(path + 'train.csv')
 test_df = pd.read_csv(path + 'test.csv') 
 
-
 data = pd.read_csv('./_data/project/cls_data.csv',index_col=0)
 
 train_df.head()
@@ -26,7 +25,6 @@ corrmat = train_df.corr()
 top_corr_features = corrmat.index[abs(corrmat["SalePrice"])>=0.3]
 top_corr_features
 
-
 # heatmap
 plt.figure(figsize=(13,10))
 g = sns.heatmap(train_df[top_corr_features].corr(),annot=True,cmap="RdYlGn")
@@ -36,7 +34,6 @@ feature selection
 train_df = train_df[top_corr_features]
 test_df = test_df[top_corr_features.drop(['SalePrice'])]
 '''
-
 # split y_label
 train_y_label = train_df['SalePrice'] 	# target 값을 미리 분리하였음.
 train_df.drop(['SalePrice'], axis=1, inplace=True)
