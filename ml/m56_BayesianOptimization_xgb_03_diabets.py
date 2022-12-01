@@ -12,7 +12,6 @@ datasets = load_breast_cancer()
 x, y = datasets.data, datasets.target
 print(x.shape, y.shape) # (506, 13) (506,)
 
-
 x_train, x_test, y_train, y_test = train_test_split(
     x, y, train_size=0.8, random_state=123  
 )
@@ -44,7 +43,6 @@ bayesian_params = {
 #             'reg_alpha': 0.01, 
 #             'reg_lambda': 10.0, 
 #             'subsample': 1.0}}
-
 
 def lgb_hamus(max_depth, gamma, min_child_weight,  
               subsample, colsample_bytree, colsample_bylevel, colsample_bynode, 
