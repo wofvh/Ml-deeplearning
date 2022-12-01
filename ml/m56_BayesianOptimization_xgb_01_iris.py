@@ -13,11 +13,9 @@ datasets = load_iris()
 x, y = datasets.data, datasets.target
 print(x.shape, y.shape) # (506, 13) (506,)
 
-
 x_train, x_test, y_train, y_test = train_test_split(
     x, y, train_size=0.8, random_state=123  
 )
-
 
 Scaler = StandardScaler() #Bagging 할때 스케일러 필수 
 x_train = Scaler.fit_transform(x_train)
