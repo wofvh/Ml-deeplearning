@@ -24,8 +24,6 @@ print(df.head(7))  #head는 기본 5개 출력
 x_train ,x_test, y_train, y_test = train_test_split(
     datasets.data, datasets.target, random_state=123, train_size=0.8, shuffle=True, stratify=datasets.target)
 
-
-
 Scaler = StandardScaler() #Bagging 할때 스케일러 필수 
 x_train = Scaler.fit_transform(x_train)
 x_test = Scaler. transform(x_test)
