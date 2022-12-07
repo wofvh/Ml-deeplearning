@@ -84,7 +84,6 @@ scalers = [StandardScaler(),MinMaxScaler(),
         #    PowerTransformer(method = 'box-cox')
            ]
 
-
 for scaler in scalers : 
     name = str(scaler).strip('()')
     x_train = scaler.fit_transform(x_train)
