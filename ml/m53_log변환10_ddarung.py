@@ -75,7 +75,6 @@ print(df) #[506 rows x 13 columns]
 #[ "ZN,TAX"]2개로  RandomFores로그변환 결과 :  0.92 제일 좋았다~! "]  RF구냥결과 :  0.9196
 
 
-
 x_train,x_test,y_train,y_test = train_test_split(df,y,
                                                  random_state=1234, train_size=0.8,)
 
