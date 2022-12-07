@@ -14,7 +14,6 @@ from sklearn.metrics import r2_score, accuracy_score
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 import matplotlib.pyplot as plt
 
-
 #1. 데이터
 datasets = load_boston()
 x, y = datasets.data, datasets.target
@@ -44,7 +43,6 @@ for scaler in scalers :
     results = r2_score(y_test, y_predict)
     print(name, "의 결과 : ", round(results,4))
     
-
 '''
 StandardScaler 의 결과 :  0.8242
 MinMaxScaler 의 결과 :  0.8261
