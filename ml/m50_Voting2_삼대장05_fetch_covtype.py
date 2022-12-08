@@ -31,8 +31,6 @@ x_train ,x_test, y_train, y_test = train_test_split(
 
 
 
-
-
 Scaler = StandardScaler() #Bagging 할때 스케일러 필수 
 x_train = Scaler.fit_transform(x_train)
 x_test = Scaler. transform(x_test)
