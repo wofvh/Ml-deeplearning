@@ -74,8 +74,6 @@ print(df) #[506 rows x 13 columns]
 # [B,ZN, TAX]3개로  Linear로그변환 결과 :  
 # ["ZN,TAX"]2개로  RandomFores로그변환 결과 :  
 
-
-
 x_train,x_test,y_train,y_test = train_test_split(df,y,
                                                  random_state=1234, train_size=0.8,)
 
