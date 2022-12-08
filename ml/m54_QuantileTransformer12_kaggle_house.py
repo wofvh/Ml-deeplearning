@@ -15,7 +15,6 @@ from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 import matplotlib.pyplot as plt
 from collections import Counter
 
-
 encording_columns = ['MSZoning','Street','Alley','LotShape','LandContour','Utilities','LotConfig',
                     'LandSlope','Neighborhood','Condition1','Condition2','BldgType','HouseStyle',
                     'RoofStyle','RoofMatl','Exterior1st','Exterior2nd','MasVnrType','ExterQual',
@@ -31,7 +30,6 @@ non_encording_columns = ['MSSubClass','LotFrontage','LotArea','OverallQual','Ove
                          'KitchenAbvGr','TotRmsAbvGrd','Fireplaces','GarageYrBlt','GarageCars','GarageArea',
                          'WoodDeckSF','OpenPorchSF','EnclosedPorch','3SsnPorch','ScreenPorch','PoolArea',
                          'MiscVal','MoSold','YrSold']
-
 
 
 #1. 데이터
