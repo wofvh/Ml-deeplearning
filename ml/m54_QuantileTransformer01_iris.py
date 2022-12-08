@@ -14,7 +14,6 @@ from sklearn.metrics import r2_score, accuracy_score
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 import matplotlib.pyplot as plt
 
-
 #1. 데이터
 datasets = load_iris()
 x, y = datasets.data, datasets.target
