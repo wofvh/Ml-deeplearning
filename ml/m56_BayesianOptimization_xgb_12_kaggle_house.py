@@ -58,7 +58,6 @@ Bayesian_parameters = {
 #             'reg_lambda': 10.0, 
 #             'subsample': 1.0}}
 
-
 def lgb_hamus(max_depth, num_leaves, min_child_samples, min_child_weight, subsample, colsample_bytree, max_bin, reg_lambda, reg_alpha):
     params = {
         'n_estimators': 500,"learning_rate": 0.02,
