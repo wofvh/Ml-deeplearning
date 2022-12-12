@@ -11,7 +11,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.impute import SimpleImputer, KNNImputer
 from sklearn.pipeline import make_pipeline
 
-
 import seaborn as sns
 import warnings
 warnings.filterwarnings(action="ignore")
