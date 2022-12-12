@@ -11,10 +11,7 @@ test_set = pd.read_csv(path + 'test.csv',
                        index_col=0)
 
 
-
 train_set.info()
-
-
 
 train_set['TypeofContact'].fillna('Self Enquiry', inplace=True)
 test_set['TypeofContact'].fillna('Self Enquiry', inplace=True)
@@ -22,7 +19,6 @@ train_set['Age'].fillna(train_set.groupby('Designation')['Age'].transform('mean'
 test_set['Age'].fillna(test_set.groupby('Designation')['Age'].transform('mean'), inplace=True)
 train_set['Age']=np.round(train_set['Age'],0).astype(int)
 test_set['Age']=np.round(test_set['Age'],0).astype(int)
-
 
 train_set['MonthlyIncome'].fillna(train_set.groupby('Designation')['MonthlyIncome'].transform('mean'), inplace=True)
 test_set['MonthlyIncome'].fillna(test_set.groupby('Designation')['MonthlyIncome'].transform('mean'), inplace=True)
@@ -64,8 +60,6 @@ for dataset in combine:
 train_set['NumberOfTrips'].fillna(train_set.groupby('DurationOfPitch')['NumberOfTrips'].transform('mean'), inplace=True)
 test_set['NumberOfTrips'].fillna(test_set.groupby('DurationOfPitch')['NumberOfTrips'].transform('mean'), inplace=True)
 # print(train_set[train_set['NumberOfChildrenVisiting'].notnull()].groupby(['MaritalStatus'])['NumberOfChildrenVisiting'].mean())
-
-
 
 train_set.loc[ train_set['Gender'] =='Fe Male' , 'Gender'] = 'Female'
 test_set.loc[ test_set['Gender'] =='Fe Male' , 'Gender'] = 'Female'
