@@ -101,7 +101,6 @@ def xgb_hamsu(max_depth, min_child_weight,
     }
 }
 '''
-
 model = XGBClassifier(
     n_estimators = 500,
     learning_rate = 0.02,
@@ -115,7 +114,6 @@ model = XGBClassifier(
     subsample = max(min(0.6927562163656839, 1), 0)
 )
 
-
 # 3. 훈련
 start = time.time()
 model.fit(x_train, y_train)
@@ -125,7 +123,6 @@ end = time.time()
 y_predict = model.predict(x_test)
 print("accuracy_score :", accuracy_score(y_test, y_predict))
 print("걸린시간 : ", round(end-start, 2))
-
 
 '''
 # 최적값으로뽑힌 파라미터 값으로 실행
