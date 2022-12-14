@@ -25,7 +25,6 @@ from sklearn.impute import SimpleImputer,KNNImputer, IterativeImputer
 # imputer = IterativeImputer()
 imputer = KNNImputer()
 
- 
 imputer.fit(data)
 data2 = imputer.transform(data)
 print(data2)
