@@ -18,7 +18,6 @@ Scaler = StandardScaler() #Bagging 할때 스케일러 필수
 x_train = Scaler.fit_transform(x_train)
 x_test = Scaler. transform(x_test)
 
-
 # Bootstrap Aggregation 
 #Bagging 한가지 모델을 여러번 돌려서 사용 
 from sklearn.ensemble import BaggingClassifier #Bagging 앙상블 모델엣 가장많이 사용함 
