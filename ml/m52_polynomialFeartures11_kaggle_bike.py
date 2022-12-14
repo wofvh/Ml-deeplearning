@@ -41,7 +41,6 @@ print(train_set.info()) # info 정보출력
 print(train_set.describe()) # describe 평균치, 중간값, 최소값 등등 출력
 '''
 
-
 ######## 년, 월 ,일 ,시간 분리 ############
 
 train_set["hour"] = [t.hour for t in pd.DatetimeIndex(train_set.datetime)]
