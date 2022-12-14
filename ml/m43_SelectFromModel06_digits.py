@@ -12,7 +12,6 @@ warnings.filterwarnings(action="ignore")
 from sklearn.feature_selection import SelectFromModel
 from sklearn.preprocessing import LabelEncoder
 
-
 #1.데이터 
 datasets = load_digits()
 x = datasets.data
