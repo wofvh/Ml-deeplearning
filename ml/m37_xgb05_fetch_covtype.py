@@ -16,7 +16,6 @@ y = datasets.target
 print(x.shape, y.shape)  #(581012, 54) (581012,)
 
 
-
 le = LabelEncoder()
 y = le.fit_transform(y)
 
