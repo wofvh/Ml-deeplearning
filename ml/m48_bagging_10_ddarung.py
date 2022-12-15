@@ -9,8 +9,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.experimental import enable_iterative_imputer # 이터러블 입력시 사용하는 모듈 추가
 from sklearn.impute import SimpleImputer, KNNImputer, IterativeImputer 
 
-
-
 parameters_xgb = [
     {'XGB__n_estimators' : [100,200,300,400,500],
     'XGB__learning_rate' : [0.01,0.05,0.1,0.15],
