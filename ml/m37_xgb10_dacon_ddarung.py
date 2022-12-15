@@ -7,7 +7,6 @@ from xgboost import XGBClassifier,XGBRFRegressor
 
 import time 
 
-
 #1.데이터 
 datasets = load_breast_cancer()
 
