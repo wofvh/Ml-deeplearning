@@ -18,7 +18,6 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from imblearn.over_sampling import SMOTE 
 
-
 path = 'D:/study_data/_data/'
 datasets = pd.read_csv(path + 'winequality-white.csv', index_col=None, header=0, sep=';') # sep';'< csv 
 
@@ -38,7 +37,6 @@ print(x.shape, y.shape)  # (4898, 11) (4898,)
 print(np.unique(y, return_counts = True)) #다중분류에서는 데이터 무조건 확인하기
 # (array([3., 4., 5., 6., 7., 8., 9.]), array([  20,  163, 1457, 2198,  880,  175,    5], dtype=int64))
 print(datasets['quality'].value_counts())
-
 
 
 x_train, x_test, y_train, y_test = train_test_split(
