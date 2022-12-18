@@ -8,7 +8,6 @@ import warnings
 warnings.filterwarnings('ignore')
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression 
-
 from sklearn.pipeline import make_pipeline
 
 #1.데이터
