@@ -6,7 +6,6 @@ from sklearn.preprocessing import MinMaxScaler,StandardScaler
 from sklearn.model_selection import KFold, cross_val_score
 
 #데이터
-
 datasets = load_boston()
 x = datasets.data
 y = datasets.target
@@ -26,11 +25,9 @@ Parameters= [
     {'RF__n_jobs':[-1,2,4],"RF__max_depth":[6,10,12]}
 ] 
 
-
 # scaler = MinMaxScaler()
 # x_train = scaler.fit_transform(x_train)
 # x_test = scaler.transform(x_test)
-
 
 #모델구성
 
@@ -51,7 +48,6 @@ GridSearchCV
 model = GridSearchCV(pipe,Parameters,cv=kfold,verbose=1)
 # model = GridSearchCV(pipe, parameters,cv=5,verbose=1)
 
-
 #훈련
 model.fit(x_train,y_train)
 
@@ -59,6 +55,5 @@ model.fit(x_train,y_train)
 result = model.score(x_test,y_test)
 
 print("model.score:", result)
-
 
 # model.score: 1.0
