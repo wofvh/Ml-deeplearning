@@ -10,7 +10,6 @@ from sklearn.model_selection import train_test_split
 
 x_train, x_test,y_train, y_test= train_test_split(x,y, train_size=0.8, shuffle=True, random_state=1234)
 
-
 #2. 모델구성 
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier,GradientBoostingClassifier
