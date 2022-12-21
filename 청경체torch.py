@@ -277,8 +277,6 @@ with zipfile.ZipFile("submission.zip", 'w') as my_zip:
 print('end')
 
 
-
-
 # import zipfile
 # filelist = ['TEST_01.csv','TEST_02.csv','TEST_03.csv','TEST_04.csv','TEST_05.csv', 'TEST_06.csv']
 # os.chdir("D:\study_data\_data\dacon_vegi/test_target")
@@ -286,10 +284,6 @@ print('end')
 #     for i in filelist:
 #         my_zip.write(i)
 #     my_zip.close()
-
-
-
-
 
 
 # 39it [06:41, 77.22s/it]
