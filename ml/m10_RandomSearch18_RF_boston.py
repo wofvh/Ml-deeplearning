@@ -7,7 +7,6 @@ from sklearn.metrics import accuracy_score,r2_score
 import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
 
-
 #1. 데이터
 datasets = load_boston()
 x = datasets.data #데이터를 리스트 형태로 불러올 때 함
