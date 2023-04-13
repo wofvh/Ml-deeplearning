@@ -1,3 +1,4 @@
+#레스넷101
 from threading import activeCount
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, GlobalAveragePooling2D, Dropout
